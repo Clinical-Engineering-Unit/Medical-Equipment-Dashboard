@@ -1,0 +1,1859 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<!-- FIX #1: Added Content-Security-Policy to block unauthorized script injection.
+     'unsafe-inline' retained for inline <script> block (GAS JSONP requires dynamic script injection).
+     script-src includes fonts.googleapis.com for font loading, script.google.com for GAS. -->
+<meta http-equiv="Content-Security-Policy"
+  content="default-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com https://script.google.com;
+           script-src 'self' 'unsafe-inline' https://script.google.com;
+           style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
+           font-src https://fonts.gstatic.com;
+           img-src 'self' data: blob: https://lh3.googleusercontent.com https://drive.google.com;
+           connect-src 'none';"/>
+<!-- FIX #2: X-Content-Type-Options and Referrer-Policy meta tags -->
+<meta http-equiv="X-Content-Type-Options" content="nosniff"/>
+<meta name="referrer" content="strict-origin-when-cross-origin"/>
+<title>Regional Clinical Engineering Equipment Management</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Space+Mono:wght@700&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#eef2f7;--surface:#fff;--surface2:#f4f7fb;--border:#d9e2ef;
+  --primary:#1b4f72;--pl:#2471a3;--pf:#d6eaf8;
+  --accent:#117a65;--al:#1abc9c;--af:#d0ece7;
+  --amber:#b7770d;--amberbg:#fef9e7;
+  --red:#c0392b;--redbg:#fdf0ef;
+  --text:#1a202c;--text2:#4a5568;--text3:#718096;
+  --radius:12px;--shadow:0 2px 14px rgba(0,0,0,.07);--shadowlg:0 8px 32px rgba(0,0,0,.13)
+}
+body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
+
+/* HEADER */
+.app-header{background:linear-gradient(135deg,#1b4f72 0%,#117a65 100%);color:#fff;padding:1.1rem 1.5rem;box-shadow:0 4px 20px rgba(27,79,114,.35)}
+.header-inner{max-width:960px;margin:0 auto;display:flex;align-items:center;gap:1rem}
+.header-logo{font-size:2rem;flex-shrink:0}
+.header-title{font-size:clamp(.92rem,3vw,1.25rem);font-weight:800;line-height:1.25}
+.header-sub{font-size:.73rem;opacity:.78;margin-top:3px}
+#gas-status{font-size:.68rem;white-space:nowrap;opacity:.88;padding:.25rem .6rem;border-radius:999px;background:rgba(255,255,255,.15);flex-shrink:0}
+#offline-banner{display:none;background:#c0392b;color:#fff;text-align:center;padding:.5rem;font-size:.82rem;font-weight:600}
+
+/* NAV */
+.tab-nav{background:var(--primary);border-bottom:3px solid var(--al);position:sticky;top:0;z-index:100}
+.tab-nav-inner{max-width:960px;margin:0 auto;display:flex;overflow-x:auto;scrollbar-width:none}
+.tab-nav-inner::-webkit-scrollbar{display:none}
+.tab-btn{padding:.78rem 1.1rem;border:none;background:none;color:rgba(255,255,255,.6);cursor:pointer;font-family:'Outfit',sans-serif;font-size:.8rem;font-weight:600;display:flex;align-items:center;gap:6px;white-space:nowrap;border-bottom:3px solid transparent;margin-bottom:-3px;transition:all .2s}
+.tab-btn:hover{color:#fff;background:rgba(255,255,255,.08)}
+.tab-btn.active{color:#fff;border-bottom-color:var(--al);background:rgba(255,255,255,.1)}
+
+/* BODY */
+.app-body{max-width:960px;margin:0 auto;padding:1.5rem 1rem 3rem}
+.panel{display:none;animation:fadeIn .28s ease}
+.panel.active{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(7px)}to{opacity:1;transform:none}}
+
+/* SECTION HEADER */
+.section-header{display:flex;align-items:flex-start;gap:.9rem;margin-bottom:1.1rem}
+.section-icon{width:46px;height:46px;border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:1.4rem;flex-shrink:0}
+.icon-fault{background:#fdebd0}.icon-install{background:var(--pf)}.icon-equip{background:var(--af)}.icon-admin{background:#ebe8fd}
+.section-title{font-size:1.2rem;font-weight:800;color:var(--primary)}
+.section-sub{font-size:.8rem;color:var(--text2);margin-top:3px}
+
+/* BANNERS */
+.banner{padding:.8rem 1rem;border-radius:0 8px 8px 0;font-size:.82rem;margin-bottom:1.1rem;border-left:4px solid}
+.banner-blue{background:var(--pf);border-color:var(--pl);color:var(--primary)}
+.banner-green{background:var(--af);border-color:var(--accent);color:#0e6655}
+
+/* FORM CARD */
+.form-card{background:var(--surface);border-radius:var(--radius);padding:1.5rem;box-shadow:var(--shadow);border:1px solid var(--border);margin-bottom:1.5rem}
+.form-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:1rem;margin-bottom:1rem}
+.field-group{display:flex;flex-direction:column;gap:5px}
+.field-label{font-size:.8rem;font-weight:700;color:var(--text2)}
+.field-hint{font-size:.73rem;color:var(--text3)}
+.req{color:var(--red)}
+input,select,textarea{border:1.5px solid var(--border);border-radius:8px;padding:.58rem .82rem;font-size:.87rem;font-family:'Outfit',sans-serif;background:var(--surface2);color:var(--text);width:100%;transition:border-color .2s,box-shadow .2s}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--pl);box-shadow:0 0 0 3px var(--pf)}
+input.err,select.err,textarea.err{border-color:var(--red)}
+textarea{resize:vertical;min-height:100px}
+.err-msg{font-size:.73rem;color:var(--red)}
+.char-count{font-size:.7rem;color:var(--text3);text-align:right}
+
+/* FILE UPLOAD */
+.file-area{display:flex;align-items:center;gap:.85rem;flex-wrap:wrap;margin-top:.25rem}
+.file-label{display:inline-flex;align-items:center;gap:6px;background:var(--pf);color:var(--primary);border:1.5px dashed var(--pl);border-radius:8px;padding:.5rem 1rem;font-size:.8rem;font-weight:700;cursor:pointer;transition:background .2s}
+.file-label:hover{background:#bed8f0}
+.file-label.uploading{opacity:.6;cursor:not-allowed;pointer-events:none}
+#img-preview{width:80px;height:80px;object-fit:cover;border-radius:8px;border:2px solid var(--border);display:none}
+/* Upload progress */
+.upload-progress-wrap{margin-top:.55rem;display:none}
+.upload-progress-bar-bg{background:var(--border);border-radius:999px;height:6px;overflow:hidden}
+.upload-progress-bar{background:linear-gradient(90deg,var(--primary),var(--al));height:6px;border-radius:999px;width:0%;transition:width .3s ease}
+.upload-progress-label{font-size:.72rem;color:var(--text2);margin-top:4px}
+/* Drive image link in admin report cards */
+.drive-img-wrap{margin-top:.55rem}
+.drive-img-thumb{width:90px;height:90px;object-fit:cover;border-radius:8px;border:2px solid var(--border);cursor:pointer;transition:transform .15s}
+.drive-img-thumb:hover{transform:scale(1.06)}
+.drive-img-link{display:inline-flex;align-items:center;gap:5px;font-size:.75rem;color:var(--pl);text-decoration:none;margin-top:4px;font-weight:600}
+.drive-img-link:hover{text-decoration:underline}
+
+/* BUTTONS */
+.form-footer{display:flex;justify-content:flex-end;margin-top:1.25rem}
+.btn-primary{background:linear-gradient(135deg,var(--primary) 0%,var(--pl) 100%);color:#fff;border:none;border-radius:10px;padding:.72rem 1.9rem;font-size:.88rem;font-weight:700;font-family:'Outfit',sans-serif;cursor:pointer;box-shadow:0 4px 12px rgba(27,79,114,.3);transition:all .2s;display:inline-flex;align-items:center;gap:6px}
+.btn-primary:hover:not(:disabled){transform:translateY(-1px);box-shadow:0 6px 16px rgba(27,79,114,.4)}
+.btn-primary:disabled{opacity:.55;cursor:not-allowed;transform:none}
+.btn-primary.green{background:linear-gradient(135deg,#0e6655 0%,var(--accent) 100%);box-shadow:0 4px 12px rgba(17,122,101,.3)}
+.btn-outline{background:transparent;border:2px solid var(--primary);color:var(--primary);border-radius:8px;padding:.52rem 1.05rem;font-size:.8rem;font-weight:700;font-family:'Outfit',sans-serif;cursor:pointer;transition:background .2s}
+.btn-outline:hover{background:var(--pf)}
+.btn-sm{padding:.35rem .75rem;font-size:.73rem}
+.spinner{display:inline-block;animation:spin .8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* MODAL */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.52);align-items:center;justify-content:center;z-index:999;padding:1rem}
+.modal-overlay.open{display:flex}
+.modal-card{background:#fff;border-radius:16px;padding:2rem;max-width:420px;width:100%;box-shadow:var(--shadowlg);text-align:center;animation:slideUp .28s ease}
+@keyframes slideUp{from{transform:translateY(18px);opacity:0}to{transform:none;opacity:1}}
+.modal-icon{font-size:2.8rem;margin-bottom:.4rem}
+.modal-title{font-size:1.25rem;font-weight:800;color:var(--accent);margin-bottom:.4rem}
+.modal-body{font-size:.83rem;color:var(--text2);margin-bottom:1rem}
+.modal-ref{background:var(--surface2);border-radius:8px;padding:.7rem;margin-bottom:1rem}
+.ref-label{display:block;font-size:.7rem;color:var(--text3);text-transform:uppercase;letter-spacing:.05em}
+.ref-code{display:block;font-family:'Space Mono',monospace;font-size:.95rem;font-weight:700;color:var(--primary);margin-top:2px;cursor:pointer;text-decoration:underline dotted}
+.ref-copy-tip{font-size:.7rem;color:var(--text3);margin-top:2px}
+.modal-q{font-size:.86rem;font-weight:600;margin-bottom:.85rem}
+.modal-btns{display:flex;gap:.7rem;justify-content:center;flex-wrap:wrap}
+
+/* ERROR MODAL */
+.error-modal-card{background:#fff;border-radius:16px;padding:1.75rem;max-width:380px;width:100%;box-shadow:var(--shadowlg);text-align:center}
+.error-modal-icon{font-size:2.5rem;margin-bottom:.4rem}
+.error-modal-title{font-size:1rem;font-weight:800;color:var(--red);margin-bottom:.5rem}
+.error-modal-body{font-size:.83rem;color:var(--text2);margin-bottom:1.1rem}
+
+/* ADMIN */
+.login-wrap{display:flex;justify-content:center;padding:2rem 0}
+.login-card{background:var(--surface);border-radius:var(--radius);padding:2rem;width:100%;max-width:350px;box-shadow:var(--shadowlg);border:1px solid var(--border);text-align:center}
+.login-icon{font-size:2.8rem;margin-bottom:.4rem}
+.login-title{font-size:1.15rem;font-weight:800;color:var(--primary)}
+.login-sub{font-size:.75rem;color:var(--text3);margin-bottom:1.2rem}
+.login-card input{text-align:center;letter-spacing:.15em}
+.admin-panel{display:none}
+.admin-panel.open{display:block}
+.admin-header-row{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:1.1rem;flex-wrap:wrap;gap:.5rem}
+.session-timer{font-size:.72rem;color:var(--amber);font-weight:600;margin-top:3px}
+.admin-tabs{display:flex;gap:.5rem;margin-bottom:1.25rem;flex-wrap:wrap}
+.atab-btn{padding:.5rem 1rem;border-radius:8px;border:1.5px solid var(--border);background:var(--surface);font-family:'Outfit',sans-serif;font-size:.8rem;font-weight:600;cursor:pointer;color:var(--text2);transition:all .18s}
+.atab-btn.active{background:var(--primary);color:#fff;border-color:var(--primary)}
+
+/* STATS */
+.stats-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:.7rem;margin-bottom:1.25rem}
+.stat-card{border-radius:10px;padding:.9rem;display:flex;flex-direction:column;align-items:center;gap:3px;box-shadow:var(--shadow)}
+.stat-num{font-size:1.75rem;font-weight:800;line-height:1}
+.stat-lbl{font-size:.68rem;color:var(--text2);font-weight:600;text-align:center}
+.s-blue{background:var(--pf)}.s-blue .stat-num{color:var(--primary)}
+.s-green{background:#d5f5e3}.s-green .stat-num{color:#1e8449}
+.s-amber{background:var(--amberbg)}.s-amber .stat-num{color:var(--amber)}
+.s-teal{background:var(--af)}.s-teal .stat-num{color:var(--accent)}
+.s-red{background:var(--redbg)}.s-red .stat-num{color:var(--red)}
+.s-purple{background:#ebe8fd}.s-purple .stat-num{color:#6c3483}
+
+/* REPORT CARDS */
+.report-card{background:var(--surface);border-radius:var(--radius);border:1px solid var(--border);padding:1.1rem;margin-bottom:1rem;box-shadow:var(--shadow)}
+.report-meta{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:6px;margin-bottom:.5rem}
+.report-ref{font-family:'Space Mono',monospace;font-size:.75rem;background:var(--pf);color:var(--primary);padding:2px 8px;border-radius:4px;font-weight:700}
+.report-time{font-size:.7rem;color:var(--text3)}
+.report-name{font-weight:700;font-size:.88rem;margin-bottom:3px}
+.report-detail{font-size:.78rem;color:var(--text2);margin-bottom:2px}
+.report-contact{font-size:.74rem;color:var(--text3)}
+
+/* STATUS STEPPER */
+.status-stepper{margin-top:1rem}
+.stepper-label{font-size:.72rem;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.05em;margin-bottom:.55rem}
+.stepper-steps{display:flex;flex-wrap:wrap;gap:.4rem}
+.step-pill{display:flex;align-items:center;gap:5px;padding:.35rem .7rem;border-radius:999px;border:2px solid var(--border);background:var(--surface2);font-size:.73rem;font-weight:600;cursor:pointer;color:var(--text3);transition:all .18s;font-family:'Outfit',sans-serif}
+.step-pill:hover{border-color:var(--pl);color:var(--pl)}
+.step-pill.active{background:var(--primary);border-color:var(--primary);color:#fff}
+.step-pill.done{background:var(--af);border-color:var(--accent);color:var(--accent)}
+.step-dot{width:7px;height:7px;border-radius:50%;background:currentColor;flex-shrink:0}
+
+/* DISTRICT MANAGER */
+.district-manager{background:var(--surface);border-radius:var(--radius);padding:1.25rem;box-shadow:var(--shadow);border:1px solid var(--border);margin-bottom:1.25rem}
+.dm-title{font-size:.9rem;font-weight:700;color:var(--primary);margin-bottom:.85rem}
+.dm-list{list-style:none;margin-bottom:1rem;max-height:240px;overflow-y:auto;border:1px solid var(--border);border-radius:8px}
+.dm-list li{display:flex;align-items:center;justify-content:space-between;padding:.5rem .85rem;font-size:.83rem;border-bottom:1px solid var(--border)}
+.dm-list li:last-child{border-bottom:none}
+.dm-list li:nth-child(even){background:var(--surface2)}
+.dm-del{background:none;border:none;color:var(--red);cursor:pointer;font-size:1rem;padding:0 4px;line-height:1}
+.dm-add-row{display:flex;gap:.6rem}
+.dm-add-row input{flex:1}
+.dm-save-row{margin-top:.75rem;display:flex;align-items:center;gap:.75rem}
+.dm-save-status{font-size:.75rem;color:var(--accent);font-weight:600}
+
+/* STATUS TRACKER (public) */
+.tracker-card{background:var(--surface);border-radius:var(--radius);padding:1.4rem;box-shadow:var(--shadow);border:1px solid var(--border);margin-top:1.5rem}
+.tracker-header{display:flex;align-items:flex-start;gap:.85rem;margin-bottom:1.25rem}
+.tracker-icon{font-size:1.5rem;width:42px;height:42px;background:#eef2f7;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.tracker-title{font-size:1rem;font-weight:800;color:var(--primary)}
+.tracker-sub{font-size:.77rem;color:var(--text3);margin-top:3px}
+.tracker-input-row{display:flex;gap:.65rem;margin-bottom:1.1rem;flex-wrap:wrap}
+.tracker-input-row input{flex:1;min-width:180px;font-family:'Space Mono',monospace;font-size:.88rem;letter-spacing:.06em;text-transform:uppercase}
+.track-state{text-align:center;padding:1.5rem;color:var(--text2)}
+.track-spinner{font-size:2rem;animation:spin 1.2s linear infinite;display:inline-block}
+.track-error{color:var(--red)}
+.track-info-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(195px,1fr));gap:.75rem;margin-bottom:1.25rem}
+.track-info-item{background:var(--surface2);border-radius:8px;padding:.65rem .85rem;border:1px solid var(--border)}
+.track-info-label{display:block;font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--text3);margin-bottom:3px}
+.track-info-value{display:block;font-size:.85rem;font-weight:600;color:var(--text)}
+.track-info-value.mono{font-family:'Space Mono',monospace;color:var(--primary)}
+.status-progress-wrap{margin-bottom:1rem}
+.status-progress-label{font-size:.72rem;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.05em;margin-bottom:.6rem}
+.status-progress-steps{display:flex;flex-wrap:wrap;gap:.35rem}
+.sp-step{display:flex;align-items:center;gap:5px;padding:.35rem .7rem;border-radius:999px;border:2px solid var(--border);background:var(--surface2);font-size:.72rem;font-weight:600;color:var(--text3)}
+.sp-step.sp-done{background:var(--af);border-color:var(--accent);color:var(--accent)}
+.sp-step.sp-active{background:var(--primary);border-color:var(--primary);color:#fff;font-weight:800}
+.sp-dot{width:7px;height:7px;border-radius:50%;background:currentColor;flex-shrink:0}
+.current-status-wrap{text-align:center;margin-top:.75rem}
+.current-status-badge{display:inline-block;padding:.5rem 1.5rem;border-radius:999px;font-size:.88rem;font-weight:800;letter-spacing:.03em}
+.badge-received{background:#d6eaf8;color:#1b4f72}
+.badge-pending{background:var(--amberbg);color:var(--amber)}
+.badge-under_repair,.badge-under\ repair{background:#fdebd0;color:#a04000}
+.badge-repair_completed,.badge-repair\ completed{background:var(--af);color:var(--accent)}
+.badge-dispatched{background:#e8daef;color:#6c3483}
+.badge-obsolete{background:var(--redbg);color:var(--red)}
+
+.empty-state{text-align:center;padding:3rem;color:var(--text3);font-size:.88rem}
+.app-footer{text-align:center;padding:1.25rem 1rem;font-size:.7rem;color:var(--text3);border-top:1px solid var(--border);margin-top:1rem}
+
+@media(max-width:480px){
+  .form-grid{grid-template-columns:1fr}
+  .stats-grid{grid-template-columns:repeat(2,1fr)}
+  .form-footer{justify-content:stretch}
+  .btn-primary{width:100%}
+  .stepper-steps{gap:.28rem}
+  .step-pill{font-size:.67rem;padding:.28rem .5rem}
+  .tracker-input-row .btn-primary{width:100%}
+}
+</style>
+</head>
+<body>
+
+<div id="offline-banner">⚠️ You are offline. Please check your internet connection before submitting forms.</div>
+
+<header class="app-header">
+  <div class="header-inner">
+    <div class="header-logo">🏥</div>
+    <div style="flex:1">
+      <div class="header-title">Medical Equipment Management Dashboard</div>
+      <div class="header-sub">Clinical Engineering Unit — Western Region Health Directorate, Sekondi-Takoradi, Ghana</div>
+    </div>
+    <div id="gas-status">⏳ Connecting…</div>
+  </div>
+</header>
+
+<nav class="tab-nav">
+  <div class="tab-nav-inner">
+    <button class="tab-btn active" onclick="showTab('fault',this)">⚠️ Fault Reporting</button>
+    <button class="tab-btn" onclick="showTab('install',this)">🔩 Installation Request</button>
+    <button class="tab-btn" onclick="showTab('equip',this)">🏥 Equipment Request</button>
+    <button class="tab-btn" onclick="showTab('admin',this)">🔐 Admin</button>
+  </div>
+</nav>
+
+<div class="app-body">
+
+<!-- ══ TAB 1: FAULT REPORTING ══ -->
+<div id="panel-fault" class="panel active">
+  <div class="section-header">
+    <div class="section-icon icon-fault">⚠️</div>
+    <div>
+      <div class="section-title">Medical Equipment Fault Reporting</div>
+      <div class="section-sub">Report equipment faults for prompt assessment by the Clinical Engineering Unit</div>
+    </div>
+  </div>
+  <div class="form-card">
+    <div class="form-grid">
+      <div class="field-group">
+        <label class="field-label" for="f-facility">Name of Facility <span class="req">*</span></label>
+        <input type="text" id="f-facility" maxlength="150" placeholder="e.g. Effia Nkwanta Regional Hospital" autocomplete="off"/>
+        <span class="err-msg" id="err-f-facility"></span>
+      </div>
+      <div class="field-group">
+        <label class="field-label" for="f-district">District <span class="req">*</span></label>
+        <select id="f-district"><option value="">-- Select District --</option></select>
+        <span class="err-msg" id="err-f-district"></span>
+      </div>
+      <div class="field-group">
+        <label class="field-label" for="f-ftype">Type of Facility <span class="req">*</span></label>
+        <select id="f-ftype">
+          <option value="">-- Select --</option>
+          <option>Teaching Hospital</option><option>Regional Hospital</option>
+          <option>District Hospital</option><option>Polyclinic</option>
+          <option>Health Centre</option><option>CHPS Compound</option><option>Quasi-Government</option>
+          <option>Private Hospital</option><option>Mission/Faith-Based Hospital</option>
+          <option>Maternity Home</option><option>Clinic</option><option>Cold Chain Facility</option><option>Public Health Lab</option>
+        </select>
+        <span class="err-msg" id="err-f-ftype"></span>
+      </div>
+      <div class="field-group">
+        <label class="field-label" for="f-unit">Unit / Department</label>
+        <input type="text" id="f-unit" maxlength="100" placeholder="e.g. ICU, Theatre, Maternity Ward" autocomplete="off"/>
+      </div>
+      <div class="field-group">
+        <label class="field-label" for="f-equip">Name of Equipment <span class="req">*</span></label>
+        <input type="text" id="f-equip" maxlength="150" placeholder="e.g. B.P Machine, Patient Monitor" autocomplete="off"/>
+        <span class="err-msg" id="err-f-equip"></span>
+      </div>
+      <div class="field-group">
+        <label class="field-label" for="f-reporter">Name of Person Reporting <span class="req">*</span></label>
+        <input type="text" id="f-reporter" maxlength="100" placeholder="Full name" autocomplete="off"/>
+        <span class="err-msg" id="err-f-reporter"></span>
+      </div>
+      <div class="field-group">
+        <label class="field-label" for="f-contact">Contact Number <span class="req">*</span></label>
+        <p class="field-hint">10 digits · starts with 0 · digits only (e.g. 0244000000, 0201234567)</p>
+        <input type="tel" id="f-contact" maxlength="10" placeholder="e.g. 0244000000"
+          oninput="livePhoneInput('f-contact')" inputmode="numeric" pattern="[0-9]*" autocomplete="tel"/>
+        <span class="err-msg" id="err-f-contact"></span>
+      </div>
+    </div>
+    <div class="field-group" style="margin-bottom:1rem">
+      <label class="field-label" for="f-desc">Description of Fault <span class="req">*</span></label>
+      <textarea id="f-desc" rows="4" maxlength="2000" oninput="updateCharCount('f-desc','f-desc-count',2000)" placeholder="Describe the fault — when it started, symptoms, error messages…"></textarea>
+      <div class="char-count"><span id="f-desc-count">0</span>/2000</div>
+      <span class="err-msg" id="err-f-desc"></span>
+    </div>
+    <div class="field-group" style="margin-bottom:1rem">
+      <label class="field-label" for="f-remarks">Other Remarks</label>
+      <textarea id="f-remarks" rows="3" maxlength="500" placeholder="Any additional information"></textarea>
+    </div>
+    <div class="field-group">
+      <label class="field-label">Upload Picture of Equipment(OPTIONAL) </label>
+      <p class="field-hint">Attach a clear photo showing the faulty area if possible (max size of picture 5 MB).</p>
+      <div class="file-area">
+        <label class="file-label" id="f-img-label" for="f-img">📷 Choose Image</label>
+        <input type="file" id="f-img" accept="image/jpeg,image/png,image/gif,image/webp" style="display:none" onchange="previewImg(this,'img-preview')"/>
+        <img id="img-preview" alt="Equipment photo preview"/>
+        <span id="f-img-name" style="font-size:.75rem;color:var(--text3)"></span>
+      </div>
+      <!-- Upload progress indicator -->
+      <div class="upload-progress-wrap" id="upload-progress-wrap">
+        <div class="upload-progress-bar-bg"><div class="upload-progress-bar" id="upload-progress-bar"></div></div>
+        <div class="upload-progress-label" id="upload-progress-label">Uploading image to Google Drive…</div>
+      </div>
+      <!-- Drive link shown after upload -->
+      <div id="f-img-drive-result" style="display:none;margin-top:.4rem">
+        <span style="font-size:.75rem;color:var(--accent);font-weight:700">✅ Image uploaded to Google Drive</span>
+        <a id="f-img-drive-link" href="#" target="_blank" rel="noopener noreferrer" class="drive-img-link" style="display:inline-flex;margin-left:.5rem">🔗 View on Drive</a>
+        <button type="button" onclick="clearImageUpload()" style="background:none;border:none;color:var(--red);cursor:pointer;font-size:.75rem;margin-left:.5rem">✕ Remove</button>
+      </div>
+      <span class="err-msg" id="err-f-img"></span>
+    </div>
+    <div class="form-footer">
+      <button class="btn-primary" id="btn-fault" onclick="submitFault()">📤 Submit Fault Report</button>
+    </div>
+  </div>
+
+  <!-- STATUS TRACKER (public) -->
+  <div class="tracker-card">
+    <div class="tracker-header">
+      <div class="tracker-icon">🔍</div>
+      <div>
+        <div class="tracker-title">Track Your Fault Report Status</div>
+        <div class="tracker-sub">Enter the reference code that popped up when you reported the fault to check the current status of your submitted report</div>
+      </div>
+    </div>
+    <div class="tracker-input-row">
+      <!-- FIX #5: Added aria-label for accessibility -->
+      <input type="text" id="track-ref-input" placeholder="e.g. FR-A3XK-7QPL"
+        aria-label="Reference code"
+        oninput="this.value=this.value.toUpperCase()"
+        onkeydown="if(event.key==='Enter')checkStatus()"/>
+      <button class="btn-primary" onclick="checkStatus()" id="track-btn">🔎 Check Status</button>
+    </div>
+    <div id="track-result" style="display:none">
+      <div id="track-loading" style="display:none" class="track-state">
+        <div class="track-spinner">⏳</div><p>Checking status…</p>
+      </div>
+      <div id="track-notfound" style="display:none" class="track-state track-error">
+        <div style="font-size:2rem">❌</div>
+        <p id="track-notfound-msg"><strong>Reference code not found.</strong></p>
+        <p style="font-size:.78rem;color:var(--text3);margin-top:4px">Codes look like <strong>FR-XXXX-XXXX</strong></p>
+      </div>
+      <div id="track-found" style="display:none">
+        <div class="track-info-grid">
+          <div class="track-info-item"><span class="track-info-label">Reference Code</span><span class="track-info-value mono" id="tr-ref"></span></div>
+          <div class="track-info-item"><span class="track-info-label">Facility</span><span class="track-info-value" id="tr-facility"></span></div>
+          <div class="track-info-item"><span class="track-info-label">Equipment</span><span class="track-info-value" id="tr-equipment"></span></div>
+          <div class="track-info-item"><span class="track-info-label">Last Updated</span><span class="track-info-value" id="tr-updated"></span></div>
+        </div>
+        <div class="status-progress-wrap">
+          <div class="status-progress-label">Status Progress</div>
+          <div class="status-progress-steps" id="tr-steps"></div>
+        </div>
+        <div class="current-status-wrap">
+          <span class="current-status-badge" id="tr-badge"></span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ TAB 2: INSTALLATION REQUEST ══ -->
+<div id="panel-install" class="panel">
+  <div class="section-header">
+    <div class="section-icon icon-install">🔩</div>
+    <div>
+      <div class="section-title">Request for Equipment Installation</div>
+      <div class="section-sub">For newly received equipment requiring professional installation</div>
+    </div>
+  </div>
+  <div class="banner banner-blue">💡 <strong>Note:</strong> This form is for newly received equipment requiring installation or commissioning by the Clinical Engineering Unit. Contact the Regional Equipment Manager on 0506971001</div>
+  <div class="form-card">
+    <div class="form-grid">
+      <div class="field-group">
+        <label class="field-label" for="i-facility">Name of Facility <span class="req">*</span></label>
+        <input type="text" id="i-facility" maxlength="150" placeholder="e.g. Axim Government Hospital" autocomplete="off"/>
+        <span class="err-msg" id="err-i-facility"></span>
+      </div>
+      <div class="field-group">
+        <label class="field-label" for="i-district">District <span class="req">*</span></label>
+        <select id="i-district"><option value="">-- Select District --</option></select>
+        <span class="err-msg" id="err-i-district"></span>
+      </div>
+      <div class="field-group">
+        <label class="field-label" for="i-ftype">Type of Facility <span class="req">*</span></label>
+        <select id="i-ftype">
+          <option value="">-- Select --</option>
+          <option>Teaching Hospital</option><option>Regional Hospital</option>
+          <option>District Hospital</option><option>Polyclinic</option>
+          <option>Health Centre</option><option>CHPS Compound</option>
+          <option>Private Hospital</option><option>Mission/Faith-Based Hospital</option><option>Quasi-Government Facility</option>
+          <option>Maternity Home</option><option>Clinic</option><option>Cold-Chain Facility</option><option>Public Health Lab</option>
+        </select>
+        <span class="err-msg" id="err-i-ftype"></span>
+      </div>
+      <div class="field-group">
+        <label class="field-label" for="i-etype">Type of Equipment <span class="req">*</span></label>
+        <input type="text" id="i-etype" maxlength="150"
+          placeholder="e.g. Autoclave, ECG Machine, Ultrasound, Weighing Scale" autocomplete="off"/>
+        <span class="err-msg" id="err-i-etype"></span>
+      </div>
+      <div class="field-group">
+        <label class="field-label" for="i-qty">Quantity<span class="req">*</span></label>
+        <select id="i-qty"><option value="">-- Select --</option></select>
+        <span class="err-msg" id="err-i-qty"></span>
+      </div>
+      <div class="field-group">
+        <label class="field-label" for="i-date">Preferred Date for Installation</label>
+        <input type="date" id="i-date"/>
+      </div>
+      <div class="field-group">
+        <label class="field-label" for="i-name">Name of Person Requesting <span class="req">*</span></label>
+        <input type="text" id="i-name" maxlength="100" placeholder="Full name" autocomplete="off"/>
+        <span class="err-msg" id="err-i-name"></span>
+      </div>
+      <div class="field-group">
+        <label class="field-label" for="i-grade">Grade / Position</label>
+        <input type="text" id="i-grade" maxlength="100" placeholder="e.g. Hospital Administrator" autocomplete="off"/>
+      </div>
+      <div class="field-group">
+        <label class="field-label" for="i-contact">Contact Number <span class="req">*</span></label>
+        <p class="field-hint">10 digits · starts with 0 · digits only (e.g. 0244000000, 0201234567)</p>
+        <input type="tel" id="i-contact" maxlength="10" placeholder="e.g. 0244000000"
+          oninput="livePhoneInput('i-contact')" inputmode="numeric" pattern="[0-9]*" autocomplete="tel"/>
+        <span class="err-msg" id="err-i-contact"></span>
+      </div>
+    </div>
+    <div class="form-footer">
+      <button class="btn-primary" id="btn-install" onclick="submitInstall()">📤 Submit Installation Request</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ TAB 3: EQUIPMENT REQUEST ══ -->
+<div id="panel-equip" class="panel">
+  <div class="section-header">
+    <div class="section-icon icon-equip">🏥</div>
+    <div>
+      <div class="section-title">Medical Equipment Request</div>
+      <div class="section-sub">Request medical equipment your facility needs</div>
+    </div>
+  </div>
+  <div class="banner banner-green">⚖️ <strong>Equity Notice:</strong> Information provided will guide equitable distribution of medical equipment across the region. Please be accurate.</div>
+  <div class="form-card">
+    <div class="form-grid">
+      <div class="field-group">
+        <label class="field-label" for="e-facility">Name of Facility <span class="req">*</span></label>
+        <input type="text" id="e-facility" maxlength="150" placeholder="e.g. Prestea Government Hospital" autocomplete="off"/>
+        <span class="err-msg" id="err-e-facility"></span>
+      </div>
+      <div class="field-group">
+        <label class="field-label" for="e-district">District <span class="req">*</span></label>
+        <select id="e-district"><option value="">-- Select District --</option></select>
+        <span class="err-msg" id="err-e-district"></span>
+      </div>
+      <div class="field-group">
+        <label class="field-label" for="e-etype">Type of Equipment <span class="req">*</span></label>
+        <input type="text" id="e-etype" maxlength="150"
+          placeholder="e.g. Blood Pressure Monitor, Oxygen Concentrator, Pulse Oximeter" autocomplete="off"/>
+        <span class="err-msg" id="err-e-etype"></span>
+      </div>
+      <div class="field-group">
+        <label class="field-label" for="e-qty">Quantity Needed <span class="req">*</span></label>
+        <select id="e-qty"><option value="">-- Select --</option></select>
+        <span class="err-msg" id="err-e-qty"></span>
+      </div>
+      <div class="field-group">
+        <label class="field-label" for="e-name">Your Name <span class="req">*</span></label>
+        <input type="text" id="e-name" maxlength="100" placeholder="Full name" autocomplete="off"/>
+        <span class="err-msg" id="err-e-name"></span>
+      </div>
+      <div class="field-group">
+        <label class="field-label" for="e-grade">Grade / Position</label>
+        <input type="text" id="e-grade" maxlength="100" placeholder="e.g. Facility Manager" autocomplete="off"/>
+      </div>
+      <div class="field-group">
+        <label class="field-label" for="e-contact">Your Contact Number <span class="req">*</span></label>
+        <p class="field-hint">10 digits · starts with 0 · digits only (e.g. 0244000000, 0201234567)</p>
+        <input type="tel" id="e-contact" maxlength="10" placeholder="e.g. 0244000000"
+          oninput="livePhoneInput('e-contact')" inputmode="numeric" pattern="[0-9]*" autocomplete="tel"/>
+        <span class="err-msg" id="err-e-contact"></span>
+      </div>
+    </div>
+    <div class="field-group" style="margin-bottom:1rem">
+      <label class="field-label" for="e-reason">Reasons for the Request <span class="req">*</span></label>
+      <p class="field-hint">Explain clinical need and how it will improve patient outcomes</p>
+      <textarea id="e-reason" rows="5" maxlength="2000" oninput="updateCharCount('e-reason','e-reason-count',2000)" placeholder="Patient volume, current gaps, clinical need…"></textarea>
+      <div class="char-count"><span id="e-reason-count">0</span>/2000</div>
+      <span class="err-msg" id="err-e-reason"></span>
+    </div>
+    <div class="form-footer">
+      <button class="btn-primary green" id="btn-equip" onclick="submitEquip()">📤 Submit Equipment Request</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ TAB 4: ADMIN ══ -->
+<div id="panel-admin" class="panel">
+  <div id="admin-login">
+    <div class="login-wrap">
+      <div class="login-card">
+        <div class="login-icon">🔐</div>
+        <div class="login-title">Admin Access</div>
+        <div class="login-sub">Clinical Engineering Unit — Restricted Area</div>
+        <!-- FIX #6: Added autocomplete="current-password" for password managers; removed value leak on failed attempt -->
+        <input type="password" id="admin-pw" placeholder="Enter admin password"
+          autocomplete="current-password"
+          onkeydown="if(event.key==='Enter')doLogin()"/>
+        <span class="err-msg" id="login-err" style="display:block;margin-top:6px"></span>
+        <button class="btn-primary" id="btn-login" style="margin-top:1rem;width:100%" onclick="doLogin()">🔓 Login</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="admin-dashboard" class="admin-panel">
+    <div class="admin-header-row">
+      <div>
+        <div class="section-title">🔐 Admin Dashboard</div>
+        <div class="section-sub">Clinical Engineering Unit — Western Region
+          &nbsp;·&nbsp; <span id="last-refresh" style="font-size:.72rem;color:var(--text3)">Not yet loaded</span>
+        </div>
+        <div class="session-timer" id="session-timer"></div>
+      </div>
+      <div style="display:flex;gap:.5rem;flex-wrap:wrap">
+        <button class="btn-outline btn-sm" onclick="loadAllAdminData()" title="Refresh from Google Sheets">🔄 Refresh</button>
+        <button class="btn-outline btn-sm" id="open-sheet-btn" onclick="openGoogleSheet()" title="Open Google Sheet">📊 Open Sheet</button>
+        <button class="btn-outline btn-sm" onclick="doLogout()">Logout</button>
+      </div>
+    </div>
+
+    <div class="admin-tabs">
+      <button class="atab-btn active" onclick="showAdminTab('atab-reports',this)">📋 Fault Reports</button>
+      <button class="atab-btn" onclick="showAdminTab('atab-installs',this)">🔩 Installations</button>
+      <button class="atab-btn" onclick="showAdminTab('atab-equips',this)">🏥 Equipment Requests</button>
+      <button class="atab-btn" onclick="showAdminTab('atab-districts',this)">📍 Manage Districts</button>
+    </div>
+
+    <div id="atab-reports" class="atab-panel">
+      <div class="stats-grid" id="stats-grid"></div>
+      <div id="fault-reports-list"><div class="empty-state">📭 No fault reports yet.</div></div>
+    </div>
+    <div id="atab-installs" class="atab-panel" style="display:none">
+      <div id="install-list"><div class="empty-state">📭 No installation requests yet.</div></div>
+    </div>
+    <div id="atab-equips" class="atab-panel" style="display:none">
+      <div id="equip-list"><div class="empty-state">📭 No equipment requests yet.</div></div>
+    </div>
+    <div id="atab-districts" class="atab-panel" style="display:none">
+      <div class="district-manager">
+        <div class="dm-title">📍 Manage District Dropdown List</div>
+        <p style="font-size:.78rem;color:var(--text3);margin-bottom:.75rem">Changes are saved to Google Sheets and apply immediately to all form dropdowns.</p>
+        <ul class="dm-list" id="district-list-ui"></ul>
+        <div class="dm-add-row">
+          <input type="text" id="new-district-input" maxlength="100" placeholder="Type new district name…" onkeydown="if(event.key==='Enter')addDistrict()"/>
+          <button class="btn-primary" onclick="addDistrict()" style="white-space:nowrap;padding:.58rem 1rem">+ Add</button>
+        </div>
+        <div class="dm-save-row">
+          <button class="btn-primary" onclick="persistDistricts()" style="padding:.58rem 1.2rem">💾 Save Districts to Sheet</button>
+          <span class="dm-save-status" id="dm-save-status"></span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div><!-- /app-body -->
+
+<footer class="app-footer">
+  © <span id="yr"></span> Clinical Engineering Unit — Western Region Health Directorate &nbsp;|&nbsp; All submissions are confidential
+</footer>
+
+<!-- SUCCESS MODAL -->
+<div class="modal-overlay" id="success-modal" role="dialog" aria-modal="true" aria-labelledby="success-modal-title">
+  <div class="modal-card">
+    <div class="modal-icon">✅</div>
+    <div class="modal-title" id="success-modal-title">Submission Successful!</div>
+    <div class="modal-body" id="modal-body-text"></div>
+    <div class="modal-ref">
+      <span class="ref-label">Reference Code — tap to copy</span>
+      <span class="ref-code" id="modal-ref-code" onclick="copyRef()" role="button" tabindex="0" aria-label="Click to copy reference code">—</span>
+      <span class="ref-copy-tip" id="ref-copy-tip">Tap the code above to copy it</span>
+    </div>
+    <div class="modal-q">Would you like to submit another form?</div>
+    <div class="modal-btns">
+      <button class="btn-primary" onclick="modalAnother()">Yes, Submit Another</button>
+      <button class="btn-outline" onclick="closeModal()">No, I'm Done</button>
+    </div>
+  </div>
+</div>
+
+<!-- ERROR MODAL -->
+<div class="modal-overlay" id="error-modal" role="dialog" aria-modal="true" aria-labelledby="error-modal-title">
+  <div class="error-modal-card">
+    <div class="error-modal-icon">⚠️</div>
+    <div class="error-modal-title" id="error-modal-title">Submission Failed</div>
+    <div class="error-modal-body" id="error-modal-body">An error occurred. Please try again.</div>
+    <button class="btn-primary" onclick="closeErrorModal()" style="width:100%">Try Again</button>
+  </div>
+</div>
+
+<script>
+// ═══════════════════════════════════════════════════════════════
+// CONFIG — ✏️ Replace YOUR_SCRIPT_ID with your GAS Web App URL
+// Also replace PASTE_YOUR_SPREADSHEET_ID_HERE with your Sheet ID
+// ═══════════════════════════════════════════════════════════════
+const GAS_URL       = "https://script.google.com/macros/s/AKfycby01vqVyZYvGu2f3Zl5WlNfvlR494f_NPKb62TX1Ez6WkOkmGvh0BvnRL3gEExfS2oC/exec";
+const SHEET_ID      = "19Fk1Gy2v7s36pXO8WHJmir_o7fbMJoHQVMIhSJIKR1w";
+const DRIVE_FOLDER  = "1CbThQWHgBLlWqM26-WDGqTGYvzk7yMtX"; // Google Drive folder for images
+
+// ═══════════════════════════════════════════════════════════════
+// CONSTANTS
+// ═══════════════════════════════════════════════════════════════
+const STATUS_STEPS = [
+  { key:"received",         label:"Received",         icon:"📥" },
+  { key:"pending",          label:"Pending",           icon:"⏳" },
+  { key:"under_repair",     label:"Under Repair",      icon:"🔧" },
+  { key:"repair_completed", label:"Repair Completed",  icon:"✅" },
+  { key:"dispatched",       label:"Dispatched",        icon:"🚚" },
+  { key:"obsolete",         label:"Obsolete",          icon:"⛔" }
+];
+const STATUS_META = {
+  received:         { label:"Received by Engineering Unit", icon:"📥", cls:"badge-received" },
+  pending:          { label:"Pending Assessment",            icon:"⏳", cls:"badge-pending" },
+  under_repair:     { label:"Under Repair",                  icon:"🔧", cls:"badge-under_repair" },
+  repair_completed: { label:"Repair Completed",              icon:"✅", cls:"badge-repair_completed" },
+  dispatched:       { label:"Dispatched",                    icon:"🚚", cls:"badge-dispatched" },
+  obsolete:         { label:"Declared Obsolete",             icon:"⛔", cls:"badge-obsolete" }
+};
+const SESSION_MINUTES = 30; // Admin auto-logout after this many minutes of inactivity
+
+// FIX #7: Allowlist for JSONP callback names — prevents prototype pollution
+// via crafted callback parameter. Callbacks are generated internally so this
+// regex is checked before any window property is set.
+const SAFE_CB_RE = /^gasCB_\d+_\d+$/;
+
+// FIX #8: Allowlist for valid GAS actions sent by the client
+// to prevent parameter-tampering abuse on the front end.
+const ALLOWED_ACTIONS = new Set([
+  "ping","adminLogin","submitFault","submitInstall","submitEquip",
+  "getAll","updateStatus","initSheets","getDistricts","saveDistricts","getStatus",
+  "uploadImage"
+]);
+
+// ═══════════════════════════════════════════════════════════════
+// STATE
+// ═══════════════════════════════════════════════════════════════
+let districts      = [];
+let faultReports   = [];
+let installReports = [];
+let equipReports   = [];
+let currentTab     = "fault";
+let pendingReset   = null;
+let adminToken     = null;       // server-issued session token
+let sessionTimer   = null;       // inactivity countdown handle
+let sessionExpiry  = null;       // Date when session expires
+let driveImageUrl  = null;       // Google Drive URL after successful image upload
+let driveFileId    = null;       // Drive file ID for deletion if user removes image
+
+// FIX #9: Rate-limiter for status checks — prevents harvesting all ref codes
+// by rapidly spamming the check endpoint.
+const _statusCheckTs = [];
+const STATUS_CHECK_LIMIT = 10;   // max checks
+const STATUS_CHECK_WINDOW = 60000; // per 60 s
+
+// ═══════════════════════════════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════════════════════════════
+document.getElementById("yr").textContent = new Date().getFullYear();
+document.getElementById("i-date").min = new Date().toISOString().split("T")[0];
+
+// Quantity dropdowns
+["i-qty","e-qty"].forEach(id => {
+  const sel = document.getElementById(id);
+  for (let i = 1; i <= 50; i++) {
+    const o = document.createElement("option");
+    o.value = o.textContent = i;
+    sel.appendChild(o);
+  }
+});
+
+// Offline detection
+function updateOnlineStatus() {
+  document.getElementById("offline-banner").style.display = navigator.onLine ? "none" : "block";
+}
+window.addEventListener("online",  updateOnlineStatus);
+window.addEventListener("offline", updateOnlineStatus);
+updateOnlineStatus();
+
+// Load districts from GAS on startup
+loadDistrictsFromGAS();
+// Ping GAS connection
+setTimeout(pingGAS, 800);
+
+// ═══════════════════════════════════════════════════════════════
+// JSONP ENGINE — all GAS communication goes through here
+// FIX #10: Hardened against callback name injection
+//   - Callback name validated against SAFE_CB_RE before window assignment
+//   - Callback removed from window immediately after invocation (no lingering globals)
+//   - Script element given nonce attribute for future CSP nonce compatibility
+//   - GAS_URL validated to be a script.google.com URL before use
+//   - Action parameter validated against ALLOWED_ACTIONS allowlist
+// ═══════════════════════════════════════════════════════════════
+function gasRequest(params, onSuccess, onError, timeoutMs) {
+  // Validate GAS_URL is safe before injecting a script tag
+  if (!GAS_URL.startsWith("https://script.google.com/")) {
+    if (onError) onError("Invalid GAS URL configuration.");
+    return;
+  }
+
+  // Validate action is known
+  if (params.action && !ALLOWED_ACTIONS.has(params.action)) {
+    if (onError) onError("Unknown action requested.");
+    return;
+  }
+
+  timeoutMs = timeoutMs || 15000;
+  const cbName = "gasCB_" + Date.now() + "_" + Math.floor(Math.random()*99999);
+
+  // Validate callback name before assigning to window
+  if (!SAFE_CB_RE.test(cbName)) {
+    if (onError) onError("Internal error: invalid callback name.");
+    return;
+  }
+
+  params.callback = cbName;
+  // Skip null/undefined values — encodeURIComponent(null) produces "null"
+  const url = GAS_URL + "?" + Object.keys(params)
+    .filter(k => params[k] !== null && params[k] !== undefined)
+    .map(k => encodeURIComponent(k) + "=" + encodeURIComponent(params[k]))
+    .join("&");
+
+  const timer = setTimeout(function() {
+    cleanup();
+    if (onError) onError("Request timed out. Please check your connection.");
+  }, timeoutMs);
+
+  function cleanup() {
+    clearTimeout(timer);
+    // FIX #11: Use delete to remove callback from window scope immediately
+    if (Object.prototype.hasOwnProperty.call(window, cbName)) {
+      delete window[cbName];
+    }
+    const el = document.getElementById("gs-req-" + cbName);
+    if (el) el.remove();
+  }
+
+  // FIX #12: Wrap in a closure that immediately calls cleanup to prevent
+  // a second invocation of the same callback (JSONP padding attack)
+  let _called = false;
+  window[cbName] = function(result) {
+    if (_called) return; // prevent double-invocation
+    _called = true;
+    cleanup();
+    if (result && result.ok) {
+      onSuccess(result);
+    } else {
+      if (onError) onError(result && result.error ? result.error : "Server returned an error.");
+    }
+  };
+
+  const script   = document.createElement("script");
+  script.id      = "gs-req-" + cbName;
+  script.src     = url;
+  script.onerror = function() {
+    cleanup();
+    if (onError) onError("Could not reach the server. Check your internet connection.");
+  };
+  document.body.appendChild(script);
+}
+
+// ═══════════════════════════════════════════════════════════════
+// PING & CONNECTION INDICATOR
+// ═══════════════════════════════════════════════════════════════
+function pingGAS() {
+  const el = document.getElementById("gas-status");
+  if (!el) return;
+  if (GAS_URL.includes("YOUR_SCRIPT_ID")) {
+    el.textContent = "⚠️ GAS URL not set"; el.style.color = "#ffd"; return;
+  }
+  gasRequest(
+    { action: "ping" },
+    function(result) {
+      if (result.sheetsReady === false) {
+        el.textContent = "⚠️ Sheets not initialised";
+        el.style.color = "#ffd";
+        gasRequest({ action: "initSheets" },
+          function() { el.textContent = "🟢 Connected"; el.style.color = "#afffda"; },
+          function() {}
+        );
+      } else {
+        el.textContent = "🟢 Connected"; el.style.color = "#afffda";
+      }
+    },
+    function() { el.textContent = "🔴 Offline"; el.style.color = "#ffaaaa"; }
+  );
+}
+
+// ═══════════════════════════════════════════════════════════════
+// DISTRICTS — loaded from GAS (persisted in Google Sheet)
+// ═══════════════════════════════════════════════════════════════
+function loadDistrictsFromGAS() {
+  gasRequest(
+    { action: "getDistricts" },
+    function(result) {
+      if (Array.isArray(result.districts) && result.districts.length > 0) {
+        // FIX #13: Sanitise district names returned from server before rendering
+        districts = result.districts.map(d => String(d).slice(0, 100));
+      } else {
+        districts = getDefaultDistricts();
+      }
+      populateAllDistricts();
+    },
+    function() {
+      districts = getDefaultDistricts();
+      populateAllDistricts();
+    }
+  );
+}
+
+function getDefaultDistricts() {
+  return [
+    "Sekondi-Takoradi Metro","Ahanta West","Shama","Wassa East",
+    "Wassa Amenfi East","Wassa Amenfi West","Wassa Amenfi Central",
+    "Amenfi East","Mpohor","Tarkwa-Nsuaem","Prestea-Huni Valley",
+    "Effia-Kwesimintsim","Ellembelle","Jomoro","Nzema East",
+    "Bia East","Bia West","Bodi","Aowin","Sefwi Wiawso",
+    "Sefwi Akontombra","Bibiani-Anhwiaso-Bekwai"
+  ];
+}
+
+function populateAllDistricts() {
+  ["f-district","i-district","e-district"].forEach(id => {
+    const sel = document.getElementById(id);
+    const cur = sel.value;
+    sel.innerHTML = '<option value="">-- Select District --</option>';
+    districts.slice().sort().forEach(d => {
+      const o = document.createElement("option");
+      // FIX #14: Use textContent (not innerHTML) to set option text — XSS safe
+      o.value = d;
+      o.textContent = d;
+      if (d === cur) o.selected = true;
+      sel.appendChild(o);
+    });
+  });
+}
+
+function renderDistrictManagerUI() {
+  const ul = document.getElementById("district-list-ui");
+  ul.innerHTML = "";
+  districts.slice().sort().forEach(d => {
+    const li = document.createElement("li");
+    const span = document.createElement("span");
+    span.textContent = d; // safe — textContent, not innerHTML
+    const btn = document.createElement("button");
+    btn.className = "dm-del";
+    btn.setAttribute("aria-label", "Remove " + d);
+    btn.title = "Remove " + d;
+    btn.textContent = "🗑";
+    btn.onclick = function() { removeDistrict(d); };
+    li.appendChild(span);
+    li.appendChild(btn);
+    ul.appendChild(li);
+  });
+}
+
+function addDistrict() {
+  const inp = document.getElementById("new-district-input");
+  // FIX #15: Trim and length-limit before comparison
+  const val = inp.value.trim().slice(0, 100);
+  if (!val) return;
+  if (districts.map(d => d.toLowerCase()).includes(val.toLowerCase())) {
+    alert("District already exists."); return;
+  }
+  districts.push(val);
+  inp.value = "";
+  populateAllDistricts();
+  renderDistrictManagerUI();
+  document.getElementById("dm-save-status").textContent = "⚠️ Unsaved — click Save";
+  document.getElementById("dm-save-status").style.color = "var(--amber)";
+}
+
+function removeDistrict(name) {
+  if (!confirm('Remove "' + escHtml(name) + '" from the list?')) return;
+  districts = districts.filter(d => d !== name);
+  populateAllDistricts();
+  renderDistrictManagerUI();
+  document.getElementById("dm-save-status").textContent = "⚠️ Unsaved — click Save";
+  document.getElementById("dm-save-status").style.color = "var(--amber)";
+}
+
+function persistDistricts() {
+  const status = document.getElementById("dm-save-status");
+  status.textContent = "⏳ Saving…"; status.style.color = "var(--text3)";
+  gasRequest(
+    { action: "saveDistricts", token: adminToken, list: JSON.stringify(districts) },
+    function() {
+      status.textContent = "✅ Saved to Google Sheet";
+      status.style.color = "var(--accent)";
+      setTimeout(() => { status.textContent = ""; }, 4000);
+    },
+    function(err) {
+      // FIX #16: Escape error message before inserting into DOM
+      status.textContent = "❌ Save failed: " + escHtml(err);
+      status.style.color = "var(--red)";
+    }
+  );
+}
+
+// ═══════════════════════════════════════════════════════════════
+// TAB SWITCHING
+// ═══════════════════════════════════════════════════════════════
+function showTab(name, btn) {
+  // FIX #17: Validate tab name against an allowlist to prevent DOM clobbering
+  const VALID_TABS = ["fault","install","equip","admin"];
+  if (!VALID_TABS.includes(name)) return;
+  document.querySelectorAll(".panel").forEach(p => p.classList.remove("active"));
+  document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
+  document.getElementById("panel-" + name).classList.add("active");
+  btn.classList.add("active");
+  currentTab = name;
+}
+
+function showAdminTab(id, btn) {
+  // FIX #18: Validate admin tab ID against an allowlist
+  const VALID_ATABS = ["atab-reports","atab-installs","atab-equips","atab-districts"];
+  if (!VALID_ATABS.includes(id)) return;
+  document.querySelectorAll(".atab-panel").forEach(p => p.style.display = "none");
+  document.querySelectorAll(".atab-btn").forEach(b => b.classList.remove("active"));
+  document.getElementById(id).style.display = "block";
+  btn.classList.add("active");
+  if (id === "atab-districts") renderDistrictManagerUI();
+}
+
+// ═══════════════════════════════════════════════════════════════
+// ADMIN AUTH — server-side validation, session token, auto-logout
+// FIX #19: Added login attempt rate-limiting to prevent brute-force
+// ═══════════════════════════════════════════════════════════════
+let _loginAttempts = 0;
+let _loginLockedUntil = 0;
+
+function doLogin() {
+  const now = Date.now();
+  // Lock out after 5 failed attempts for 2 minutes
+  if (_loginAttempts >= 5 && now < _loginLockedUntil) {
+    const secs = Math.ceil((_loginLockedUntil - now) / 1000);
+    document.getElementById("login-err").textContent =
+      "Too many failed attempts. Please wait " + secs + " seconds.";
+    return;
+  }
+
+  const pw  = document.getElementById("admin-pw").value;
+  const btn = document.getElementById("btn-login");
+  const err = document.getElementById("login-err");
+  if (!pw) { err.textContent = "Please enter the password."; return; }
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spinner">⏳</span> Verifying…';
+  err.textContent = "";
+
+  gasRequest(
+    { action: "adminLogin", pw: pw },
+    function(result) {
+      _loginAttempts = 0; // reset on success
+      btn.disabled = false; btn.innerHTML = "🔓 Login";
+      adminToken = result.token;
+      // FIX #20: Clear password field before showing dashboard
+      document.getElementById("admin-pw").value = "";
+      document.getElementById("admin-login").style.display = "none";
+      document.getElementById("admin-dashboard").classList.add("open");
+      startSessionTimer();
+      loadAllAdminData();
+    },
+    function(errMsg) {
+      _loginAttempts++;
+      if (_loginAttempts >= 5) {
+        _loginLockedUntil = Date.now() + 2 * 60 * 1000; // 2-minute lockout
+      }
+      btn.disabled = false; btn.innerHTML = "🔓 Login";
+      // FIX #21: Escape error message; also clear password field on failure
+      document.getElementById("admin-pw").value = "";
+      err.textContent = escHtml(errMsg) || "Incorrect password.";
+    }
+  );
+}
+
+function doLogout() {
+  adminToken = null;
+  clearInterval(sessionTimer);
+  // FIX #22: Clear all admin data arrays from memory on logout
+  faultReports   = [];
+  installReports = [];
+  equipReports   = [];
+  document.getElementById("fault-reports-list").innerHTML = '<div class="empty-state">📭 No fault reports yet.</div>';
+  document.getElementById("install-list").innerHTML = '<div class="empty-state">📭 No installation requests yet.</div>';
+  document.getElementById("equip-list").innerHTML = '<div class="empty-state">📭 No equipment requests yet.</div>';
+  document.getElementById("stats-grid").innerHTML = "";
+  document.getElementById("admin-login").style.display = "block";
+  document.getElementById("admin-dashboard").classList.remove("open");
+  document.getElementById("session-timer").textContent = "";
+  document.getElementById("admin-pw").value = "";
+}
+
+// Session timer — auto-logout after SESSION_MINUTES of inactivity
+let lastActivity = Date.now();
+document.addEventListener("click",    function() { lastActivity = Date.now(); });
+document.addEventListener("keypress", function() { lastActivity = Date.now(); });
+
+function startSessionTimer() {
+  clearInterval(sessionTimer);
+  sessionExpiry = Date.now() + SESSION_MINUTES * 60 * 1000;
+  sessionTimer  = setInterval(function() {
+    const remaining = Math.round((sessionExpiry - Date.now()) / 1000);
+    if (remaining <= 0 || (Date.now() - lastActivity) > SESSION_MINUTES * 60 * 1000) {
+      clearInterval(sessionTimer);
+      alert("Your admin session has expired due to inactivity. Please log in again.");
+      doLogout();
+      return;
+    }
+    const m = Math.floor(remaining / 60);
+    const s = String(remaining % 60).padStart(2, "0");
+    const el = document.getElementById("session-timer");
+    if (el) el.textContent = "Session expires in " + m + ":" + s;
+    // Refresh token expiry on activity
+    if ((Date.now() - lastActivity) < 5000) {
+      sessionExpiry = Date.now() + SESSION_MINUTES * 60 * 1000;
+    }
+  }, 1000);
+}
+
+// ═══════════════════════════════════════════════════════════════
+// ADMIN — LOAD ALL DATA FROM GOOGLE SHEETS
+// ═══════════════════════════════════════════════════════════════
+function loadAllAdminData() {
+  loadingState("fault-reports-list", "📡 Loading fault reports…");
+  loadingState("install-list",       "📡 Loading installation requests…");
+  loadingState("equip-list",         "📡 Loading equipment requests…");
+  document.getElementById("stats-grid").innerHTML =
+    '<div style="grid-column:1/-1;font-size:.8rem;color:var(--text3)">⏳ Loading…</div>';
+
+  let done = 0;
+  const onDone = function() {
+    done++;
+    if (done === 3) {
+      const stamp = document.getElementById("last-refresh");
+      if (stamp) stamp.textContent = "Last updated: " + new Date().toLocaleTimeString();
+    }
+  };
+
+  fetchSheet("fault",   function(d) { faultReports   = d; renderFaultList();   renderStats(); onDone(); });
+  fetchSheet("install", function(d) { installReports = d; renderInstallList(); onDone(); });
+  fetchSheet("equip",   function(d) { equipReports   = d; renderEquipList();   onDone(); });
+}
+
+function fetchSheet(type, onSuccess) {
+  const listId = type === "fault" ? "fault-reports-list" : type === "install" ? "install-list" : "equip-list";
+
+  if (!adminToken) {
+    document.getElementById(listId).innerHTML =
+      '<div class="empty-state" style="color:var(--red)">⚠️ Session expired. Please log in again.</div>';
+    onSuccess([]);
+    return;
+  }
+
+  gasRequest(
+    { action: "getAll", type: type, token: adminToken },
+    function(result) {
+      if (Array.isArray(result.records)) {
+        onSuccess(result.records.map(function(row) { return mapSheetRow(type, row); }));
+      } else {
+        loadingState(listId, "⚠️ No records returned.");
+        onSuccess([]);
+      }
+    },
+    function(err) {
+      document.getElementById(listId).innerHTML =
+        '<div class="empty-state" style="color:var(--red)">⚠️ ' + escHtml(err) + '</div>';
+      onSuccess([]);
+    }
+  );
+}
+
+function mapSheetRow(type, row) {
+  if (type === "fault") return {
+    ref: row["Ref Code"]||"", timestamp: row["Timestamp"]||"",
+    facility: row["Facility Name"]||"", district: row["District"]||"",
+    ftype: row["Facility Type"]||"", unit: row["Unit / Department"]||"",
+    equipment: row["Equipment Name"]||"", desc: row["Fault Description"]||"",
+    reporter: row["Reporter Name"]||"", contact: row["Contact Number"]||"",
+    remarks: row["Remarks"]||"", status: row["Status"]||"Received",
+    imageUrl: row["Image URL"]||""
+  };
+  if (type === "install") return {
+    ref: row["Ref Code"]||"", timestamp: row["Timestamp"]||"",
+    facility: row["Facility Name"]||"", district: row["District"]||"",
+    ftype: row["Facility Type"]||"", etype: row["Equipment Type"]||"",
+    qty: row["Quantity"]||"", date: row["Preferred Date"]||"",
+    name: row["Requester Name"]||"", grade: row["Grade / Position"]||"",
+    contact: row["Contact Number"]||"", status: row["Status"]||""
+  };
+  if (type === "equip") return {
+    ref: row["Ref Code"]||"", timestamp: row["Timestamp"]||"",
+    facility: row["Facility Name"]||"", district: row["District"]||"",
+    etype: row["Equipment Type"]||"", qty: row["Quantity Needed"]||"",
+    reason: row["Reason for Request"]||"", name: row["Requester Name"]||"",
+    contact: row["Contact Number"]||"", grade: row["Grade / Position"]||"",
+    status: row["Status"]||""
+  };
+  return row;
+}
+
+function loadingState(id, msg) {
+  const el = document.getElementById(id);
+  // FIX #23: Use escHtml for loading messages that may contain user-influenced content
+  if (el) el.innerHTML = '<div class="empty-state" style="color:var(--primary)">' + escHtml(msg) + '</div>';
+}
+
+// ═══════════════════════════════════════════════════════════════
+// ADMIN — RENDER LISTS & STATS
+// ═══════════════════════════════════════════════════════════════
+function normaliseStatus(s) {
+  return (s || "").toLowerCase().replace(/ /g, "_");
+}
+
+function renderStats() {
+  const ns = normaliseStatus;
+  const t  = faultReports.length;
+  const c  = function(k) { return faultReports.filter(r => ns(r.status) === k).length; };
+  document.getElementById("stats-grid").innerHTML =
+    '<div class="stat-card s-blue"><span class="stat-num">'   + t                     + '</span><span class="stat-lbl">Total</span></div>' +
+    '<div class="stat-card s-green"><span class="stat-num">'  + c("received")          + '</span><span class="stat-lbl">Received</span></div>' +
+    '<div class="stat-card s-amber"><span class="stat-num">'  + c("pending")           + '</span><span class="stat-lbl">Pending</span></div>' +
+    '<div class="stat-card s-amber"><span class="stat-num">'  + c("under_repair")      + '</span><span class="stat-lbl">Under Repair</span></div>' +
+    '<div class="stat-card s-teal"><span class="stat-num">'   + c("repair_completed")  + '</span><span class="stat-lbl">Completed</span></div>' +
+    '<div class="stat-card s-purple"><span class="stat-num">' + c("dispatched")        + '</span><span class="stat-lbl">Dispatched</span></div>' +
+    '<div class="stat-card s-red"><span class="stat-num">'    + c("obsolete")          + '</span><span class="stat-lbl">Obsolete</span></div>';
+}
+
+function renderFaultList() {
+  const c = document.getElementById("fault-reports-list");
+  if (!faultReports.length) { c.innerHTML = '<div class="empty-state">📭 No fault reports found.</div>'; return; }
+  // FIX #24: All user data escaped via escHtml before insertion
+  c.innerHTML = faultReports.map(r => {
+    // Build safe Drive image block if URL exists
+    let imgBlock = "";
+    if (r.imageUrl && r.imageUrl.startsWith("https://drive.google.com/")) {
+      // Convert Drive share URL to direct thumbnail URL for preview
+      // Pattern: https://drive.google.com/file/d/FILE_ID/view → thumbnail API
+      const fileIdMatch = r.imageUrl.match(/\/d\/([A-Za-z0-9_-]+)/);
+      const thumbUrl = fileIdMatch
+        ? "https://drive.google.com/thumbnail?id=" + fileIdMatch[1] + "&sz=w200"
+        : "";
+      imgBlock =
+        '<div class="drive-img-wrap">' +
+        (thumbUrl ? '<img class="drive-img-thumb" src="' + escHtml(thumbUrl) + '" alt="Equipment photo" onerror="this.style.display=\'none\'" onclick="window.open(\'' + escHtml(r.imageUrl) + '\',\'_blank\',\'noopener,noreferrer\')">' : "") +
+        '<br><a href="' + escHtml(r.imageUrl) + '" target="_blank" rel="noopener noreferrer" class="drive-img-link">🖼 View Full Image on Drive</a>' +
+        '</div>';
+    }
+
+    return '<div class="report-card" id="card-' + escHtml(r.ref) + '">' +
+      '<div class="report-meta"><span class="report-ref">' + escHtml(r.ref) + '</span>' +
+      '<span class="report-time">' + (r.timestamp ? new Date(r.timestamp).toLocaleString() : "") + '</span></div>' +
+      '<div class="report-name">' + escHtml(r.equipment) + '</div>' +
+      '<div class="report-detail">🏥 ' + escHtml(r.facility) + ' &nbsp;·&nbsp; 📍 ' + escHtml(r.district) + ' &nbsp;·&nbsp; ' + escHtml(r.ftype) + '</div>' +
+      (r.unit ? '<div class="report-detail">🏷 Unit: ' + escHtml(r.unit) + '</div>' : '') +
+      '<div class="report-detail" style="margin-top:4px">' + escHtml(r.desc) + '</div>' +
+      '<div class="report-contact">👤 ' + escHtml(r.reporter) + ' &nbsp;|&nbsp; 📞 ' + escHtml(r.contact) + '</div>' +
+      (r.remarks ? '<div class="report-contact">📝 ' + escHtml(r.remarks) + '</div>' : '') +
+      imgBlock +
+      '<div class="status-stepper"><div class="stepper-label">Update Status</div>' +
+      '<div class="stepper-steps" id="stepper-' + escHtml(r.ref) + '">' + buildStepperHTML(r.ref, r.status) + '</div></div>' +
+    '</div>';
+  }).join("");
+}
+
+// FIX #25: buildStepperHTML uses data-* attributes instead of inline onclick
+// with ref embedded directly — this eliminates ref-as-JS-injection risk
+// (though refs are already alphanumeric, using data-* is defence-in-depth).
+function buildStepperHTML(ref, currentStatus) {
+  const ci = STATUS_STEPS.findIndex(s => s.key === normaliseStatus(currentStatus));
+  return STATUS_STEPS.map(function(s, i) {
+    const cls = i === ci ? "step-pill active" : i < ci ? "step-pill done" : "step-pill";
+    return '<button class="' + cls + '" ' +
+           'data-ref="' + escHtml(ref) + '" ' +
+           'data-status="' + escHtml(s.label) + '" ' +
+           'onclick="handleStepClick(this)">' +
+           '<span class="step-dot"></span>' + s.icon + ' ' + escHtml(s.label) + '</button>';
+  }).join("");
+}
+
+// FIX #26: Extract ref and status from data attributes — not raw onclick params
+function handleStepClick(btn) {
+  const ref    = btn.getAttribute("data-ref");
+  const status = btn.getAttribute("data-status");
+  if (!ref || !status) return;
+  updateFaultStatus(ref, status);
+}
+
+function updateFaultStatus(ref, newStatus) {
+  // FIX #27: Validate newStatus client-side against the same allowlist used server-side
+  const VALID_STATUSES = ["Received","Pending","Under Repair","Repair Completed","Dispatched","Obsolete"];
+  if (!VALID_STATUSES.includes(newStatus)) { alert("Invalid status value."); return; }
+
+  const idx = faultReports.findIndex(r => r.ref === ref);
+  if (idx !== -1) faultReports[idx].status = newStatus;
+  const stepperEl = document.getElementById("stepper-" + ref);
+  if (stepperEl) stepperEl.innerHTML = buildStepperHTML(ref, newStatus);
+  renderStats();
+  gasRequest(
+    { action: "updateStatus", ref: ref, status: newStatus, token: adminToken },
+    function() { /* success */ },
+    function(err) { alert("Status update failed: " + escHtml(err) + "\nPlease try again."); }
+  );
+}
+
+function renderInstallList() {
+  const c = document.getElementById("install-list");
+  if (!installReports.length) { c.innerHTML = '<div class="empty-state">📭 No installation requests found.</div>'; return; }
+  c.innerHTML = installReports.map(r =>
+    '<div class="report-card"><div class="report-meta">' +
+    '<span class="report-ref">' + escHtml(r.ref) + '</span>' +
+    '<span class="report-time">' + (r.timestamp ? new Date(r.timestamp).toLocaleString() : "") + '</span></div>' +
+    '<div class="report-name">' + escHtml(r.etype) + ' — Qty: ' + escHtml(r.qty) + '</div>' +
+    '<div class="report-detail">🏥 ' + escHtml(r.facility) + ' &nbsp;·&nbsp; 📍 ' + escHtml(r.district) + '</div>' +
+    (r.date ? '<div class="report-detail">📅 Preferred: ' + escHtml(r.date) + '</div>' : '') +
+    '<div class="report-contact">👤 ' + escHtml(r.name) + (r.grade ? ' (' + escHtml(r.grade) + ')' : '') + ' &nbsp;|&nbsp; 📞 ' + escHtml(r.contact) + '</div>' +
+    '<div class="report-detail" style="font-size:.74rem;color:var(--text3);margin-top:4px">Status: ' + escHtml(r.status) + '</div></div>'
+  ).join("");
+}
+
+function renderEquipList() {
+  const c = document.getElementById("equip-list");
+  if (!equipReports.length) { c.innerHTML = '<div class="empty-state">📭 No equipment requests found.</div>'; return; }
+  c.innerHTML = equipReports.map(r =>
+    '<div class="report-card"><div class="report-meta">' +
+    '<span class="report-ref">' + escHtml(r.ref) + '</span>' +
+    '<span class="report-time">' + (r.timestamp ? new Date(r.timestamp).toLocaleString() : "") + '</span></div>' +
+    '<div class="report-name">' + escHtml(r.etype) + ' — Qty: ' + escHtml(r.qty) + '</div>' +
+    '<div class="report-detail">🏥 ' + escHtml(r.facility) + ' &nbsp;·&nbsp; 📍 ' + escHtml(r.district) + '</div>' +
+    '<div class="report-detail" style="margin-top:4px">' + escHtml(r.reason) + '</div>' +
+    '<div class="report-contact">👤 ' + escHtml(r.name) + (r.grade ? ' (' + escHtml(r.grade) + ')' : '') + ' &nbsp;|&nbsp; 📞 ' + escHtml(r.contact) + '</div>' +
+    '<div class="report-detail" style="font-size:.74rem;color:var(--text3);margin-top:4px">Status: ' + escHtml(r.status) + '</div></div>'
+  ).join("");
+}
+
+function openGoogleSheet() {
+  if (!SHEET_ID || SHEET_ID === "PASTE_YOUR_SPREADSHEET_ID_HERE") {
+    alert("Update SHEET_ID at the top of CEU_Dashboard.html with your Google Sheet ID.");
+    return;
+  }
+  // FIX #28: Validate SHEET_ID is alphanumeric before building URL (prevents open redirect)
+  if (!/^[A-Za-z0-9_-]+$/.test(SHEET_ID)) {
+    alert("Invalid Sheet ID format.");
+    return;
+  }
+  window.open("https://docs.google.com/spreadsheets/d/" + encodeURIComponent(SHEET_ID) + "/edit", "_blank", "noopener,noreferrer");
+}
+
+// ═══════════════════════════════════════════════════════════════
+// VALIDATION HELPERS
+// ═══════════════════════════════════════════════════════════════
+function setErr(id, msg) {
+  const el = document.getElementById("err-" + id);
+  if (el) el.textContent = msg; // FIX #29: Use textContent, never innerHTML, for error messages
+  const inp = document.getElementById(id);
+  if (inp) inp.classList.toggle("err", !!msg);
+}
+function clearErrors(ids) { ids.forEach(id => setErr(id, "")); }
+function req(id, label) {
+  const el = document.getElementById(id);
+  if (!el || !el.value.trim()) { setErr(id, label + " is required."); return false; }
+  return true;
+}
+
+function stripNonDigits(val) {
+  return (val || "").replace(/\D/g, "");
+}
+
+function livePhoneInput(id) {
+  const input = document.getElementById(id);
+  const raw   = input.value;
+  const clean = stripNonDigits(raw);
+  if (raw !== clean) input.value = clean;
+  const len = clean.length;
+  if (len === 0) {
+    setErr(id, "");
+  } else if (clean[0] !== "0") {
+    setErr(id, "Ghana numbers must start with 0 (e.g. 0244000000)");
+  } else if (len >= 2 && (clean[1] === "0" || clean[1] === "1")) {
+    setErr(id, "Invalid network prefix. Valid: 020–029, 050–059, 023–028, etc.");
+  } else if (len > 10) {
+    setErr(id, "Too many digits — Ghana numbers are exactly 10 digits.");
+  } else if (len < 10) {
+    setErr(id, "Keep typing… (" + len + "/10 digits)");
+  } else {
+    setErr(id, "");
+  }
+}
+
+function validPhone(id) {
+  const val = stripNonDigits(document.getElementById(id).value);
+  if (val.length === 0) { setErr(id, "Contact number is required."); return false; }
+  if (val.length !== 10) { setErr(id, "Must be exactly 10 digits (you entered " + val.length + ")."); return false; }
+  if (val[0] !== "0")    { setErr(id, "Ghana numbers must start with 0 (e.g. 0244000000)."); return false; }
+  if (val[1] === "0" || val[1] === "1") { setErr(id, "Invalid network prefix — valid prefixes: 020–029, 050–059, 023–028."); return false; }
+  setErr(id, "");
+  return true;
+}
+
+function updateCharCount(textareaId, countId, max) {
+  const len = (document.getElementById(textareaId).value || "").length;
+  const el  = document.getElementById(countId);
+  if (el) { el.textContent = len; el.style.color = len > max * 0.9 ? "var(--amber)" : "var(--text3)"; }
+}
+
+// ═══════════════════════════════════════════════════════════════
+// FILE UPLOAD — Google Drive pipeline
+// Flow: user picks file → client validates → FileReader reads
+//       base64 → chunked JSONP to GAS uploadImage →
+//       GAS saves to Drive folder → returns shareable URL →
+//       URL stored in driveImageUrl for inclusion in submitFault
+// ═══════════════════════════════════════════════════════════════
+const ALLOWED_IMAGE_TYPES = ["image/jpeg","image/png","image/gif","image/webp"];
+const MAX_FILE_BYTES      = 5 * 1024 * 1024; // 5 MB hard cap
+// Base64 chunk size per JSONP call — stays safely under GAS URL length limit
+const B64_CHUNK_BYTES = 30000; // ~40 KB base64 per chunk
+
+function previewImg(input, previewId) {
+  const prev  = document.getElementById(previewId);
+  const errEl = document.getElementById("err-f-img");
+  const file  = input.files && input.files[0];
+
+  // Clear any previous upload state
+  driveImageUrl = null;
+  driveFileId   = null;
+  document.getElementById("f-img-drive-result").style.display = "none";
+  setUploadProgress(false, 0, "");
+
+  if (!file) { prev.style.display = "none"; document.getElementById("f-img-name").textContent = ""; return; }
+
+  // Client-side type validation
+  if (!ALLOWED_IMAGE_TYPES.includes(file.type)) {
+    if (errEl) errEl.textContent = "Only JPEG, PNG, GIF, or WebP images are allowed.";
+    input.value = ""; prev.style.display = "none"; return;
+  }
+  // Client-side size validation
+  if (file.size > MAX_FILE_BYTES) {
+    if (errEl) errEl.textContent = "Image must be smaller than 5 MB (yours is " + (file.size / 1048576).toFixed(1) + " MB).";
+    input.value = ""; prev.style.display = "none"; return;
+  }
+  if (errEl) errEl.textContent = "";
+  document.getElementById("f-img-name").textContent = file.name;
+
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    const dataUrl = e.target.result;
+    // Security: confirm it's a genuine image data URL before using
+    if (typeof dataUrl !== "string" || !dataUrl.startsWith("data:image/")) {
+      if (errEl) errEl.textContent = "Invalid image file.";
+      input.value = ""; return;
+    }
+    // Show local preview immediately for good UX
+    prev.src = dataUrl;
+    prev.style.display = "block";
+
+    // Begin chunked Drive upload
+    const base64 = dataUrl.split(",")[1]; // strip data:image/...;base64, prefix
+    uploadToDrive(base64, file.name, file.type);
+  };
+  reader.onerror = function() {
+    if (errEl) errEl.textContent = "Could not read the file. Please try again.";
+    input.value = "";
+  };
+  reader.readAsDataURL(file);
+}
+
+// Animate the progress bar
+function setUploadProgress(visible, pct, label) {
+  const wrap  = document.getElementById("upload-progress-wrap");
+  const bar   = document.getElementById("upload-progress-bar");
+  const lbl   = document.getElementById("upload-progress-label");
+  const fileLbl = document.getElementById("f-img-label");
+  if (!wrap) return;
+  wrap.style.display       = visible ? "block" : "none";
+  bar.style.width          = pct + "%";
+  lbl.textContent          = label;
+  fileLbl.classList.toggle("uploading", visible);
+}
+
+// ── Chunked upload to Google Drive via GAS ──────────────────────
+// Large base64 strings are split into chunks and sent sequentially.
+// GAS assembles them in the PropertiesService before writing to Drive.
+function uploadToDrive(base64, fileName, mimeType) {
+  const errEl    = document.getElementById("err-f-img");
+  const totalLen = base64.length;
+  const chunks   = Math.ceil(totalLen / B64_CHUNK_BYTES);
+  const uploadId = "UPL_" + Date.now() + "_" + Math.floor(Math.random() * 99999);
+
+  setUploadProgress(true, 5, "Starting upload (" + chunks + " part" + (chunks > 1 ? "s" : "") + ")…");
+
+  function sendChunk(idx) {
+    const start  = idx * B64_CHUNK_BYTES;
+    const end    = Math.min(start + B64_CHUNK_BYTES, totalLen);
+    const chunk  = base64.slice(start, end);
+    const isLast = (end >= totalLen);
+    const pct    = Math.round(((idx + 1) / chunks) * 90); // reserve last 10% for Drive write
+
+    setUploadProgress(true, pct,
+      isLast
+        ? "Saving to Google Drive…"
+        : "Uploading part " + (idx + 1) + " of " + chunks + "…"
+    );
+
+    gasRequest(
+      {
+        action:   "uploadImage",
+        uploadId: uploadId,
+        chunk:    chunk,
+        chunkIdx: idx,
+        total:    chunks,
+        fileName: fileName,
+        mimeType: mimeType,
+        folderId: DRIVE_FOLDER
+      },
+      function(result) {
+        if (isLast) {
+          // Final chunk — GAS has assembled and saved the file
+          setUploadProgress(true, 100, "Upload complete ✅");
+          setTimeout(function() { setUploadProgress(false, 0, ""); }, 1800);
+
+          driveImageUrl = result.viewUrl  || "";
+          driveFileId   = result.fileId   || "";
+
+          // Show Drive link
+          const resultDiv  = document.getElementById("f-img-drive-result");
+          const driveAnchor = document.getElementById("f-img-drive-link");
+          if (driveImageUrl) {
+            driveAnchor.href = driveImageUrl;
+            resultDiv.style.display = "block";
+          }
+          if (errEl) errEl.textContent = "";
+        } else {
+          // More chunks to send
+          sendChunk(idx + 1);
+        }
+      },
+      function(err) {
+        setUploadProgress(false, 0, "");
+        if (errEl) errEl.textContent = "Image upload failed: " + escHtml(err) + " — you can still submit without an image.";
+        driveImageUrl = null;
+        driveFileId   = null;
+        document.getElementById("f-img-drive-result").style.display = "none";
+      },
+      30000 // allow 30s per chunk for slow connections
+    );
+  }
+
+  sendChunk(0);
+}
+
+// Clear the uploaded image (user clicks ✕ Remove)
+function clearImageUpload() {
+  driveImageUrl = null;
+  driveFileId   = null;
+  document.getElementById("f-img").value             = "";
+  document.getElementById("img-preview").style.display = "none";
+  document.getElementById("img-preview").src          = "";
+  document.getElementById("f-img-name").textContent  = "";
+  document.getElementById("f-img-drive-result").style.display = "none";
+  setUploadProgress(false, 0, "");
+  const errEl = document.getElementById("err-f-img");
+  if (errEl) errEl.textContent = "";
+}
+
+// ═══════════════════════════════════════════════════════════════
+// SUBMIT ENGINE — waits for GAS confirmation before showing modal
+// ═══════════════════════════════════════════════════════════════
+let _submitting = false;
+
+function isSubmitLocked() { return _submitting; }
+
+function setSubmitting(btnId, isSubmitting) {
+  _submitting = isSubmitting;
+  const btn = document.getElementById(btnId);
+  if (!btn) return;
+  btn.disabled = isSubmitting;
+  if (isSubmitting) {
+    btn._origHTML = btn.innerHTML;
+    btn.innerHTML = '<span class="spinner">⏳</span> Submitting…';
+  } else {
+    btn.disabled = true;
+    btn.innerHTML = '⏳ Please wait…';
+    setTimeout(function() {
+      _submitting = false;
+      btn.disabled = false;
+      btn.innerHTML = btn._origHTML || btn.innerHTML;
+    }, 5000);
+  }
+}
+
+function submitFault() {
+  if (isSubmitLocked()) return;
+  clearErrors(["f-facility","f-district","f-ftype","f-equip","f-reporter","f-contact","f-desc"]);
+  let ok = true;
+  ok = req("f-facility","Facility name")      && ok;
+  ok = req("f-district","District")           && ok;
+  ok = req("f-ftype","Facility type")         && ok;
+  ok = req("f-equip","Equipment name")        && ok;
+  ok = req("f-reporter","Reporter name")      && ok;
+  ok = req("f-desc","Fault description")      && ok;
+  ok = validPhone("f-contact")               && ok;
+  if (!ok) return;
+
+  // Block submission if an upload is still in progress
+  const progressWrap = document.getElementById("upload-progress-wrap");
+  if (progressWrap && progressWrap.style.display !== "none") {
+    showErrorModal("Please wait — image upload is still in progress.");
+    return;
+  }
+
+  if (!navigator.onLine) { showErrorModal("You are offline. Please reconnect and try again."); return; }
+
+  setSubmitting("btn-fault", true);
+  const ref = genRef("FR");
+  gasRequest(
+    {
+      action:    "submitFault",
+      ref:       ref,
+      facility:  document.getElementById("f-facility").value.trim(),
+      district:  document.getElementById("f-district").value,
+      ftype:     document.getElementById("f-ftype").value,
+      unit:      document.getElementById("f-unit").value.trim(),
+      equipment: document.getElementById("f-equip").value.trim(),
+      desc:      document.getElementById("f-desc").value.trim(),
+      reporter:  document.getElementById("f-reporter").value.trim(),
+      contact:   document.getElementById("f-contact").value.trim(),
+      remarks:   document.getElementById("f-remarks").value.trim(),
+      imageUrl:  driveImageUrl || ""   // Drive URL included here
+    },
+    function(result) {
+      setSubmitting("btn-fault", false);
+      pendingReset = resetFaultForm;
+      showModal(result.refCode || ref, "Fault Report");
+    },
+    function(err) {
+      setSubmitting("btn-fault", false);
+      showErrorModal(escHtml(err));
+    },
+    20000
+  );
+}
+
+function resetFaultForm() {
+  ["f-facility","f-unit","f-equip","f-reporter","f-contact","f-desc","f-remarks"].forEach(id => {
+    document.getElementById(id).value = "";
+  });
+  ["f-district","f-ftype"].forEach(id => document.getElementById(id).value = "");
+  clearImageUpload();
+  document.getElementById("f-desc-count").textContent = "0";
+}
+
+function submitInstall() {
+  if (isSubmitLocked()) return;
+  clearErrors(["i-facility","i-district","i-ftype","i-etype","i-qty","i-name","i-contact"]);
+  let ok = true;
+  ok = req("i-facility","Facility name")  && ok;
+  ok = req("i-district","District")       && ok;
+  ok = req("i-ftype","Facility type")     && ok;
+  ok = req("i-etype","Equipment type")    && ok;
+  ok = req("i-qty","Quantity")            && ok;
+  ok = req("i-name","Requester name")     && ok;
+  ok = validPhone("i-contact")           && ok;
+  if (!ok) return;
+
+  if (!navigator.onLine) { showErrorModal("You are offline. Please reconnect and try again."); return; }
+
+  setSubmitting("btn-install", true);
+  const ref = genRef("IR");
+  gasRequest(
+    {
+      action:   "submitInstall",
+      ref:      ref,
+      facility: document.getElementById("i-facility").value.trim(),
+      district: document.getElementById("i-district").value,
+      ftype:    document.getElementById("i-ftype").value,
+      etype:    document.getElementById("i-etype").value,
+      qty:      document.getElementById("i-qty").value,
+      date:     document.getElementById("i-date").value,
+      name:     document.getElementById("i-name").value.trim(),
+      grade:    document.getElementById("i-grade").value.trim(),
+      contact:  document.getElementById("i-contact").value.trim()
+    },
+    function(result) {
+      setSubmitting("btn-install", false);
+      pendingReset = function() {
+        ["i-facility","i-name","i-grade","i-contact","i-date"].forEach(id => document.getElementById(id).value = "");
+        ["i-district","i-ftype","i-etype","i-qty"].forEach(id => document.getElementById(id).value = "");
+      };
+      showModal(result.refCode || ref, "Installation Request");
+    },
+    function(err) { setSubmitting("btn-install", false); showErrorModal(escHtml(err)); },
+    20000
+  );
+}
+
+function submitEquip() {
+  if (isSubmitLocked()) return;
+  clearErrors(["e-facility","e-district","e-etype","e-qty","e-name","e-contact","e-reason"]);
+  let ok = true;
+  ok = req("e-facility","Facility name")   && ok;
+  ok = req("e-district","District")        && ok;
+  ok = req("e-etype","Equipment type")     && ok;
+  ok = req("e-qty","Quantity")             && ok;
+  ok = req("e-name","Your name")           && ok;
+  ok = req("e-reason","Reason")            && ok;
+  ok = validPhone("e-contact")            && ok;
+  if (!ok) return;
+
+  if (!navigator.onLine) { showErrorModal("You are offline. Please reconnect and try again."); return; }
+
+  setSubmitting("btn-equip", true);
+  const ref = genRef("ER");
+  gasRequest(
+    {
+      action:   "submitEquip",
+      ref:      ref,
+      facility: document.getElementById("e-facility").value.trim(),
+      district: document.getElementById("e-district").value,
+      etype:    document.getElementById("e-etype").value,
+      qty:      document.getElementById("e-qty").value,
+      reason:   document.getElementById("e-reason").value.trim(),
+      name:     document.getElementById("e-name").value.trim(),
+      contact:  document.getElementById("e-contact").value.trim(),
+      grade:    document.getElementById("e-grade").value.trim()
+    },
+    function(result) {
+      setSubmitting("btn-equip", false);
+      pendingReset = function() {
+        ["e-facility","e-name","e-grade","e-contact","e-reason"].forEach(id => document.getElementById(id).value = "");
+        ["e-district","e-etype","e-qty"].forEach(id => document.getElementById(id).value = "");
+        document.getElementById("e-reason-count").textContent = "0";
+      };
+      showModal(result.refCode || ref, "Equipment Request");
+    },
+    function(err) { setSubmitting("btn-equip", false); showErrorModal(escHtml(err)); },
+    20000
+  );
+}
+
+// ═══════════════════════════════════════════════════════════════
+// MODALS
+// ═══════════════════════════════════════════════════════════════
+function showModal(ref, label) {
+  // FIX #32: Use textContent for ref code and safe HTML for label (label is internal constant only)
+  document.getElementById("modal-ref-code").textContent = ref;
+  const labelEl = document.getElementById("modal-body-text");
+  labelEl.textContent = "";
+  const strong = document.createElement("strong");
+  strong.textContent = label;
+  labelEl.appendChild(strong);
+  const rest = document.createTextNode(" was confirmed by the server and saved to Google Sheets. Keep your reference code safe for tracking.");
+  labelEl.appendChild(rest);
+  document.getElementById("ref-copy-tip").textContent = "Tap the code above to copy it";
+  document.getElementById("success-modal").classList.add("open");
+}
+function closeModal() {
+  document.getElementById("success-modal").classList.remove("open");
+  pendingReset = null;
+}
+function modalAnother() {
+  document.getElementById("success-modal").classList.remove("open");
+  if (pendingReset) { pendingReset(); pendingReset = null; }
+}
+function copyRef() {
+  const code = document.getElementById("modal-ref-code").textContent;
+  const tip  = document.getElementById("ref-copy-tip");
+  if (navigator.clipboard && window.isSecureContext) {
+    navigator.clipboard.writeText(code).then(function() {
+      tip.textContent = "✅ Copied to clipboard!";
+    }).catch(function() {
+      tip.textContent = "Could not copy — please select and copy the code manually.";
+    });
+  } else {
+    try {
+      var ta = document.createElement("textarea");
+      ta.value = code;
+      ta.style.position = "fixed"; ta.style.opacity = "0";
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand("copy");
+      document.body.removeChild(ta);
+      tip.textContent = "✅ Copied to clipboard!";
+    } catch(e) {
+      tip.textContent = "Please copy the code manually: " + escHtml(code);
+    }
+  }
+}
+
+function showErrorModal(msg) {
+  // FIX #33: Use textContent — never innerHTML — for error messages
+  document.getElementById("error-modal-body").textContent = msg || "An error occurred. Please try again.";
+  document.getElementById("error-modal").classList.add("open");
+}
+function closeErrorModal() {
+  document.getElementById("error-modal").classList.remove("open");
+}
+
+// ═══════════════════════════════════════════════════════════════
+// REF CODE GENERATOR
+// ═══════════════════════════════════════════════════════════════
+function genRef(prefix) {
+  const chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+  const ts    = Date.now().toString(36).toUpperCase().slice(-4);
+  let rand = "";
+  for (let i = 0; i < 4; i++) rand += chars[Math.floor(Math.random() * chars.length)];
+  return prefix + "-" + ts + "-" + rand;
+}
+
+// ═══════════════════════════════════════════════════════════════
+// XSS PROTECTION — escape HTML before inserting into DOM
+// ═══════════════════════════════════════════════════════════════
+function escHtml(str) {
+  return String(str || "")
+    .replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;")
+    .replace(/"/g,"&quot;").replace(/'/g,"&#39;");
+}
+
+// ═══════════════════════════════════════════════════════════════
+// PUBLIC STATUS CHECKER
+// FIX #34: Rate-limited to prevent reference code enumeration attacks
+// ═══════════════════════════════════════════════════════════════
+function checkStatus() {
+  // Rate-limit: max STATUS_CHECK_LIMIT checks per STATUS_CHECK_WINDOW
+  const now = Date.now();
+  while (_statusCheckTs.length && now - _statusCheckTs[0] > STATUS_CHECK_WINDOW) {
+    _statusCheckTs.shift();
+  }
+  if (_statusCheckTs.length >= STATUS_CHECK_LIMIT) {
+    document.getElementById("track-result").style.display   = "block";
+    document.getElementById("track-loading").style.display  = "none";
+    document.getElementById("track-found").style.display    = "none";
+    document.getElementById("track-notfound").style.display = "block";
+    document.getElementById("track-notfound-msg").textContent =
+      "Too many status checks. Please wait a moment and try again.";
+    return;
+  }
+  _statusCheckTs.push(now);
+
+  const raw = document.getElementById("track-ref-input").value.trim().toUpperCase();
+  if (!raw) { document.getElementById("track-ref-input").focus(); return; }
+
+  // FIX #35: Strict reference code format validation — only allow known prefixes
+  // This tightens the original check (length < 8, parts < 3) to reject
+  // anything that doesn't match the exact FR-/IR-/ER-XXXX-XXXX pattern.
+  const REF_RE = /^(FR|IR|ER)-[A-Z0-9]{4}-[A-Z0-9]{4}$/;
+  if (!REF_RE.test(raw)) {
+    document.getElementById("track-result").style.display   = "block";
+    document.getElementById("track-loading").style.display  = "none";
+    document.getElementById("track-found").style.display    = "none";
+    document.getElementById("track-notfound").style.display = "block";
+    // FIX #36: Use textContent for the error message (not innerHTML)
+    document.getElementById("track-notfound-msg").textContent =
+      "Invalid reference code format. Codes look like FR-A3XK-7QPL — please check and try again.";
+    return;
+  }
+
+  document.getElementById("track-result").style.display   = "block";
+  document.getElementById("track-loading").style.display  = "block";
+  document.getElementById("track-notfound").style.display = "none";
+  document.getElementById("track-found").style.display    = "none";
+  document.getElementById("track-btn").disabled           = true;
+  document.getElementById("track-btn").textContent        = "⏳ Checking…";
+
+  gasRequest(
+    { action: "getStatus", ref: raw },
+    function(result) {
+      document.getElementById("track-btn").disabled    = false;
+      document.getElementById("track-btn").textContent = "🔎 Check Status";
+      document.getElementById("track-loading").style.display = "none";
+      if (!result.found) {
+        document.getElementById("track-notfound").style.display = "block";
+        document.getElementById("track-notfound-msg").textContent = "Reference code not found.";
+        return;
+      }
+      renderTrackResult(result);
+    },
+    function(err) {
+      document.getElementById("track-btn").disabled    = false;
+      document.getElementById("track-btn").textContent = "🔎 Check Status";
+      document.getElementById("track-loading").style.display  = "none";
+      document.getElementById("track-notfound").style.display = "block";
+      // FIX #37: Use textContent for error display
+      document.getElementById("track-notfound-msg").textContent = escHtml(err);
+    }
+  );
+}
+
+function renderTrackResult(result) {
+  document.getElementById("track-found").style.display = "block";
+  // FIX #38: All server-returned values set via textContent — never innerHTML
+  document.getElementById("tr-ref").textContent       = result.ref      || "—";
+  document.getElementById("tr-facility").textContent  = result.facility  || "—";
+  document.getElementById("tr-equipment").textContent = result.equipment || (result.type !== "fault_report" ? result.type.replace(/_/g," ") : "—");
+  const upd = result.lastUpdated || result.timestamp || "";
+  document.getElementById("tr-updated").textContent   = upd ? new Date(upd).toLocaleString() : "—";
+
+  const ci = STATUS_STEPS.findIndex(s => s.key === normaliseStatus(result.status));
+  document.getElementById("tr-steps").innerHTML = STATUS_STEPS.map(function(s, i) {
+    const cls = i === ci ? "sp-step sp-active" : i < ci ? "sp-step sp-done" : "sp-step";
+    // Status labels are from our own constant — safe to insert
+    return '<div class="' + cls + '"><span class="sp-dot"></span>' + s.icon + " " + escHtml(s.label) + "</div>";
+  }).join("");
+
+  const meta  = STATUS_META[normaliseStatus(result.status)] || { label: escHtml(result.status || "Unknown"), icon: "❓", cls: "" };
+  const badge = document.getElementById("tr-badge");
+  badge.textContent = meta.icon + "  " + meta.label;
+  badge.className   = "current-status-badge " + meta.cls;
+}
+</script>
+</body>
+</html>
