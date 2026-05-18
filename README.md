@@ -1,0 +1,1 @@
+The Western Regional Medical Equipment Dashboard is specially designed for use by facilities to report promptly faults identified with equipment at their facilities, request for installation and also submit equipment needs
