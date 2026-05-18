@@ -12,7 +12,7 @@
            style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
            font-src https://fonts.gstatic.com;
            img-src 'self' data: blob: https://lh3.googleusercontent.com https://drive.google.com;
-           connect-src 'none';"/>
+           connect-src https://script.google.com https://script.googleusercontent.com;"/>
 <!-- FIX #2: X-Content-Type-Options and Referrer-Policy meta tags -->
 <meta http-equiv="X-Content-Type-Options" content="nosniff"/>
 <meta name="referrer" content="strict-origin-when-cross-origin"/>
@@ -268,7 +268,7 @@ textarea{resize:vertical;min-height:100px}
     <div class="section-icon icon-fault">⚠️</div>
     <div>
       <div class="section-title">Medical Equipment Fault Reporting</div>
-      <div class="section-sub">Report equipment faults for prompt assessment by the Clinical Engineering Unit</div>
+      <div class="section-sub">Report equipment faults for assessment by the Clinical Engineering Unit</div>
     </div>
   </div>
   <div class="form-card">
@@ -301,7 +301,7 @@ textarea{resize:vertical;min-height:100px}
       </div>
       <div class="field-group">
         <label class="field-label" for="f-equip">Name of Equipment <span class="req">*</span></label>
-        <input type="text" id="f-equip" maxlength="150" placeholder="e.g. B.P Machine, Patient Monitor" autocomplete="off"/>
+        <input type="text" id="f-equip" maxlength="150" placeholder="e.g. Portable Ventilator, ECG Machine" autocomplete="off"/>
         <span class="err-msg" id="err-f-equip"></span>
       </div>
       <div class="field-group">
@@ -328,8 +328,8 @@ textarea{resize:vertical;min-height:100px}
       <textarea id="f-remarks" rows="3" maxlength="500" placeholder="Any additional information"></textarea>
     </div>
     <div class="field-group">
-      <label class="field-label">Upload Picture of Equipment(OPTIONAL) </label>
-      <p class="field-hint">Attach a clear photo showing the faulty area if possible (max size of picture 5 MB).</p>
+      <label class="field-label">Upload Picture of Equipment(OPTIONAL)</label>
+      <p class="field-hint">Attach a clear photo showing the faulty area if possible (max size of picture 5 MB)</p>
       <div class="file-area">
         <label class="file-label" id="f-img-label" for="f-img">📷 Choose Image</label>
         <input type="file" id="f-img" accept="image/jpeg,image/png,image/gif,image/webp" style="display:none" onchange="previewImg(this,'img-preview')"/>
@@ -339,11 +339,11 @@ textarea{resize:vertical;min-height:100px}
       <!-- Upload progress indicator -->
       <div class="upload-progress-wrap" id="upload-progress-wrap">
         <div class="upload-progress-bar-bg"><div class="upload-progress-bar" id="upload-progress-bar"></div></div>
-        <div class="upload-progress-label" id="upload-progress-label">Uploading image to Google Drive…</div>
+        <div class="upload-progress-label" id="upload-progress-label">Uploading image…</div>
       </div>
       <!-- Drive link shown after upload -->
       <div id="f-img-drive-result" style="display:none;margin-top:.4rem">
-        <span style="font-size:.75rem;color:var(--accent);font-weight:700">✅ Image uploaded to Google Drive</span>
+        <span style="font-size:.75rem;color:var(--accent);font-weight:700">✅ Image uploaded</span>
         <a id="f-img-drive-link" href="#" target="_blank" rel="noopener noreferrer" class="drive-img-link" style="display:inline-flex;margin-left:.5rem">🔗 View on Drive</a>
         <button type="button" onclick="clearImageUpload()" style="background:none;border:none;color:var(--red);cursor:pointer;font-size:.75rem;margin-left:.5rem">✕ Remove</button>
       </div>
@@ -360,7 +360,7 @@ textarea{resize:vertical;min-height:100px}
       <div class="tracker-icon">🔍</div>
       <div>
         <div class="tracker-title">Track Your Fault Report Status</div>
-        <div class="tracker-sub">Enter the reference code that popped up when you reported the fault to check the current status of your submitted report</div>
+        <div class="tracker-sub">Enter your reference code to check the current status of your submitted report</div>
       </div>
     </div>
     <div class="tracker-input-row">
@@ -408,7 +408,7 @@ textarea{resize:vertical;min-height:100px}
       <div class="section-sub">For newly received equipment requiring professional installation</div>
     </div>
   </div>
-  <div class="banner banner-blue">💡 <strong>Note:</strong> This form is for newly received equipment requiring installation or commissioning by the Clinical Engineering Unit. Contact the Regional Equipment Manager on 0506971001</div>
+  <div class="banner banner-blue">💡 <strong>Note:</strong> This form is for newly received equipment requiring installation by the Clinical Engineering Unit. Contact the Regional Equipment Manager on 0506971001</div>
   <div class="form-card">
     <div class="form-grid">
       <div class="field-group">
@@ -436,11 +436,11 @@ textarea{resize:vertical;min-height:100px}
       <div class="field-group">
         <label class="field-label" for="i-etype">Type of Equipment <span class="req">*</span></label>
         <input type="text" id="i-etype" maxlength="150"
-          placeholder="e.g. Autoclave, ECG Machine, Ultrasound, Weighing Scale" autocomplete="off"/>
+          placeholder="e.g. Autoclave, Hospital Beds, Ultrasound, Freezers" autocomplete="off"/>
         <span class="err-msg" id="err-i-etype"></span>
       </div>
       <div class="field-group">
-        <label class="field-label" for="i-qty">Quantity<span class="req">*</span></label>
+        <label class="field-label" for="i-qty">Quantity <span class="req">*</span></label>
         <select id="i-qty"><option value="">-- Select --</option></select>
         <span class="err-msg" id="err-i-qty"></span>
       </div>
@@ -455,7 +455,7 @@ textarea{resize:vertical;min-height:100px}
       </div>
       <div class="field-group">
         <label class="field-label" for="i-grade">Grade / Position</label>
-        <input type="text" id="i-grade" maxlength="100" placeholder="e.g. Hospital Administrator" autocomplete="off"/>
+        <input type="text" id="i-grade" maxlength="100" placeholder="e.g. Administrator" autocomplete="off"/>
       </div>
       <div class="field-group">
         <label class="field-label" for="i-contact">Contact Number <span class="req">*</span></label>
@@ -643,8 +643,8 @@ textarea{resize:vertical;min-height:100px}
 // CONFIG — ✏️ Replace YOUR_SCRIPT_ID with your GAS Web App URL
 // Also replace PASTE_YOUR_SPREADSHEET_ID_HERE with your Sheet ID
 // ═══════════════════════════════════════════════════════════════
-const GAS_URL       = "https://script.google.com/macros/s/AKfycbw8PXR1Eh7bcgiQegI7dIgGJ9WR8lnrmzJkozlPXE8-gaF6NjORZsoj7hekSyGhPW-E/exec";
-const SHEET_ID      = "19Fk1Gy2v7s36pXO8WHJmir_o7fbMJoHQVMIhSJIKR1w";
+const GAS_URL       = "https://script.google.com/macros/s/AKfycbzcRJA48HyXO09uFW8TgSBnn_U5DXn-e4ss3pivvNk5OP-uLYbsc9emm0PTM-ID4BOW7g/exec";
+const SHEET_ID      = "1ij2Qt6rfOxWPoZC-wOP2I4yIPs3lHjeaGjnyUFOTAs8";
 const DRIVE_FOLDER  = "1CbThQWHgBLlWqM26-WDGqTGYvzk7yMtX"; // Google Drive folder for images
 
 // ═══════════════════════════════════════════════════════════════
@@ -810,6 +810,13 @@ function gasRequest(params, onSuccess, onError, timeoutMs) {
 
 // ═══════════════════════════════════════════════════════════════
 // PING & CONNECTION INDICATOR
+// Uses fetch() first (avoids the GAS echo-redirect JSONP issue),
+// falls back to JSONP if fetch is blocked by the browser.
+// The GAS echo redirect (script.googleusercontent.com/macros/echo)
+// strips query parameters from JSONP script tag src URLs, making
+// action=ping arrive as action="" at the server. fetch() bypasses
+// this because GAS handles fetch requests on the exec URL directly
+// without the echo redirect.
 // ═══════════════════════════════════════════════════════════════
 function pingGAS() {
   const el = document.getElementById("gas-status");
@@ -817,22 +824,64 @@ function pingGAS() {
   if (GAS_URL.includes("YOUR_SCRIPT_ID")) {
     el.textContent = "⚠️ GAS URL not set"; el.style.color = "#ffd"; return;
   }
-  gasRequest(
-    { action: "ping" },
-    function(result) {
-      if (result.sheetsReady === false) {
-        el.textContent = "⚠️ Sheets not initialised";
-        el.style.color = "#ffd";
-        gasRequest({ action: "initSheets" },
-          function() { el.textContent = "🟢 Connected"; el.style.color = "#afffda"; },
-          function() {}
-        );
-      } else {
-        el.textContent = "🟢 Connected"; el.style.color = "#afffda";
+
+  // Try fetch() first — avoids the echo-redirect parameter-stripping problem
+  fetch(GAS_URL + "?action=ping", { method: "GET", redirect: "follow" })
+    .then(function(res) { return res.text(); })
+    .then(function(text) {
+      var data;
+      try {
+        // Response may be JSONP-wrapped or plain JSON depending on GAS path
+        var cleaned = text.trim();
+        // Strip any JSONP wrapper if present: callbackName({...});
+        var jsonpMatch = cleaned.match(/^[A-Za-z0-9_]+\((\{[\s\S]*\})\);?$/);
+        data = JSON.parse(jsonpMatch ? jsonpMatch[1] : cleaned);
+      } catch(e) {
+        throw new Error("Unparseable response: " + text.slice(0, 80));
       }
-    },
-    function() { el.textContent = "🔴 Offline"; el.style.color = "#ffaaaa"; }
-  );
+
+      if (data.ok) {
+        if (data.sheetsReady === false) {
+          el.textContent = "⚠️ Sheets not initialised";
+          el.style.color = "#ffd";
+          // Auto-initialise
+          gasRequest({ action: "initSheets" },
+            function() {
+              el.textContent = "🟢 Connected";
+              el.style.color = "#afffda";
+              loadDistrictsFromGAS();
+            },
+            function() {}
+          );
+        } else {
+          el.textContent = "🟢 Connected";
+          el.style.color = "#afffda";
+        }
+      } else {
+        el.textContent = "⚠️ API error";
+        el.style.color = "#ffd";
+      }
+    })
+    .catch(function(fetchErr) {
+      // fetch failed (CORS block, network error) — fall back to JSONP
+      console.warn("fetch ping failed, trying JSONP:", fetchErr.message);
+      gasRequest(
+        { action: "ping" },
+        function(result) {
+          if (result.sheetsReady === false) {
+            el.textContent = "⚠️ Sheets not initialised";
+            el.style.color = "#ffd";
+            gasRequest({ action: "initSheets" },
+              function() { el.textContent = "🟢 Connected"; el.style.color = "#afffda"; },
+              function() {}
+            );
+          } else {
+            el.textContent = "🟢 Connected"; el.style.color = "#afffda";
+          }
+        },
+        function() { el.textContent = "🔴 Offline"; el.style.color = "#ffaaaa"; }
+      );
+    });
 }
 
 // ═══════════════════════════════════════════════════════════════
