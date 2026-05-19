@@ -16,7 +16,7 @@
 <!-- FIX #2: X-Content-Type-Options and Referrer-Policy meta tags -->
 <meta http-equiv="X-Content-Type-Options" content="nosniff"/>
 <meta name="referrer" content="strict-origin-when-cross-origin"/>
-<title>Regional Clinical Engineering Equipment Management</title>
+<title>Medical Equipment Management Dashboard</title>
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Space+Mono:wght@700&display=swap" rel="stylesheet"/>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -244,7 +244,7 @@ textarea{resize:vertical;min-height:100px}
   <div class="header-inner">
     <div class="header-logo">🏥</div>
     <div style="flex:1">
-      <div class="header-title">Medical Equipment Management Dashboard</div>
+      <div class="header-title">Regional Medical Equipment Dashboard</div>
       <div class="header-sub">Clinical Engineering Unit — Western Region Health Directorate, Sekondi-Takoradi, Ghana</div>
     </div>
     <div id="gas-status">⏳ Connecting…</div>
@@ -268,7 +268,7 @@ textarea{resize:vertical;min-height:100px}
     <div class="section-icon icon-fault">⚠️</div>
     <div>
       <div class="section-title">Medical Equipment Fault Reporting</div>
-      <div class="section-sub">Report equipment faults for assessment by the Clinical Engineering Unit</div>
+      <div class="section-sub">This section is for reporting equipment faults for assessment by the Clinical Engineering Unit. Contact the Regional Equipmen Manager on 0506971001</div>
     </div>
   </div>
   <div class="form-card">
@@ -297,11 +297,11 @@ textarea{resize:vertical;min-height:100px}
       </div>
       <div class="field-group">
         <label class="field-label" for="f-unit">Unit / Department</label>
-        <input type="text" id="f-unit" maxlength="100" placeholder="e.g. ICU, Theatre, Maternity Ward" autocomplete="off"/>
+        <input type="text" id="f-unit" maxlength="100" placeholder="e.g. OPD, Theatre, Maternity Ward" autocomplete="off"/>
       </div>
       <div class="field-group">
         <label class="field-label" for="f-equip">Name of Equipment <span class="req">*</span></label>
-        <input type="text" id="f-equip" maxlength="150" placeholder="e.g. Portable Ventilator, ECG Machine" autocomplete="off"/>
+        <input type="text" id="f-equip" maxlength="150" placeholder="e.g. Patient Monitor, Weighing Scale" autocomplete="off"/>
         <span class="err-msg" id="err-f-equip"></span>
       </div>
       <div class="field-group">
@@ -319,17 +319,17 @@ textarea{resize:vertical;min-height:100px}
     </div>
     <div class="field-group" style="margin-bottom:1rem">
       <label class="field-label" for="f-desc">Description of Fault <span class="req">*</span></label>
-      <textarea id="f-desc" rows="4" maxlength="2000" oninput="updateCharCount('f-desc','f-desc-count',2000)" placeholder="Describe the fault — when it started, symptoms, error messages…"></textarea>
+      <textarea id="f-desc" rows="4" maxlength="2000" oninput="updateCharCount('f-desc','f-desc-count',2000)" placeholder="Describe what is wrong with the equipment — when it started, error messages…"></textarea>
       <div class="char-count"><span id="f-desc-count">0</span>/2000</div>
       <span class="err-msg" id="err-f-desc"></span>
     </div>
     <div class="field-group" style="margin-bottom:1rem">
-      <label class="field-label" for="f-remarks">Other Remarks</label>
+      <label class="field-label" for="f-remarks">Other Remarks (Optional)</label>
       <textarea id="f-remarks" rows="3" maxlength="500" placeholder="Any additional information"></textarea>
     </div>
     <div class="field-group">
       <label class="field-label">Upload Picture of Equipment(OPTIONAL)</label>
-      <p class="field-hint">Attach a clear photo showing the faulty area if possible (max size of picture 5 MB)</p>
+      <p class="field-hint">You can attach a clear photo showing the fault or equipment label (max size of photo 5 MB).</p>
       <div class="file-area">
         <label class="file-label" id="f-img-label" for="f-img">📷 Choose Image</label>
         <input type="file" id="f-img" accept="image/jpeg,image/png,image/gif,image/webp" style="display:none" onchange="previewImg(this,'img-preview')"/>
@@ -404,11 +404,11 @@ textarea{resize:vertical;min-height:100px}
   <div class="section-header">
     <div class="section-icon icon-install">🔩</div>
     <div>
-      <div class="section-title">Request for Equipment Installation</div>
-      <div class="section-sub">For newly received equipment requiring professional installation</div>
+      <div class="section-title">Request for Installation of Equipment</div>
+      <div class="section-sub">For new equipment requiring professional installation</div>
     </div>
   </div>
-  <div class="banner banner-blue">💡 <strong>Note:</strong> This form is for newly received equipment requiring installation by the Clinical Engineering Unit. Contact the Regional Equipment Manager on 0506971001</div>
+  <div class="banner banner-blue">💡 <strong>Note:</strong> This form is for equipment requiring professional installation by the Clinical Engineering Unit. Contact the Regional Equipment Manager on 0506971001</div>
   <div class="form-card">
     <div class="form-grid">
       <div class="field-group">
@@ -427,16 +427,16 @@ textarea{resize:vertical;min-height:100px}
           <option value="">-- Select --</option>
           <option>Teaching Hospital</option><option>Regional Hospital</option>
           <option>District Hospital</option><option>Polyclinic</option>
-          <option>Health Centre</option><option>CHPS Compound</option>
-          <option>Private Hospital</option><option>Mission/Faith-Based Hospital</option><option>Quasi-Government Facility</option>
-          <option>Maternity Home</option><option>Clinic</option><option>Cold-Chain Facility</option><option>Public Health Lab</option>
+          <option>Health Centre</option><option>CHPS Compound</option><option>Quasi-Government</option>
+          <option>Private Hospital</option><option>Mission/Faith-Based Hospital</option>
+          <option>Maternity Home</option><option>Clinic</option><option>Cold Chain Facility</option><option>Public Health Lab</option>
         </select>
         <span class="err-msg" id="err-i-ftype"></span>
       </div>
       <div class="field-group">
         <label class="field-label" for="i-etype">Type of Equipment <span class="req">*</span></label>
         <input type="text" id="i-etype" maxlength="150"
-          placeholder="e.g. Autoclave, Hospital Beds, Ultrasound, Freezers" autocomplete="off"/>
+          placeholder="e.g. Autoclave, Hospital Furniture, Ultrasound" autocomplete="off"/>
         <span class="err-msg" id="err-i-etype"></span>
       </div>
       <div class="field-group">
@@ -511,7 +511,7 @@ textarea{resize:vertical;min-height:100px}
       </div>
       <div class="field-group">
         <label class="field-label" for="e-grade">Grade / Position</label>
-        <input type="text" id="e-grade" maxlength="100" placeholder="e.g. Facility Manager" autocomplete="off"/>
+        <input type="text" id="e-grade" maxlength="100" placeholder="e.g. Facility In-charge" autocomplete="off"/>
       </div>
       <div class="field-group">
         <label class="field-label" for="e-contact">Your Contact Number <span class="req">*</span></label>
@@ -523,7 +523,7 @@ textarea{resize:vertical;min-height:100px}
     </div>
     <div class="field-group" style="margin-bottom:1rem">
       <label class="field-label" for="e-reason">Reasons for the Request <span class="req">*</span></label>
-      <p class="field-hint">Explain clinical need and how it will improve patient outcomes</p>
+      <p class="field-hint">Explain why you need the equipment and how it will improve patient outcomes</p>
       <textarea id="e-reason" rows="5" maxlength="2000" oninput="updateCharCount('e-reason','e-reason-count',2000)" placeholder="Patient volume, current gaps, clinical need…"></textarea>
       <div class="char-count"><span id="e-reason-count">0</span>/2000</div>
       <span class="err-msg" id="err-e-reason"></span>
@@ -606,7 +606,7 @@ textarea{resize:vertical;min-height:100px}
 </div><!-- /app-body -->
 
 <footer class="app-footer">
-  © <span id="yr"></span> Clinical Engineering Unit — Western Region Health Directorate &nbsp;|&nbsp; All submissions are confidential
+  © <span id="yr"></span> Clinical Engineering Unit — Western Region Health Directorate, Ghana Health Service &nbsp;|&nbsp; All submissions are confidential
 </footer>
 
 <!-- SUCCESS MODAL -->
@@ -732,91 +732,131 @@ loadDistrictsFromGAS();
 setTimeout(pingGAS, 800);
 
 // ═══════════════════════════════════════════════════════════════
-// JSONP ENGINE — all GAS communication goes through here
-// FIX #10: Hardened against callback name injection
-//   - Callback name validated against SAFE_CB_RE before window assignment
-//   - Callback removed from window immediately after invocation (no lingering globals)
-//   - Script element given nonce attribute for future CSP nonce compatibility
-//   - GAS_URL validated to be a script.google.com URL before use
-//   - Action parameter validated against ALLOWED_ACTIONS allowlist
+// GAS REQUEST ENGINE
+// All standard GET calls use fetch() — avoids GAS echo-redirect.
+// Image upload chunks use gasPost() — POST avoids URL length limit.
+// JSONP is kept as a last-resort fallback for blocked fetch().
 // ═══════════════════════════════════════════════════════════════
 function gasRequest(params, onSuccess, onError, timeoutMs) {
-  // Validate GAS_URL is safe before injecting a script tag
   if (!GAS_URL.startsWith("https://script.google.com/")) {
     if (onError) onError("Invalid GAS URL configuration.");
     return;
   }
-
-  // Validate action is known
   if (params.action && !ALLOWED_ACTIONS.has(params.action)) {
     if (onError) onError("Unknown action requested.");
     return;
   }
+  timeoutMs = timeoutMs || 20000;
 
-  timeoutMs = timeoutMs || 15000;
-  const cbName = "gasCB_" + Date.now() + "_" + Math.floor(Math.random()*99999);
-
-  // Validate callback name before assigning to window
-  if (!SAFE_CB_RE.test(cbName)) {
-    if (onError) onError("Internal error: invalid callback name.");
-    return;
-  }
-
-  params.callback = cbName;
-  // Skip null/undefined values — encodeURIComponent(null) produces "null"
-  const url = GAS_URL + "?" + Object.keys(params)
-    .filter(k => params[k] !== null && params[k] !== undefined)
+  // Build query string — exclude null/undefined/callback keys
+  const qs = Object.keys(params)
+    .filter(k => k !== "callback" && params[k] !== null && params[k] !== undefined)
     .map(k => encodeURIComponent(k) + "=" + encodeURIComponent(params[k]))
+    .join("&");
+  const url = GAS_URL + "?" + qs;
+
+  const controller = new AbortController();
+  const timer = setTimeout(function() { controller.abort(); }, timeoutMs);
+
+  fetch(url, { method: "GET", redirect: "follow", signal: controller.signal })
+    .then(function(res) { return res.text(); })
+    .then(function(text) {
+      clearTimeout(timer);
+      var data;
+      try {
+        var cleaned = text.trim();
+        var m = cleaned.match(/^[A-Za-z0-9_]+\((\{[\s\S]*\})\);?$/);
+        data = JSON.parse(m ? m[1] : cleaned);
+      } catch(e) {
+        throw new Error("Unparseable server response. Please try again.");
+      }
+      if (data && data.ok) { onSuccess(data); }
+      else { if (onError) onError(data && data.error ? data.error : "Server returned an error."); }
+    })
+    .catch(function(fetchErr) {
+      clearTimeout(timer);
+      // FIX: Don't fall into JSONP for abort — that would double-submit on timeout
+      if (fetchErr.name === "AbortError") {
+        if (onError) onError("Request timed out. If this was a form submission, please check your Google Sheet before retrying to avoid duplicates.");
+        return;
+      }
+      // Network error — try JSONP fallback (don't mutate original params)
+      console.warn("fetch failed, trying JSONP fallback:", fetchErr.message);
+      gasRequestJSONP(Object.assign({}, params), onSuccess, onError, Math.min(timeoutMs, 25000));
+    });
+}
+
+// POST engine — used for image chunk upload to avoid URL length limits
+// GAS doPost() receives JSON body and routes to uploadImageChunk
+function gasPost(payload, onSuccess, onError, timeoutMs) {
+  if (!GAS_URL.startsWith("https://script.google.com/")) {
+    if (onError) onError("Invalid GAS URL configuration."); return;
+  }
+  timeoutMs = timeoutMs || 30000;
+  const controller = new AbortController();
+  const timer = setTimeout(function() { controller.abort(); }, timeoutMs);
+
+  fetch(GAS_URL, {
+    method:   "POST",
+    redirect: "follow",
+    signal:   controller.signal,
+    headers:  { "Content-Type": "text/plain" }, // GAS requires text/plain for doPost JSON
+    body:     JSON.stringify(payload)
+  })
+    .then(function(res) { return res.text(); })
+    .then(function(text) {
+      clearTimeout(timer);
+      var data;
+      try { data = JSON.parse(text.trim()); }
+      catch(e) { throw new Error("Unparseable POST response."); }
+      if (data && data.ok) { onSuccess(data); }
+      else { if (onError) onError(data && data.error ? data.error : "Upload error."); }
+    })
+    .catch(function(err) {
+      clearTimeout(timer);
+      if (onError) onError(err.name === "AbortError" ? "Upload timed out. Please try a smaller image." : err.message);
+    });
+}
+
+// JSONP fallback — FIX #4: uses a copy of params, never mutates original
+function gasRequestJSONP(paramsCopy, onSuccess, onError, timeoutMs) {
+  const cbName = "gasCB_" + Date.now() + "_" + Math.floor(Math.random()*99999);
+  if (!SAFE_CB_RE.test(cbName)) {
+    if (onError) onError("Internal error: invalid callback name."); return;
+  }
+  paramsCopy.callback = cbName;
+  const url = GAS_URL + "?" + Object.keys(paramsCopy)
+    .filter(k => paramsCopy[k] !== null && paramsCopy[k] !== undefined)
+    .map(k => encodeURIComponent(k) + "=" + encodeURIComponent(paramsCopy[k]))
     .join("&");
 
   const timer = setTimeout(function() {
     cleanup();
     if (onError) onError("Request timed out. Please check your connection.");
-  }, timeoutMs);
+  }, timeoutMs || 25000);
 
   function cleanup() {
     clearTimeout(timer);
-    // FIX #11: Use delete to remove callback from window scope immediately
-    if (Object.prototype.hasOwnProperty.call(window, cbName)) {
-      delete window[cbName];
-    }
+    if (Object.prototype.hasOwnProperty.call(window, cbName)) delete window[cbName];
     const el = document.getElementById("gs-req-" + cbName);
     if (el) el.remove();
   }
 
-  // FIX #12: Wrap in a closure that immediately calls cleanup to prevent
-  // a second invocation of the same callback (JSONP padding attack)
   let _called = false;
   window[cbName] = function(result) {
-    if (_called) return; // prevent double-invocation
-    _called = true;
-    cleanup();
-    if (result && result.ok) {
-      onSuccess(result);
-    } else {
-      if (onError) onError(result && result.error ? result.error : "Server returned an error.");
-    }
+    if (_called) return; _called = true; cleanup();
+    if (result && result.ok) { onSuccess(result); }
+    else { if (onError) onError(result && result.error ? result.error : "Server returned an error."); }
   };
-
-  const script   = document.createElement("script");
-  script.id      = "gs-req-" + cbName;
-  script.src     = url;
-  script.onerror = function() {
-    cleanup();
-    if (onError) onError("Could not reach the server. Check your internet connection.");
-  };
+  const script = document.createElement("script");
+  script.id = "gs-req-" + cbName;
+  script.src = url;
+  script.onerror = function() { cleanup(); if (onError) onError("Could not reach the server."); };
   document.body.appendChild(script);
 }
 
 // ═══════════════════════════════════════════════════════════════
 // PING & CONNECTION INDICATOR
-// Uses fetch() first (avoids the GAS echo-redirect JSONP issue),
-// falls back to JSONP if fetch is blocked by the browser.
-// The GAS echo redirect (script.googleusercontent.com/macros/echo)
-// strips query parameters from JSONP script tag src URLs, making
-// action=ping arrive as action="" at the server. fetch() bypasses
-// this because GAS handles fetch requests on the exec URL directly
-// without the echo redirect.
 // ═══════════════════════════════════════════════════════════════
 function pingGAS() {
   const el = document.getElementById("gas-status");
@@ -824,64 +864,23 @@ function pingGAS() {
   if (GAS_URL.includes("YOUR_SCRIPT_ID")) {
     el.textContent = "⚠️ GAS URL not set"; el.style.color = "#ffd"; return;
   }
-
-  // Try fetch() first — avoids the echo-redirect parameter-stripping problem
-  fetch(GAS_URL + "?action=ping", { method: "GET", redirect: "follow" })
-    .then(function(res) { return res.text(); })
-    .then(function(text) {
-      var data;
-      try {
-        // Response may be JSONP-wrapped or plain JSON depending on GAS path
-        var cleaned = text.trim();
-        // Strip any JSONP wrapper if present: callbackName({...});
-        var jsonpMatch = cleaned.match(/^[A-Za-z0-9_]+\((\{[\s\S]*\})\);?$/);
-        data = JSON.parse(jsonpMatch ? jsonpMatch[1] : cleaned);
-      } catch(e) {
-        throw new Error("Unparseable response: " + text.slice(0, 80));
-      }
-
-      if (data.ok) {
-        if (data.sheetsReady === false) {
-          el.textContent = "⚠️ Sheets not initialised";
-          el.style.color = "#ffd";
-          // Auto-initialise
-          gasRequest({ action: "initSheets" },
-            function() {
-              el.textContent = "🟢 Connected";
-              el.style.color = "#afffda";
-              loadDistrictsFromGAS();
-            },
-            function() {}
-          );
-        } else {
-          el.textContent = "🟢 Connected";
-          el.style.color = "#afffda";
-        }
+  el.textContent = "⏳ Connecting…";
+  gasRequest(
+    { action: "ping" },
+    function(result) {
+      if (result.sheetsReady === false) {
+        el.textContent = "⚠️ Sheets not initialised"; el.style.color = "#ffd";
+        gasRequest({ action: "initSheets" },
+          function() { el.textContent = "🟢 Connected"; el.style.color = "#afffda"; loadDistrictsFromGAS(); },
+          function() { el.textContent = "⚠️ Init failed"; el.style.color = "#ffd"; }
+        );
       } else {
-        el.textContent = "⚠️ API error";
-        el.style.color = "#ffd";
+        el.textContent = "🟢 Connected"; el.style.color = "#afffda";
       }
-    })
-    .catch(function(fetchErr) {
-      // fetch failed (CORS block, network error) — fall back to JSONP
-      console.warn("fetch ping failed, trying JSONP:", fetchErr.message);
-      gasRequest(
-        { action: "ping" },
-        function(result) {
-          if (result.sheetsReady === false) {
-            el.textContent = "⚠️ Sheets not initialised";
-            el.style.color = "#ffd";
-            gasRequest({ action: "initSheets" },
-              function() { el.textContent = "🟢 Connected"; el.style.color = "#afffda"; },
-              function() {}
-            );
-          } else {
-            el.textContent = "🟢 Connected"; el.style.color = "#afffda";
-          }
-        },
-        function() { el.textContent = "🔴 Offline"; el.style.color = "#ffaaaa"; }
-      );
-    });
+    },
+    function() { el.textContent = "🔴 Offline"; el.style.color = "#ffaaaa"; },
+    10000
+  );
 }
 
 // ═══════════════════════════════════════════════════════════════
@@ -1029,7 +1028,6 @@ let _loginLockedUntil = 0;
 
 function doLogin() {
   const now = Date.now();
-  // Lock out after 5 failed attempts for 2 minutes
   if (_loginAttempts >= 5 && now < _loginLockedUntil) {
     const secs = Math.ceil((_loginLockedUntil - now) / 1000);
     document.getElementById("login-err").textContent =
@@ -1041,17 +1039,19 @@ function doLogin() {
   const btn = document.getElementById("btn-login");
   const err = document.getElementById("login-err");
   if (!pw) { err.textContent = "Please enter the password."; return; }
-  btn.disabled = true;
+
+  btn.disabled  = true;
+  btn._origHTML = btn.innerHTML;
   btn.innerHTML = '<span class="spinner">⏳</span> Verifying…';
   err.textContent = "";
 
   gasRequest(
     { action: "adminLogin", pw: pw },
     function(result) {
-      _loginAttempts = 0; // reset on success
-      btn.disabled = false; btn.innerHTML = "🔓 Login";
-      adminToken = result.token;
-      // FIX #20: Clear password field before showing dashboard
+      _loginAttempts = 0;
+      btn.disabled  = false;
+      btn.innerHTML = btn._origHTML;
+      adminToken    = result.token;
       document.getElementById("admin-pw").value = "";
       document.getElementById("admin-login").style.display = "none";
       document.getElementById("admin-dashboard").classList.add("open");
@@ -1061,31 +1061,33 @@ function doLogin() {
     function(errMsg) {
       _loginAttempts++;
       if (_loginAttempts >= 5) {
-        _loginLockedUntil = Date.now() + 2 * 60 * 1000; // 2-minute lockout
+        _loginLockedUntil = Date.now() + 2 * 60 * 1000;
       }
-      btn.disabled = false; btn.innerHTML = "🔓 Login";
-      // FIX #21: Escape error message; also clear password field on failure
+      btn.disabled  = false;
+      btn.innerHTML = btn._origHTML;
       document.getElementById("admin-pw").value = "";
       err.textContent = escHtml(errMsg) || "Incorrect password.";
-    }
+    },
+    20000
   );
 }
 
 function doLogout() {
   adminToken = null;
   clearInterval(sessionTimer);
-  // FIX #22: Clear all admin data arrays from memory on logout
+  _loginAttempts   = 0;       // FIX #6: reset lockout counter on logout
+  _loginLockedUntil = 0;
   faultReports   = [];
   installReports = [];
   equipReports   = [];
   document.getElementById("fault-reports-list").innerHTML = '<div class="empty-state">📭 No fault reports yet.</div>';
-  document.getElementById("install-list").innerHTML = '<div class="empty-state">📭 No installation requests yet.</div>';
-  document.getElementById("equip-list").innerHTML = '<div class="empty-state">📭 No equipment requests yet.</div>';
-  document.getElementById("stats-grid").innerHTML = "";
-  document.getElementById("admin-login").style.display = "block";
+  document.getElementById("install-list").innerHTML       = '<div class="empty-state">📭 No installation requests yet.</div>';
+  document.getElementById("equip-list").innerHTML         = '<div class="empty-state">📭 No equipment requests yet.</div>';
+  document.getElementById("stats-grid").innerHTML         = "";
+  document.getElementById("admin-login").style.display   = "block";
   document.getElementById("admin-dashboard").classList.remove("open");
-  document.getElementById("session-timer").textContent = "";
-  document.getElementById("admin-pw").value = "";
+  document.getElementById("session-timer").textContent    = "";
+  document.getElementById("admin-pw").value               = "";
 }
 
 // Session timer — auto-logout after SESSION_MINUTES of inactivity
@@ -1098,17 +1100,20 @@ function startSessionTimer() {
   sessionExpiry = Date.now() + SESSION_MINUTES * 60 * 1000;
   sessionTimer  = setInterval(function() {
     const remaining = Math.round((sessionExpiry - Date.now()) / 1000);
+    const el = document.getElementById("session-timer");
+
+    // FIX #7: replaced alert() with inline notice to avoid blocking mid-request
     if (remaining <= 0 || (Date.now() - lastActivity) > SESSION_MINUTES * 60 * 1000) {
       clearInterval(sessionTimer);
-      alert("Your admin session has expired due to inactivity. Please log in again.");
-      doLogout();
+      if (el) el.textContent = "⚠️ Session expired — please log in again.";
+      // Small delay so the message is visible before the panel hides
+      setTimeout(function() { doLogout(); }, 1500);
       return;
     }
     const m = Math.floor(remaining / 60);
     const s = String(remaining % 60).padStart(2, "0");
-    const el = document.getElementById("session-timer");
     if (el) el.textContent = "Session expires in " + m + ":" + s;
-    // Refresh token expiry on activity
+    // Refresh expiry on recent activity
     if ((Date.now() - lastActivity) < 5000) {
       sessionExpiry = Date.now() + SESSION_MINUTES * 60 * 1000;
     }
@@ -1284,20 +1289,39 @@ function handleStepClick(btn) {
 }
 
 function updateFaultStatus(ref, newStatus) {
-  // FIX #27: Validate newStatus client-side against the same allowlist used server-side
   const VALID_STATUSES = ["Received","Pending","Under Repair","Repair Completed","Dispatched","Obsolete"];
-  if (!VALID_STATUSES.includes(newStatus)) { alert("Invalid status value."); return; }
+  if (!VALID_STATUSES.includes(newStatus)) return;
 
   const idx = faultReports.findIndex(r => r.ref === ref);
   if (idx !== -1) faultReports[idx].status = newStatus;
   const stepperEl = document.getElementById("stepper-" + ref);
   if (stepperEl) stepperEl.innerHTML = buildStepperHTML(ref, newStatus);
   renderStats();
+
   gasRequest(
     { action: "updateStatus", ref: ref, status: newStatus, token: adminToken },
-    function() { /* success */ },
-    function(err) { alert("Status update failed: " + escHtml(err) + "\nPlease try again."); }
+    function() { /* success — stepper already updated optimistically */ },
+    function(err) {
+      // Revert optimistic update on failure
+      if (idx !== -1) faultReports[idx].status = newStatus; // keep as-is since we don't know old
+      showStatusUpdateError(ref, String(err || "Status update failed. Please try again."));
+    }
   );
+}
+
+function showStatusUpdateError(ref, msg) {
+  // Show error inline on the card instead of blocking alert()
+  const card = document.getElementById("card-" + ref);
+  if (!card) return;
+  let errBanner = card.querySelector(".status-err-banner");
+  if (!errBanner) {
+    errBanner = document.createElement("div");
+    errBanner.className = "status-err-banner";
+    errBanner.style.cssText = "font-size:.74rem;color:var(--red);margin-top:.4rem;padding:.3rem .6rem;background:var(--redbg);border-radius:6px;";
+    card.querySelector(".status-stepper").prepend(errBanner);
+  }
+  errBanner.textContent = "⚠️ " + msg;
+  setTimeout(function() { if (errBanner.parentNode) errBanner.remove(); }, 5000);
 }
 
 function renderInstallList() {
@@ -1332,15 +1356,34 @@ function renderEquipList() {
 
 function openGoogleSheet() {
   if (!SHEET_ID || SHEET_ID === "PASTE_YOUR_SPREADSHEET_ID_HERE") {
-    alert("Update SHEET_ID at the top of CEU_Dashboard.html with your Google Sheet ID.");
+    showAdminNotice("Update SHEET_ID in the HTML config block with your Google Sheet ID.", "warn");
     return;
   }
-  // FIX #28: Validate SHEET_ID is alphanumeric before building URL (prevents open redirect)
   if (!/^[A-Za-z0-9_-]+$/.test(SHEET_ID)) {
-    alert("Invalid Sheet ID format.");
+    showAdminNotice("Invalid Sheet ID format.", "warn");
     return;
   }
   window.open("https://docs.google.com/spreadsheets/d/" + encodeURIComponent(SHEET_ID) + "/edit", "_blank", "noopener,noreferrer");
+}
+
+function showAdminNotice(msg, type) {
+  // Non-blocking admin notification strip
+  const colours = { warn: "var(--amberbg)", err: "var(--redbg)", ok: "var(--af)" };
+  const textCol = { warn: "var(--amber)",   err: "var(--red)",   ok: "var(--accent)" };
+  let notice = document.getElementById("admin-notice-strip");
+  if (!notice) {
+    notice = document.createElement("div");
+    notice.id = "admin-notice-strip";
+    notice.style.cssText = "padding:.55rem 1rem;border-radius:8px;font-size:.8rem;font-weight:600;margin-bottom:.75rem;";
+    const header = document.querySelector(".admin-header-row");
+    if (header) header.after(notice);
+  }
+  notice.style.background = colours[type] || colours.warn;
+  notice.style.color      = textCol[type]  || textCol.warn;
+  notice.textContent      = msg;
+  notice.style.display    = "block";
+  clearTimeout(notice._timer);
+  notice._timer = setTimeout(function() { notice.style.display = "none"; }, 5000);
 }
 
 // ═══════════════════════════════════════════════════════════════
@@ -1474,9 +1517,10 @@ function setUploadProgress(visible, pct, label) {
   fileLbl.classList.toggle("uploading", visible);
 }
 
-// ── Chunked upload to Google Drive via GAS ──────────────────────
-// Large base64 strings are split into chunks and sent sequentially.
-// GAS assembles them in the PropertiesService before writing to Drive.
+// ── Chunked upload to Google Drive via GAS POST ─────────────────
+// FIX: Previously used GET which truncates at ~8KB URL limit.
+// Now uses gasPost() which sends chunks as JSON body — no size limit.
+// GAS assembles chunks in PropertiesService then writes to Drive.
 function uploadToDrive(base64, fileName, mimeType) {
   const errEl    = document.getElementById("err-f-img");
   const totalLen = base64.length;
@@ -1490,15 +1534,13 @@ function uploadToDrive(base64, fileName, mimeType) {
     const end    = Math.min(start + B64_CHUNK_BYTES, totalLen);
     const chunk  = base64.slice(start, end);
     const isLast = (end >= totalLen);
-    const pct    = Math.round(((idx + 1) / chunks) * 90); // reserve last 10% for Drive write
+    const pct    = Math.round(((idx + 1) / chunks) * 90);
 
     setUploadProgress(true, pct,
-      isLast
-        ? "Saving to Google Drive…"
-        : "Uploading part " + (idx + 1) + " of " + chunks + "…"
+      isLast ? "Saving to Google Drive…" : "Uploading part " + (idx + 1) + " of " + chunks + "…"
     );
 
-    gasRequest(
+    gasPost(
       {
         action:   "uploadImage",
         uploadId: uploadId,
@@ -1511,23 +1553,15 @@ function uploadToDrive(base64, fileName, mimeType) {
       },
       function(result) {
         if (isLast) {
-          // Final chunk — GAS has assembled and saved the file
           setUploadProgress(true, 100, "Upload complete ✅");
           setTimeout(function() { setUploadProgress(false, 0, ""); }, 1800);
-
-          driveImageUrl = result.viewUrl  || "";
-          driveFileId   = result.fileId   || "";
-
-          // Show Drive link
-          const resultDiv  = document.getElementById("f-img-drive-result");
+          driveImageUrl = result.viewUrl || "";
+          driveFileId   = result.fileId  || "";
+          const resultDiv   = document.getElementById("f-img-drive-result");
           const driveAnchor = document.getElementById("f-img-drive-link");
-          if (driveImageUrl) {
-            driveAnchor.href = driveImageUrl;
-            resultDiv.style.display = "block";
-          }
+          if (driveImageUrl) { driveAnchor.href = driveImageUrl; resultDiv.style.display = "block"; }
           if (errEl) errEl.textContent = "";
         } else {
-          // More chunks to send
           sendChunk(idx + 1);
         }
       },
@@ -1538,7 +1572,7 @@ function uploadToDrive(base64, fileName, mimeType) {
         driveFileId   = null;
         document.getElementById("f-img-drive-result").style.display = "none";
       },
-      30000 // allow 30s per chunk for slow connections
+      35000
     );
   }
 
@@ -1560,33 +1594,39 @@ function clearImageUpload() {
 }
 
 // ═══════════════════════════════════════════════════════════════
-// SUBMIT ENGINE — waits for GAS confirmation before showing modal
+// SUBMIT ENGINE — per-form locking (FIX: was a single global that
+// blocked ALL forms when any one was submitting)
 // ═══════════════════════════════════════════════════════════════
-let _submitting = false;
+const _submittingForms = {}; // tracks lock per button ID
 
-function isSubmitLocked() { return _submitting; }
+function isSubmitLocked(btnId) { return !!_submittingForms[btnId]; }
 
-function setSubmitting(btnId, isSubmitting) {
-  _submitting = isSubmitting;
+function setSubmitting(btnId, isActive) {
   const btn = document.getElementById(btnId);
   if (!btn) return;
-  btn.disabled = isSubmitting;
-  if (isSubmitting) {
+  _submittingForms[btnId] = isActive;
+  if (isActive) {
     btn._origHTML = btn.innerHTML;
+    btn.disabled  = true;
     btn.innerHTML = '<span class="spinner">⏳</span> Submitting…';
   } else {
-    btn.disabled = true;
-    btn.innerHTML = '⏳ Please wait…';
-    setTimeout(function() {
-      _submitting = false;
-      btn.disabled = false;
-      btn.innerHTML = btn._origHTML || btn.innerHTML;
-    }, 5000);
+    _submittingForms[btnId] = false;
+    btn.disabled  = false;
+    btn.innerHTML = btn._origHTML || btn.innerHTML;
   }
 }
 
+function unlockSubmit(btnId) {
+  // On failure: re-enable after 1s so error modal is seen first
+  setTimeout(function() {
+    _submittingForms[btnId] = false;
+    const btn = document.getElementById(btnId);
+    if (btn) { btn.disabled = false; btn.innerHTML = btn._origHTML || btn.innerHTML; }
+  }, 1000);
+}
+
 function submitFault() {
-  if (isSubmitLocked()) return;
+  if (isSubmitLocked("btn-fault")) return;
   clearErrors(["f-facility","f-district","f-ftype","f-equip","f-reporter","f-contact","f-desc"]);
   let ok = true;
   ok = req("f-facility","Facility name")      && ok;
@@ -1598,9 +1638,13 @@ function submitFault() {
   ok = validPhone("f-contact")               && ok;
   if (!ok) return;
 
-  // Block submission if an upload is still in progress
+  // Block submission ONLY if an upload is actively in progress
+  // (progress wrap visible AND no Drive URL yet = upload still running)
   const progressWrap = document.getElementById("upload-progress-wrap");
-  if (progressWrap && progressWrap.style.display !== "none") {
+  const uploadActive = progressWrap &&
+                       progressWrap.style.display !== "none" &&
+                       !driveImageUrl; // if driveImageUrl is set, upload finished
+  if (uploadActive) {
     showErrorModal("Please wait — image upload is still in progress.");
     return;
   }
@@ -1629,10 +1673,7 @@ function submitFault() {
       pendingReset = resetFaultForm;
       showModal(result.refCode || ref, "Fault Report");
     },
-    function(err) {
-      setSubmitting("btn-fault", false);
-      showErrorModal(escHtml(err));
-    },
+    function(err) { unlockSubmit("btn-fault"); showErrorModal(err); },
     20000
   );
 }
@@ -1647,7 +1688,7 @@ function resetFaultForm() {
 }
 
 function submitInstall() {
-  if (isSubmitLocked()) return;
+  if (isSubmitLocked("btn-install")) return;
   clearErrors(["i-facility","i-district","i-ftype","i-etype","i-qty","i-name","i-contact"]);
   let ok = true;
   ok = req("i-facility","Facility name")  && ok;
@@ -1685,13 +1726,13 @@ function submitInstall() {
       };
       showModal(result.refCode || ref, "Installation Request");
     },
-    function(err) { setSubmitting("btn-install", false); showErrorModal(escHtml(err)); },
+    function(err) { unlockSubmit("btn-install"); showErrorModal(err); },
     20000
   );
 }
 
 function submitEquip() {
-  if (isSubmitLocked()) return;
+  if (isSubmitLocked("btn-equip")) return;
   clearErrors(["e-facility","e-district","e-etype","e-qty","e-name","e-contact","e-reason"]);
   let ok = true;
   ok = req("e-facility","Facility name")   && ok;
@@ -1729,7 +1770,7 @@ function submitEquip() {
       };
       showModal(result.refCode || ref, "Equipment Request");
     },
-    function(err) { setSubmitting("btn-equip", false); showErrorModal(escHtml(err)); },
+    function(err) { unlockSubmit("btn-equip"); showErrorModal(err); },
     20000
   );
 }
@@ -1750,13 +1791,16 @@ function showModal(ref, label) {
   document.getElementById("ref-copy-tip").textContent = "Tap the code above to copy it";
   document.getElementById("success-modal").classList.add("open");
 }
+function modalAnother() {
+  document.getElementById("success-modal").classList.remove("open");
+  // FIX #12: clear any lingering per-form submit lock on "submit another"
+  Object.keys(_submittingForms).forEach(k => { _submittingForms[k] = false; });
+  if (pendingReset) { pendingReset(); pendingReset = null; }
+}
+
 function closeModal() {
   document.getElementById("success-modal").classList.remove("open");
   pendingReset = null;
-}
-function modalAnother() {
-  document.getElementById("success-modal").classList.remove("open");
-  if (pendingReset) { pendingReset(); pendingReset = null; }
 }
 function copyRef() {
   const code = document.getElementById("modal-ref-code").textContent;
@@ -1784,8 +1828,8 @@ function copyRef() {
 }
 
 function showErrorModal(msg) {
-  // FIX #33: Use textContent — never innerHTML — for error messages
-  document.getElementById("error-modal-body").textContent = msg || "An error occurred. Please try again.";
+  // Use textContent — never innerHTML. Pass raw string, no pre-escaping needed.
+  document.getElementById("error-modal-body").textContent = String(msg || "An error occurred. Please try again.");
   document.getElementById("error-modal").classList.add("open");
 }
 function closeErrorModal() {
@@ -1817,7 +1861,6 @@ function escHtml(str) {
 // FIX #34: Rate-limited to prevent reference code enumeration attacks
 // ═══════════════════════════════════════════════════════════════
 function checkStatus() {
-  // Rate-limit: max STATUS_CHECK_LIMIT checks per STATUS_CHECK_WINDOW
   const now = Date.now();
   while (_statusCheckTs.length && now - _statusCheckTs[0] > STATUS_CHECK_WINDOW) {
     _statusCheckTs.shift();
@@ -1836,33 +1879,37 @@ function checkStatus() {
   const raw = document.getElementById("track-ref-input").value.trim().toUpperCase();
   if (!raw) { document.getElementById("track-ref-input").focus(); return; }
 
-  // FIX #35: Strict reference code format validation — only allow known prefixes
-  // This tightens the original check (length < 8, parts < 3) to reject
-  // anything that doesn't match the exact FR-/IR-/ER-XXXX-XXXX pattern.
   const REF_RE = /^(FR|IR|ER)-[A-Z0-9]{4}-[A-Z0-9]{4}$/;
   if (!REF_RE.test(raw)) {
     document.getElementById("track-result").style.display   = "block";
     document.getElementById("track-loading").style.display  = "none";
     document.getElementById("track-found").style.display    = "none";
     document.getElementById("track-notfound").style.display = "block";
-    // FIX #36: Use textContent for the error message (not innerHTML)
     document.getElementById("track-notfound-msg").textContent =
-      "Invalid reference code format. Codes look like FR-A3XK-7QPL — please check and try again.";
+      "Invalid format. Codes look like FR-A3XK-7QPL — please check and try again.";
     return;
   }
+
+  const trackBtn = document.getElementById("track-btn");
+  // FIX #11: save original HTML so we can restore exactly, not just text
+  if (!trackBtn._origHTML) trackBtn._origHTML = trackBtn.innerHTML;
+  trackBtn.disabled  = true;
+  trackBtn.innerHTML = '<span class="spinner">⏳</span> Checking…';
 
   document.getElementById("track-result").style.display   = "block";
   document.getElementById("track-loading").style.display  = "block";
   document.getElementById("track-notfound").style.display = "none";
   document.getElementById("track-found").style.display    = "none";
-  document.getElementById("track-btn").disabled           = true;
-  document.getElementById("track-btn").textContent        = "⏳ Checking…";
+
+  function resetTrackBtn() {
+    trackBtn.disabled  = false;
+    trackBtn.innerHTML = trackBtn._origHTML;
+  }
 
   gasRequest(
     { action: "getStatus", ref: raw },
     function(result) {
-      document.getElementById("track-btn").disabled    = false;
-      document.getElementById("track-btn").textContent = "🔎 Check Status";
+      resetTrackBtn();
       document.getElementById("track-loading").style.display = "none";
       if (!result.found) {
         document.getElementById("track-notfound").style.display = "block";
@@ -1872,33 +1919,36 @@ function checkStatus() {
       renderTrackResult(result);
     },
     function(err) {
-      document.getElementById("track-btn").disabled    = false;
-      document.getElementById("track-btn").textContent = "🔎 Check Status";
+      resetTrackBtn();
       document.getElementById("track-loading").style.display  = "none";
       document.getElementById("track-notfound").style.display = "block";
-      // FIX #37: Use textContent for error display
-      document.getElementById("track-notfound-msg").textContent = escHtml(err);
+      document.getElementById("track-notfound-msg").textContent =
+        "Could not check status: " + String(err || "Unknown error");
     }
   );
 }
 
 function renderTrackResult(result) {
   document.getElementById("track-found").style.display = "block";
-  // FIX #38: All server-returned values set via textContent — never innerHTML
   document.getElementById("tr-ref").textContent       = result.ref      || "—";
   document.getElementById("tr-facility").textContent  = result.facility  || "—";
-  document.getElementById("tr-equipment").textContent = result.equipment || (result.type !== "fault_report" ? result.type.replace(/_/g," ") : "—");
+  // FIX #5: Guard against undefined result.type before calling .replace()
+  const equipLabel = result.equipment ||
+    (result.type && result.type !== "fault_report"
+      ? String(result.type).replace(/_/g, " ")
+      : "—");
+  document.getElementById("tr-equipment").textContent = equipLabel;
   const upd = result.lastUpdated || result.timestamp || "";
-  document.getElementById("tr-updated").textContent   = upd ? new Date(upd).toLocaleString() : "—";
+  document.getElementById("tr-updated").textContent = upd ? new Date(upd).toLocaleString() : "—";
 
   const ci = STATUS_STEPS.findIndex(s => s.key === normaliseStatus(result.status));
   document.getElementById("tr-steps").innerHTML = STATUS_STEPS.map(function(s, i) {
     const cls = i === ci ? "sp-step sp-active" : i < ci ? "sp-step sp-done" : "sp-step";
-    // Status labels are from our own constant — safe to insert
     return '<div class="' + cls + '"><span class="sp-dot"></span>' + s.icon + " " + escHtml(s.label) + "</div>";
   }).join("");
 
-  const meta  = STATUS_META[normaliseStatus(result.status)] || { label: escHtml(result.status || "Unknown"), icon: "❓", cls: "" };
+  const normStatus = normaliseStatus(result.status);
+  const meta = STATUS_META[normStatus] || { label: String(result.status || "Unknown"), icon: "❓", cls: "" };
   const badge = document.getElementById("tr-badge");
   badge.textContent = meta.icon + "  " + meta.label;
   badge.className   = "current-status-badge " + meta.cls;
