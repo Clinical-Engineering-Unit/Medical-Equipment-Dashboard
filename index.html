@@ -16,7 +16,7 @@
 <!-- FIX #2: X-Content-Type-Options and Referrer-Policy meta tags -->
 <meta http-equiv="X-Content-Type-Options" content="nosniff"/>
 <meta name="referrer" content="strict-origin-when-cross-origin"/>
-<title>Medical Equipment Management Dashboard</title>
+<title>Regional Clinical Engineering Equipment Manager</title>
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Space+Mono:wght@700&display=swap" rel="stylesheet"/>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -245,7 +245,7 @@ textarea{resize:vertical;min-height:100px}
     <div class="header-logo">🏥</div>
     <div style="flex:1">
       <div class="header-title">Regional Medical Equipment Dashboard</div>
-      <div class="header-sub">Clinical Engineering Unit — Western Region Health Directorate, Sekondi-Takoradi, Ghana</div>
+      <div class="header-sub">Clinical Engineering Unit, Western Region Health Directorate, Sekondi-Takoradi, Ghana</div>
     </div>
     <div id="gas-status">⏳ Connecting…</div>
   </div>
@@ -268,7 +268,7 @@ textarea{resize:vertical;min-height:100px}
     <div class="section-icon icon-fault">⚠️</div>
     <div>
       <div class="section-title">Medical Equipment Fault Reporting</div>
-      <div class="section-sub">This section is for reporting equipment faults for assessment by the Clinical Engineering Unit. Contact the Regional Equipmen Manager on 0506971001</div>
+      <div class="section-sub">Fill this to report equipment faults for assessment by the Clinical Engineering Unit</div>
     </div>
   </div>
   <div class="form-card">
@@ -286,7 +286,7 @@ textarea{resize:vertical;min-height:100px}
       <div class="field-group">
         <label class="field-label" for="f-ftype">Type of Facility <span class="req">*</span></label>
         <select id="f-ftype">
-          <option value="">-- Select --</option>
+         <option value="">-- Select --</option>
           <option>Teaching Hospital</option><option>Regional Hospital</option>
           <option>District Hospital</option><option>Polyclinic</option>
           <option>Health Centre</option><option>CHPS Compound</option><option>Quasi-Government</option>
@@ -301,7 +301,7 @@ textarea{resize:vertical;min-height:100px}
       </div>
       <div class="field-group">
         <label class="field-label" for="f-equip">Name of Equipment <span class="req">*</span></label>
-        <input type="text" id="f-equip" maxlength="150" placeholder="e.g. Patient Monitor, Weighing Scale" autocomplete="off"/>
+        <input type="text" id="f-equip" maxlength="150" placeholder="e.g. Portable Ventilator, ECG Machine" autocomplete="off"/>
         <span class="err-msg" id="err-f-equip"></span>
       </div>
       <div class="field-group">
@@ -319,17 +319,17 @@ textarea{resize:vertical;min-height:100px}
     </div>
     <div class="field-group" style="margin-bottom:1rem">
       <label class="field-label" for="f-desc">Description of Fault <span class="req">*</span></label>
-      <textarea id="f-desc" rows="4" maxlength="2000" oninput="updateCharCount('f-desc','f-desc-count',2000)" placeholder="Describe what is wrong with the equipment — when it started, error messages…"></textarea>
+      <textarea id="f-desc" rows="4" maxlength="2000" oninput="updateCharCount('f-desc','f-desc-count',2000)" placeholder="Describe the fault — when it started, symptoms, error messages…"></textarea>
       <div class="char-count"><span id="f-desc-count">0</span>/2000</div>
       <span class="err-msg" id="err-f-desc"></span>
     </div>
     <div class="field-group" style="margin-bottom:1rem">
-      <label class="field-label" for="f-remarks">Other Remarks (Optional)</label>
+      <label class="field-label" for="f-remarks">Other Remarks</label>
       <textarea id="f-remarks" rows="3" maxlength="500" placeholder="Any additional information"></textarea>
     </div>
     <div class="field-group">
-      <label class="field-label">Upload Picture of Equipment(OPTIONAL)</label>
-      <p class="field-hint">You can attach a clear photo showing the fault or equipment label (max size of photo 5 MB).</p>
+      <label class="field-label">Upload Picture of Equipment (OPTIONAL)</label>
+      <p class="field-hint">Attach a clear photo showing the fault or equipment label (max photo size 5 MB)</p>
       <div class="file-area">
         <label class="file-label" id="f-img-label" for="f-img">📷 Choose Image</label>
         <input type="file" id="f-img" accept="image/jpeg,image/png,image/gif,image/webp" style="display:none" onchange="previewImg(this,'img-preview')"/>
@@ -404,11 +404,11 @@ textarea{resize:vertical;min-height:100px}
   <div class="section-header">
     <div class="section-icon icon-install">🔩</div>
     <div>
-      <div class="section-title">Request for Installation of Equipment</div>
-      <div class="section-sub">For new equipment requiring professional installation</div>
+      <div class="section-title">Request for Equipment Installation</div>
+      <div class="section-sub">For newly received equipment requiring professional installation</div>
     </div>
   </div>
-  <div class="banner banner-blue">💡 <strong>Note:</strong> This form is for equipment requiring professional installation by the Clinical Engineering Unit. Contact the Regional Equipment Manager on 0506971001</div>
+  <div class="banner banner-blue">💡 <strong>Note:</strong> This form is for newly received equipment requiring installation by the Clinical Engineering Unit. Contact the Regional Equipment Manager on 0506971001</div>
   <div class="form-card">
     <div class="form-grid">
       <div class="field-group">
@@ -427,16 +427,16 @@ textarea{resize:vertical;min-height:100px}
           <option value="">-- Select --</option>
           <option>Teaching Hospital</option><option>Regional Hospital</option>
           <option>District Hospital</option><option>Polyclinic</option>
-          <option>Health Centre</option><option>CHPS Compound</option><option>Quasi-Government</option>
+          <option>Health Centre</option><option>CHPS Compound</option>
           <option>Private Hospital</option><option>Mission/Faith-Based Hospital</option>
-          <option>Maternity Home</option><option>Clinic</option><option>Cold Chain Facility</option><option>Public Health Lab</option>
+          <option>Maternity Home</option><option>Clinic</option>
         </select>
         <span class="err-msg" id="err-i-ftype"></span>
       </div>
       <div class="field-group">
         <label class="field-label" for="i-etype">Type of Equipment <span class="req">*</span></label>
         <input type="text" id="i-etype" maxlength="150"
-          placeholder="e.g. Autoclave, Hospital Furniture, Ultrasound" autocomplete="off"/>
+          placeholder="e.g. Autoclave, ECG Machine, Ultrasound, Ventilator" autocomplete="off"/>
         <span class="err-msg" id="err-i-etype"></span>
       </div>
       <div class="field-group">
@@ -480,7 +480,7 @@ textarea{resize:vertical;min-height:100px}
       <div class="section-sub">Request medical equipment your facility needs</div>
     </div>
   </div>
-  <div class="banner banner-green">⚖️ <strong>Equity Notice:</strong> Information provided will guide equitable distribution of medical equipment across the region. Please be accurate.</div>
+  <div class="banner banner-green">⚖️ <strong>Equity Notice:</strong> Information provided will guide equitable distribution of medical equipment across the region. Please be accurate. Contact the Regional Equipment Manager on 0506971001</div>
   <div class="form-card">
     <div class="form-grid">
       <div class="field-group">
@@ -511,7 +511,7 @@ textarea{resize:vertical;min-height:100px}
       </div>
       <div class="field-group">
         <label class="field-label" for="e-grade">Grade / Position</label>
-        <input type="text" id="e-grade" maxlength="100" placeholder="e.g. Facility In-charge" autocomplete="off"/>
+        <input type="text" id="e-grade" maxlength="100" placeholder="e.g. Facility Manager" autocomplete="off"/>
       </div>
       <div class="field-group">
         <label class="field-label" for="e-contact">Your Contact Number <span class="req">*</span></label>
@@ -523,8 +523,8 @@ textarea{resize:vertical;min-height:100px}
     </div>
     <div class="field-group" style="margin-bottom:1rem">
       <label class="field-label" for="e-reason">Reasons for the Request <span class="req">*</span></label>
-      <p class="field-hint">Explain why you need the equipment and how it will improve patient outcomes</p>
-      <textarea id="e-reason" rows="5" maxlength="2000" oninput="updateCharCount('e-reason','e-reason-count',2000)" placeholder="Patient volume, current gaps, clinical need…"></textarea>
+      <p class="field-hint">Explain clinical need and how it will improve patient outcomes</p>
+      <textarea id="e-reason" rows="5" maxlength="2000" oninput="updateCharCount('e-reason','e-reason-count',2000)" placeholder="Patient volume, current equipment gaps, clinical need…"></textarea>
       <div class="char-count"><span id="e-reason-count">0</span>/2000</div>
       <span class="err-msg" id="err-e-reason"></span>
     </div>
@@ -606,7 +606,7 @@ textarea{resize:vertical;min-height:100px}
 </div><!-- /app-body -->
 
 <footer class="app-footer">
-  © <span id="yr"></span> Clinical Engineering Unit — Western Region Health Directorate, Ghana Health Service &nbsp;|&nbsp; All submissions are confidential
+  © <span id="yr"></span> Clinical Engineering Unit — Western Regional Health Directorate, Ghana Health Service &nbsp;|&nbsp; All submissions are confidential
 </footer>
 
 <!-- SUCCESS MODAL -->
@@ -666,7 +666,7 @@ const STATUS_META = {
   dispatched:       { label:"Dispatched",                    icon:"🚚", cls:"badge-dispatched" },
   obsolete:         { label:"Declared Obsolete",             icon:"⛔", cls:"badge-obsolete" }
 };
-const SESSION_MINUTES = 30; // Admin auto-logout after this many minutes of inactivity
+const SESSION_MINUTES = 10; // Admin auto-logout after this many minutes of inactivity
 
 // FIX #7: Allowlist for JSONP callback names — prevents prototype pollution
 // via crafted callback parameter. Callbacks are generated internally so this
@@ -690,11 +690,12 @@ let installReports = [];
 let equipReports   = [];
 let currentTab     = "fault";
 let pendingReset   = null;
-let adminToken     = null;       // server-issued session token
-let sessionTimer   = null;       // inactivity countdown handle
-let sessionExpiry  = null;       // Date when session expires
-let driveImageUrl  = null;       // Google Drive URL after successful image upload
-let driveFileId    = null;       // Drive file ID for deletion if user removes image
+let adminToken     = null;
+let sessionTimer   = null;
+let sessionExpiry  = null;
+let driveImageUrl  = null;
+let driveFileId    = null;
+let uploadInProgress = false;  // FIX: explicit flag — never rely on CSS display state
 
 // FIX #9: Rate-limiter for status checks — prevents harvesting all ref codes
 // by rapidly spamming the check endpoint.
@@ -908,11 +909,8 @@ function loadDistrictsFromGAS() {
 function getDefaultDistricts() {
   return [
     "Sekondi-Takoradi Metro","Ahanta West","Shama","Wassa East",
-    "Wassa Amenfi East","Wassa Amenfi West","Wassa Amenfi Central",
-    "Amenfi East","Mpohor","Tarkwa-Nsuaem","Prestea-Huni Valley",
-    "Effia-Kwesimintsim","Ellembelle","Jomoro","Nzema East",
-    "Bia East","Bia West","Bodi","Aowin","Sefwi Wiawso",
-    "Sefwi Akontombra","Bibiani-Anhwiaso-Bekwai"
+    "Wassa Amenfi East","Wassa Amenfi West","Amenfi Central","Mpohor","Tarkwa-Nsuaem","Prestea-Huni Valley",
+    "Effia-Kwesimintsim","Ellembelle","Jomoro","Nzema East"
   ];
 }
 
@@ -1461,8 +1459,9 @@ function previewImg(input, previewId) {
   const file  = input.files && input.files[0];
 
   // Clear any previous upload state
-  driveImageUrl = null;
-  driveFileId   = null;
+  driveImageUrl    = null;
+  driveFileId      = null;
+  uploadInProgress = false;
   document.getElementById("f-img-drive-result").style.display = "none";
   setUploadProgress(false, 0, "");
 
@@ -1506,15 +1505,16 @@ function previewImg(input, previewId) {
 
 // Animate the progress bar
 function setUploadProgress(visible, pct, label) {
-  const wrap  = document.getElementById("upload-progress-wrap");
-  const bar   = document.getElementById("upload-progress-bar");
-  const lbl   = document.getElementById("upload-progress-label");
+  uploadInProgress = visible && pct < 100; // true only while actively uploading
+  const wrap    = document.getElementById("upload-progress-wrap");
+  const bar     = document.getElementById("upload-progress-bar");
+  const lbl     = document.getElementById("upload-progress-label");
   const fileLbl = document.getElementById("f-img-label");
   if (!wrap) return;
-  wrap.style.display       = visible ? "block" : "none";
-  bar.style.width          = pct + "%";
-  lbl.textContent          = label;
-  fileLbl.classList.toggle("uploading", visible);
+  wrap.style.display = visible ? "block" : "none";
+  bar.style.width    = pct + "%";
+  lbl.textContent    = label;
+  fileLbl.classList.toggle("uploading", visible && pct < 100);
 }
 
 // ── Chunked upload to Google Drive via GAS POST ─────────────────
@@ -1581,12 +1581,13 @@ function uploadToDrive(base64, fileName, mimeType) {
 
 // Clear the uploaded image (user clicks ✕ Remove)
 function clearImageUpload() {
-  driveImageUrl = null;
-  driveFileId   = null;
-  document.getElementById("f-img").value             = "";
+  driveImageUrl    = null;
+  driveFileId      = null;
+  uploadInProgress = false;
+  document.getElementById("f-img").value              = "";
   document.getElementById("img-preview").style.display = "none";
-  document.getElementById("img-preview").src          = "";
-  document.getElementById("f-img-name").textContent  = "";
+  document.getElementById("img-preview").src           = "";
+  document.getElementById("f-img-name").textContent   = "";
   document.getElementById("f-img-drive-result").style.display = "none";
   setUploadProgress(false, 0, "");
   const errEl = document.getElementById("err-f-img");
@@ -1638,13 +1639,8 @@ function submitFault() {
   ok = validPhone("f-contact")               && ok;
   if (!ok) return;
 
-  // Block submission ONLY if an upload is actively in progress
-  // (progress wrap visible AND no Drive URL yet = upload still running)
-  const progressWrap = document.getElementById("upload-progress-wrap");
-  const uploadActive = progressWrap &&
-                       progressWrap.style.display !== "none" &&
-                       !driveImageUrl; // if driveImageUrl is set, upload finished
-  if (uploadActive) {
+  // Block submission ONLY if an upload is genuinely in progress
+  if (uploadInProgress) {
     showErrorModal("Please wait — image upload is still in progress.");
     return;
   }
@@ -1786,7 +1782,7 @@ function showModal(ref, label) {
   const strong = document.createElement("strong");
   strong.textContent = label;
   labelEl.appendChild(strong);
-  const rest = document.createTextNode(" was confirmed by the server and saved to Google Sheets. Keep your reference code safe for tracking.");
+  const rest = document.createTextNode(" was confirmed by the server and saved. Keep your reference code safe for tracking.");
   labelEl.appendChild(rest);
   document.getElementById("ref-copy-tip").textContent = "Tap the code above to copy it";
   document.getElementById("success-modal").classList.add("open");
