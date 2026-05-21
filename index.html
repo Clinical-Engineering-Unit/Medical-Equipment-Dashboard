@@ -3,20 +3,16 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<!-- FIX #1: Added Content-Security-Policy to block unauthorized script injection.
-     'unsafe-inline' retained for inline <script> block (GAS JSONP requires dynamic script injection).
-     script-src includes fonts.googleapis.com for font loading, script.google.com for GAS. -->
 <meta http-equiv="Content-Security-Policy"
-  content="default-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com https://script.google.com;
-           script-src 'self' 'unsafe-inline' https://script.google.com;
+  content="default-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com;
+           script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net;
            style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
            font-src https://fonts.gstatic.com;
-           img-src 'self' data: blob: https://lh3.googleusercontent.com https://drive.google.com;
-           connect-src https://script.google.com https://script.googleusercontent.com;"/>
-<!-- FIX #2: X-Content-Type-Options and Referrer-Policy meta tags -->
+           img-src 'self' data: blob: https://*.supabase.co https://*.supabase.in;
+           connect-src https://*.supabase.co https://*.supabase.in;"/>
 <meta http-equiv="X-Content-Type-Options" content="nosniff"/>
 <meta name="referrer" content="strict-origin-when-cross-origin"/>
-<title>Regional Clinical Engineering Equipment Manager</title>
+<title>Regional Clinical Engineering Equipment Management</title>
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Space+Mono:wght@700&display=swap" rel="stylesheet"/>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -244,8 +240,8 @@ textarea{resize:vertical;min-height:100px}
   <div class="header-inner">
     <div class="header-logo">🏥</div>
     <div style="flex:1">
-      <div class="header-title">Regional Medical Equipment Dashboard</div>
-      <div class="header-sub">Clinical Engineering Unit, Western Region Health Directorate, Sekondi-Takoradi, Ghana</div>
+      <div class="header-title">Medical Equipment Management Dashboard</div>
+      <div class="header-sub">Clinical Engineering Unit, Western Regional Health Directorate,Sekondi-Takoradi</div>
     </div>
     <div id="gas-status">⏳ Connecting…</div>
   </div>
@@ -268,7 +264,7 @@ textarea{resize:vertical;min-height:100px}
     <div class="section-icon icon-fault">⚠️</div>
     <div>
       <div class="section-title">Medical Equipment Fault Reporting</div>
-      <div class="section-sub">Fill this to report equipment faults for assessment by the Clinical Engineering Unit</div>
+      <div class="section-sub">Fill this form to report equipment faults for assessment by the Clinical Engineering Unit.</div>
     </div>
   </div>
   <div class="form-card">
@@ -286,7 +282,7 @@ textarea{resize:vertical;min-height:100px}
       <div class="field-group">
         <label class="field-label" for="f-ftype">Type of Facility <span class="req">*</span></label>
         <select id="f-ftype">
-         <option value="">-- Select --</option>
+          <option value="">-- Select --</option>
           <option>Teaching Hospital</option><option>Regional Hospital</option>
           <option>District Hospital</option><option>Polyclinic</option>
           <option>Health Centre</option><option>CHPS Compound</option><option>Quasi-Government</option>
@@ -301,7 +297,7 @@ textarea{resize:vertical;min-height:100px}
       </div>
       <div class="field-group">
         <label class="field-label" for="f-equip">Name of Equipment <span class="req">*</span></label>
-        <input type="text" id="f-equip" maxlength="150" placeholder="e.g. Portable Ventilator, ECG Machine" autocomplete="off"/>
+        <input type="text" id="f-equip" maxlength="150" placeholder="e.g. Patient Monitor, ECG Machine" autocomplete="off"/>
         <span class="err-msg" id="err-f-equip"></span>
       </div>
       <div class="field-group">
@@ -328,8 +324,8 @@ textarea{resize:vertical;min-height:100px}
       <textarea id="f-remarks" rows="3" maxlength="500" placeholder="Any additional information"></textarea>
     </div>
     <div class="field-group">
-      <label class="field-label">Upload Picture of Equipment (OPTIONAL)</label>
-      <p class="field-hint">Attach a clear photo showing the fault or equipment label (max photo size 5 MB)</p>
+      <label class="field-label">Upload Picture of Equipment</label>
+      <p class="field-hint">Attach a clear photo showing the fault or equipment label (Photo max size: 5 MB). Uploaded securely.</p>
       <div class="file-area">
         <label class="file-label" id="f-img-label" for="f-img">📷 Choose Image</label>
         <input type="file" id="f-img" accept="image/jpeg,image/png,image/gif,image/webp" style="display:none" onchange="previewImg(this,'img-preview')"/>
@@ -408,7 +404,7 @@ textarea{resize:vertical;min-height:100px}
       <div class="section-sub">For newly received equipment requiring professional installation</div>
     </div>
   </div>
-  <div class="banner banner-blue">💡 <strong>Note:</strong> This form is for newly received equipment requiring installation by the Clinical Engineering Unit. Contact the Regional Equipment Manager on 0506971001</div>
+  <div class="banner banner-blue">💡 <strong>Note:</strong> This form is for newly received equipment requiring installation by the Clinical Engineering Unit. Contact the Regional Equipment Manager on 0506971001.</div>
   <div class="form-card">
     <div class="form-grid">
       <div class="field-group">
@@ -427,16 +423,16 @@ textarea{resize:vertical;min-height:100px}
           <option value="">-- Select --</option>
           <option>Teaching Hospital</option><option>Regional Hospital</option>
           <option>District Hospital</option><option>Polyclinic</option>
-          <option>Health Centre</option><option>CHPS Compound</option>
+          <option>Health Centre</option><option>CHPS Compound</option><option>Quasi-Government</option>
           <option>Private Hospital</option><option>Mission/Faith-Based Hospital</option>
-          <option>Maternity Home</option><option>Clinic</option>
+          <option>Maternity Home</option><option>Clinic</option><option>Cold Chain Facility</option><option>Public Health Lab</option>
         </select>
         <span class="err-msg" id="err-i-ftype"></span>
       </div>
       <div class="field-group">
         <label class="field-label" for="i-etype">Type of Equipment <span class="req">*</span></label>
         <input type="text" id="i-etype" maxlength="150"
-          placeholder="e.g. Autoclave, ECG Machine, Ultrasound, Ventilator" autocomplete="off"/>
+          placeholder="e.g. Weighing Scale, Pulse Oximeter, BP Apparatus" autocomplete="off"/>
         <span class="err-msg" id="err-i-etype"></span>
       </div>
       <div class="field-group">
@@ -480,7 +476,7 @@ textarea{resize:vertical;min-height:100px}
       <div class="section-sub">Request medical equipment your facility needs</div>
     </div>
   </div>
-  <div class="banner banner-green">⚖️ <strong>Equity Notice:</strong> Information provided will guide equitable distribution of medical equipment across the region. Please be accurate. Contact the Regional Equipment Manager on 0506971001</div>
+  <div class="banner banner-green">⚖️ <strong>Equity Notice:</strong> Information provided will guide equitable distribution of medical equipment across the region. Please be accurate. Contact the Regional Equipment Manager on 0506971001.</div>
   <div class="form-card">
     <div class="form-grid">
       <div class="field-group">
@@ -496,7 +492,7 @@ textarea{resize:vertical;min-height:100px}
       <div class="field-group">
         <label class="field-label" for="e-etype">Type of Equipment <span class="req">*</span></label>
         <input type="text" id="e-etype" maxlength="150"
-          placeholder="e.g. Blood Pressure Monitor, Oxygen Concentrator, Pulse Oximeter" autocomplete="off"/>
+          placeholder="e.g. Thermometer, Oxygen Concentrator" autocomplete="off"/>
         <span class="err-msg" id="err-e-etype"></span>
       </div>
       <div class="field-group">
@@ -524,7 +520,7 @@ textarea{resize:vertical;min-height:100px}
     <div class="field-group" style="margin-bottom:1rem">
       <label class="field-label" for="e-reason">Reasons for the Request <span class="req">*</span></label>
       <p class="field-hint">Explain clinical need and how it will improve patient outcomes</p>
-      <textarea id="e-reason" rows="5" maxlength="2000" oninput="updateCharCount('e-reason','e-reason-count',2000)" placeholder="Patient volume, current equipment gaps, clinical need…"></textarea>
+      <textarea id="e-reason" rows="5" maxlength="2000" oninput="updateCharCount('e-reason','e-reason-count',2000)" placeholder="Patient volume, current gaps, clinical need…"></textarea>
       <div class="char-count"><span id="e-reason-count">0</span>/2000</div>
       <span class="err-msg" id="err-e-reason"></span>
     </div>
@@ -542,8 +538,11 @@ textarea{resize:vertical;min-height:100px}
         <div class="login-icon">🔐</div>
         <div class="login-title">Admin Access</div>
         <div class="login-sub">Clinical Engineering Unit — Restricted Area</div>
-        <!-- FIX #6: Added autocomplete="current-password" for password managers; removed value leak on failed attempt -->
-        <input type="password" id="admin-pw" placeholder="Enter admin password"
+        <input type="email" id="admin-email" placeholder="Admin email address"
+          autocomplete="username"
+          style="margin-bottom:.6rem;text-align:center"
+          onkeydown="if(event.key==='Enter')document.getElementById('admin-pw').focus()"/>
+        <input type="password" id="admin-pw" placeholder="Password"
           autocomplete="current-password"
           onkeydown="if(event.key==='Enter')doLogin()"/>
         <span class="err-msg" id="login-err" style="display:block;margin-top:6px"></span>
@@ -563,7 +562,7 @@ textarea{resize:vertical;min-height:100px}
       </div>
       <div style="display:flex;gap:.5rem;flex-wrap:wrap">
         <button class="btn-outline btn-sm" onclick="loadAllAdminData()" title="Refresh from Google Sheets">🔄 Refresh</button>
-        <button class="btn-outline btn-sm" id="open-sheet-btn" onclick="openGoogleSheet()" title="Open Google Sheet">📊 Open Sheet</button>
+        <button class="btn-outline btn-sm" id="open-sheet-btn" onclick="openGoogleSheet()" title="Open Supabase Table Editor">📊 Open Database</button>
         <button class="btn-outline btn-sm" onclick="doLogout()">Logout</button>
       </div>
     </div>
@@ -588,7 +587,7 @@ textarea{resize:vertical;min-height:100px}
     <div id="atab-districts" class="atab-panel" style="display:none">
       <div class="district-manager">
         <div class="dm-title">📍 Manage District Dropdown List</div>
-        <p style="font-size:.78rem;color:var(--text3);margin-bottom:.75rem">Changes are saved to Google Sheets and apply immediately to all form dropdowns.</p>
+        <p style="font-size:.78rem;color:var(--text3);margin-bottom:.75rem">Changes are saved and apply immediately to all form dropdowns.</p>
         <ul class="dm-list" id="district-list-ui"></ul>
         <div class="dm-add-row">
           <input type="text" id="new-district-input" maxlength="100" placeholder="Type new district name…" onkeydown="if(event.key==='Enter')addDistrict()"/>
@@ -640,12 +639,12 @@ textarea{resize:vertical;min-height:100px}
 
 <script>
 // ═══════════════════════════════════════════════════════════════
-// CONFIG — ✏️ Replace YOUR_SCRIPT_ID with your GAS Web App URL
-// Also replace PASTE_YOUR_SPREADSHEET_ID_HERE with your Sheet ID
+// CONFIG — ✏️ Replace with your Supabase project values
+// Found in: Supabase Dashboard → Settings → API
 // ═══════════════════════════════════════════════════════════════
-const GAS_URL       = "https://script.google.com/macros/s/AKfycbzcRJA48HyXO09uFW8TgSBnn_U5DXn-e4ss3pivvNk5OP-uLYbsc9emm0PTM-ID4BOW7g/exec";
-const SHEET_ID      = "1ij2Qt6rfOxWPoZC-wOP2I4yIPs3lHjeaGjnyUFOTAs8";
-const DRIVE_FOLDER  = "1CbThQWHgBLlWqM26-WDGqTGYvzk7yMtX"; // Google Drive folder for images
+const SUPABASE_URL    = "https://omasimlmfyctpobutfbc.supabase.co";
+const SUPABASE_ANON   = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9tYXNpbWxtZnljdHBvYnV0ZmJjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkzNzQ5MDMsImV4cCI6MjA5NDk1MDkwM30.9RMuGkTiEeEmZTdYQ4-COIJQFGGvWGwL1oSQpiGj14A";
+const IMAGE_BUCKET    = "equipment-images";
 
 // ═══════════════════════════════════════════════════════════════
 // CONSTANTS
@@ -666,45 +665,167 @@ const STATUS_META = {
   dispatched:       { label:"Dispatched",                    icon:"🚚", cls:"badge-dispatched" },
   obsolete:         { label:"Declared Obsolete",             icon:"⛔", cls:"badge-obsolete" }
 };
-const SESSION_MINUTES = 10; // Admin auto-logout after this many minutes of inactivity
+const SESSION_MINUTES = 30;
 
-// FIX #7: Allowlist for JSONP callback names — prevents prototype pollution
-// via crafted callback parameter. Callbacks are generated internally so this
-// regex is checked before any window property is set.
-const SAFE_CB_RE = /^gasCB_\d+_\d+$/;
-
-// FIX #8: Allowlist for valid GAS actions sent by the client
-// to prevent parameter-tampering abuse on the front end.
-const ALLOWED_ACTIONS = new Set([
-  "ping","adminLogin","submitFault","submitInstall","submitEquip",
-  "getAll","updateStatus","initSheets","getDistricts","saveDistricts","getStatus",
-  "uploadImage"
-]);
+// Rate limiter for public status checks
+const _statusCheckTs   = [];
+const STATUS_CHECK_LIMIT  = 10;
+const STATUS_CHECK_WINDOW = 60000;
 
 // ═══════════════════════════════════════════════════════════════
 // STATE
 // ═══════════════════════════════════════════════════════════════
-let districts      = [];
-let faultReports   = [];
-let installReports = [];
-let equipReports   = [];
-let currentTab     = "fault";
-let pendingReset   = null;
-let adminToken     = null;
-let sessionTimer   = null;
-let sessionExpiry  = null;
-let driveImageUrl  = null;
-let driveFileId    = null;
-let uploadInProgress = false;  // FIX: explicit flag — never rely on CSS display state
-
-// FIX #9: Rate-limiter for status checks — prevents harvesting all ref codes
-// by rapidly spamming the check endpoint.
-const _statusCheckTs = [];
-const STATUS_CHECK_LIMIT = 10;   // max checks
-const STATUS_CHECK_WINDOW = 60000; // per 60 s
+let districts        = [];
+let faultReports     = [];
+let installReports   = [];
+let equipReports     = [];
+let currentTab       = "fault";
+let pendingReset     = null;
+let supabaseSession  = null;  // Supabase Auth session object
+let sessionTimer     = null;
+let sessionExpiry    = null;
+let imagePublicUrl   = null;  // Supabase Storage public URL after upload
+let uploadInProgress = false;
 
 // ═══════════════════════════════════════════════════════════════
-// INIT
+// SUPABASE CLIENT — thin fetch wrapper (no SDK needed)
+// All Supabase REST API calls go through sbFetch().
+// ═══════════════════════════════════════════════════════════════
+function sbHeaders(authRequired) {
+  const h = {
+    "apikey":       SUPABASE_ANON,
+    "Content-Type": "application/json",
+    "Accept":       "application/json"
+  };
+  if (authRequired && supabaseSession) {
+    h["Authorization"] = "Bearer " + supabaseSession.access_token;
+  } else {
+    h["Authorization"] = "Bearer " + SUPABASE_ANON;
+  }
+  return h;
+}
+
+async function sbFetch(path, options, timeoutMs) {
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), timeoutMs || 15000);
+  try {
+    const res = await fetch(SUPABASE_URL + path, {
+      ...options,
+      signal: controller.signal,
+      headers: { ...sbHeaders(!!supabaseSession), ...(options.headers || {}) }
+    });
+    clearTimeout(timer);
+    const text = await res.text();
+    if (!text) return { data: null, error: null, status: res.status };
+    let json;
+    try { json = JSON.parse(text); } catch(e) { return { data: null, error: "Unparseable response", status: res.status }; }
+    if (!res.ok) return { data: null, error: json.message || json.error || "Request failed (" + res.status + ")", status: res.status };
+    return { data: json, error: null, status: res.status };
+  } catch(err) {
+    clearTimeout(timer);
+    return { data: null, error: err.name === "AbortError" ? "Request timed out." : err.message, status: 0 };
+  }
+}
+
+// Convenience wrappers
+async function sbSelect(table, params, authRequired) {
+  let qs = "select=*";
+  if (params) qs += "&" + params;
+  return sbFetch("/rest/v1/" + table + "?" + qs, { method: "GET", headers: { "Prefer": "return=representation" } });
+}
+async function sbInsert(table, body) {
+  return sbFetch("/rest/v1/" + table, {
+    method: "POST",
+    body: JSON.stringify(body),
+    headers: { "Prefer": "return=representation" }
+  });
+}
+async function sbUpdate(table, match, body) {
+  return sbFetch("/rest/v1/" + table + "?" + match, {
+    method: "PATCH",
+    body: JSON.stringify(body),
+    headers: { "Prefer": "return=representation" }
+  });
+}
+async function sbDelete(table, match) {
+  return sbFetch("/rest/v1/" + table + "?" + match, { method: "DELETE" });
+}
+
+// ═══════════════════════════════════════════════════════════════
+// SUPABASE AUTH — email/password login
+// ═══════════════════════════════════════════════════════════════
+async function sbSignIn(email, password) {
+  return sbFetch("/auth/v1/token?grant_type=password", {
+    method: "POST",
+    headers: { "Content-Type": "application/json", "apikey": SUPABASE_ANON },
+    body: JSON.stringify({ email, password })
+  }, 15000);
+}
+async function sbSignOut() {
+  if (!supabaseSession) return;
+  await sbFetch("/auth/v1/logout", {
+    method: "POST",
+    headers: { "Authorization": "Bearer " + supabaseSession.access_token, "apikey": SUPABASE_ANON }
+  });
+}
+async function sbRefreshSession() {
+  if (!supabaseSession?.refresh_token) return;
+  const res = await sbFetch("/auth/v1/token?grant_type=refresh_token", {
+    method: "POST",
+    headers: { "Content-Type": "application/json", "apikey": SUPABASE_ANON },
+    body: JSON.stringify({ refresh_token: supabaseSession.refresh_token })
+  });
+  if (res.data?.access_token) {
+    supabaseSession = res.data;
+    localStorage.setItem("ceu_session", JSON.stringify(supabaseSession));
+  }
+}
+
+// ═══════════════════════════════════════════════════════════════
+// PING & CONNECTION INDICATOR
+// ═══════════════════════════════════════════════════════════════
+async function pingGAS() {
+  const el = document.getElementById("gas-status");
+  if (!el) return;
+  if (SUPABASE_URL.includes("YOUR_PROJECT_ID")) {
+    el.textContent = "⚠️ Supabase URL not set"; el.style.color = "#ffd"; return;
+  }
+  el.textContent = "⏳ Connecting…";
+  const res = await sbFetch("/rest/v1/districts?select=count", { method: "GET" }, 8000);
+  if (!res.error) {
+    el.textContent = "🟢 Connected"; el.style.color = "#afffda";
+  } else {
+    el.textContent = "🔴 Offline"; el.style.color = "#ffaaaa";
+    console.warn("Supabase ping failed:", res.error);
+  }
+}
+
+// ═══════════════════════════════════════════════════════════════
+// DISTRICTS — loaded from Supabase
+// ═══════════════════════════════════════════════════════════════
+async function loadDistrictsFromGAS() {
+  const res = await sbSelect("districts", "order=name.asc&limit=100");
+  if (!res.error && Array.isArray(res.data) && res.data.length > 0) {
+    districts = res.data.map(d => String(d.name).slice(0, 100));
+  } else {
+    districts = getDefaultDistricts();
+  }
+  populateAllDistricts();
+}
+
+function getDefaultDistricts() {
+  return [
+    "Sekondi-Takoradi Metro","Ahanta West","Shama","Wassa East",
+    "Wassa Amenfi East","Wassa Amenfi West","Wassa Amenfi Central",
+    "Amenfi East","Mpohor","Tarkwa-Nsuaem","Prestea-Huni Valley",
+    "Effia-Kwesimintsim","Ellembelle","Jomoro","Nzema East",
+    "Bia East","Bia West","Bodi","Aowin","Sefwi Wiawso",
+    "Sefwi Akontombra","Bibiani-Anhwiaso-Bekwai"
+  ];
+}
+
+// ═══════════════════════════════════════════════════════════════
+// INIT — runs on page load
 // ═══════════════════════════════════════════════════════════════
 document.getElementById("yr").textContent = new Date().getFullYear();
 document.getElementById("i-date").min = new Date().toISOString().split("T")[0];
@@ -727,192 +848,31 @@ window.addEventListener("online",  updateOnlineStatus);
 window.addEventListener("offline", updateOnlineStatus);
 updateOnlineStatus();
 
-// Load districts from GAS on startup
-loadDistrictsFromGAS();
-// Ping GAS connection
-setTimeout(pingGAS, 800);
-
-// ═══════════════════════════════════════════════════════════════
-// GAS REQUEST ENGINE
-// All standard GET calls use fetch() — avoids GAS echo-redirect.
-// Image upload chunks use gasPost() — POST avoids URL length limit.
-// JSONP is kept as a last-resort fallback for blocked fetch().
-// ═══════════════════════════════════════════════════════════════
-function gasRequest(params, onSuccess, onError, timeoutMs) {
-  if (!GAS_URL.startsWith("https://script.google.com/")) {
-    if (onError) onError("Invalid GAS URL configuration.");
-    return;
-  }
-  if (params.action && !ALLOWED_ACTIONS.has(params.action)) {
-    if (onError) onError("Unknown action requested.");
-    return;
-  }
-  timeoutMs = timeoutMs || 20000;
-
-  // Build query string — exclude null/undefined/callback keys
-  const qs = Object.keys(params)
-    .filter(k => k !== "callback" && params[k] !== null && params[k] !== undefined)
-    .map(k => encodeURIComponent(k) + "=" + encodeURIComponent(params[k]))
-    .join("&");
-  const url = GAS_URL + "?" + qs;
-
-  const controller = new AbortController();
-  const timer = setTimeout(function() { controller.abort(); }, timeoutMs);
-
-  fetch(url, { method: "GET", redirect: "follow", signal: controller.signal })
-    .then(function(res) { return res.text(); })
-    .then(function(text) {
-      clearTimeout(timer);
-      var data;
-      try {
-        var cleaned = text.trim();
-        var m = cleaned.match(/^[A-Za-z0-9_]+\((\{[\s\S]*\})\);?$/);
-        data = JSON.parse(m ? m[1] : cleaned);
-      } catch(e) {
-        throw new Error("Unparseable server response. Please try again.");
-      }
-      if (data && data.ok) { onSuccess(data); }
-      else { if (onError) onError(data && data.error ? data.error : "Server returned an error."); }
-    })
-    .catch(function(fetchErr) {
-      clearTimeout(timer);
-      // FIX: Don't fall into JSONP for abort — that would double-submit on timeout
-      if (fetchErr.name === "AbortError") {
-        if (onError) onError("Request timed out. If this was a form submission, please check your Google Sheet before retrying to avoid duplicates.");
-        return;
-      }
-      // Network error — try JSONP fallback (don't mutate original params)
-      console.warn("fetch failed, trying JSONP fallback:", fetchErr.message);
-      gasRequestJSONP(Object.assign({}, params), onSuccess, onError, Math.min(timeoutMs, 25000));
-    });
-}
-
-// POST engine — used for image chunk upload to avoid URL length limits
-// GAS doPost() receives JSON body and routes to uploadImageChunk
-function gasPost(payload, onSuccess, onError, timeoutMs) {
-  if (!GAS_URL.startsWith("https://script.google.com/")) {
-    if (onError) onError("Invalid GAS URL configuration."); return;
-  }
-  timeoutMs = timeoutMs || 30000;
-  const controller = new AbortController();
-  const timer = setTimeout(function() { controller.abort(); }, timeoutMs);
-
-  fetch(GAS_URL, {
-    method:   "POST",
-    redirect: "follow",
-    signal:   controller.signal,
-    headers:  { "Content-Type": "text/plain" }, // GAS requires text/plain for doPost JSON
-    body:     JSON.stringify(payload)
-  })
-    .then(function(res) { return res.text(); })
-    .then(function(text) {
-      clearTimeout(timer);
-      var data;
-      try { data = JSON.parse(text.trim()); }
-      catch(e) { throw new Error("Unparseable POST response."); }
-      if (data && data.ok) { onSuccess(data); }
-      else { if (onError) onError(data && data.error ? data.error : "Upload error."); }
-    })
-    .catch(function(err) {
-      clearTimeout(timer);
-      if (onError) onError(err.name === "AbortError" ? "Upload timed out. Please try a smaller image." : err.message);
-    });
-}
-
-// JSONP fallback — FIX #4: uses a copy of params, never mutates original
-function gasRequestJSONP(paramsCopy, onSuccess, onError, timeoutMs) {
-  const cbName = "gasCB_" + Date.now() + "_" + Math.floor(Math.random()*99999);
-  if (!SAFE_CB_RE.test(cbName)) {
-    if (onError) onError("Internal error: invalid callback name."); return;
-  }
-  paramsCopy.callback = cbName;
-  const url = GAS_URL + "?" + Object.keys(paramsCopy)
-    .filter(k => paramsCopy[k] !== null && paramsCopy[k] !== undefined)
-    .map(k => encodeURIComponent(k) + "=" + encodeURIComponent(paramsCopy[k]))
-    .join("&");
-
-  const timer = setTimeout(function() {
-    cleanup();
-    if (onError) onError("Request timed out. Please check your connection.");
-  }, timeoutMs || 25000);
-
-  function cleanup() {
-    clearTimeout(timer);
-    if (Object.prototype.hasOwnProperty.call(window, cbName)) delete window[cbName];
-    const el = document.getElementById("gs-req-" + cbName);
-    if (el) el.remove();
-  }
-
-  let _called = false;
-  window[cbName] = function(result) {
-    if (_called) return; _called = true; cleanup();
-    if (result && result.ok) { onSuccess(result); }
-    else { if (onError) onError(result && result.error ? result.error : "Server returned an error."); }
-  };
-  const script = document.createElement("script");
-  script.id = "gs-req-" + cbName;
-  script.src = url;
-  script.onerror = function() { cleanup(); if (onError) onError("Could not reach the server."); };
-  document.body.appendChild(script);
-}
-
-// ═══════════════════════════════════════════════════════════════
-// PING & CONNECTION INDICATOR
-// ═══════════════════════════════════════════════════════════════
-function pingGAS() {
-  const el = document.getElementById("gas-status");
-  if (!el) return;
-  if (GAS_URL.includes("YOUR_SCRIPT_ID")) {
-    el.textContent = "⚠️ GAS URL not set"; el.style.color = "#ffd"; return;
-  }
-  el.textContent = "⏳ Connecting…";
-  gasRequest(
-    { action: "ping" },
-    function(result) {
-      if (result.sheetsReady === false) {
-        el.textContent = "⚠️ Sheets not initialised"; el.style.color = "#ffd";
-        gasRequest({ action: "initSheets" },
-          function() { el.textContent = "🟢 Connected"; el.style.color = "#afffda"; loadDistrictsFromGAS(); },
-          function() { el.textContent = "⚠️ Init failed"; el.style.color = "#ffd"; }
-        );
+// Restore admin session from localStorage (survives page refresh)
+(function restoreSession() {
+  try {
+    const saved = localStorage.getItem("ceu_session");
+    if (saved) {
+      const s = JSON.parse(saved);
+      // Check token hasn't expired (exp is Unix timestamp in seconds)
+      if (s.access_token && s.expires_at && (s.expires_at * 1000) > Date.now()) {
+        supabaseSession = s;
+        // Show dashboard immediately, refresh token in background
+        document.getElementById("admin-login").style.display = "none";
+        document.getElementById("admin-dashboard").classList.add("open");
+        startSessionTimer();
+        loadAllAdminData();
+        sbRefreshSession(); // silently refresh in background
       } else {
-        el.textContent = "🟢 Connected"; el.style.color = "#afffda";
+        localStorage.removeItem("ceu_session");
       }
-    },
-    function() { el.textContent = "🔴 Offline"; el.style.color = "#ffaaaa"; },
-    10000
-  );
-}
-
-// ═══════════════════════════════════════════════════════════════
-// DISTRICTS — loaded from GAS (persisted in Google Sheet)
-// ═══════════════════════════════════════════════════════════════
-function loadDistrictsFromGAS() {
-  gasRequest(
-    { action: "getDistricts" },
-    function(result) {
-      if (Array.isArray(result.districts) && result.districts.length > 0) {
-        // FIX #13: Sanitise district names returned from server before rendering
-        districts = result.districts.map(d => String(d).slice(0, 100));
-      } else {
-        districts = getDefaultDistricts();
-      }
-      populateAllDistricts();
-    },
-    function() {
-      districts = getDefaultDistricts();
-      populateAllDistricts();
     }
-  );
-}
+  } catch(e) { localStorage.removeItem("ceu_session"); }
+})();
 
-function getDefaultDistricts() {
-  return [
-    "Sekondi-Takoradi Metro","Ahanta West","Shama","Wassa East",
-    "Wassa Amenfi East","Wassa Amenfi West","Amenfi Central","Mpohor","Tarkwa-Nsuaem","Prestea-Huni Valley",
-    "Effia-Kwesimintsim","Ellembelle","Jomoro","Nzema East"
-  ];
-}
+// Load districts and ping on startup
+loadDistrictsFromGAS();
+setTimeout(pingGAS, 800);
 
 function populateAllDistricts() {
   ["f-district","i-district","e-district"].forEach(id => {
@@ -974,22 +934,23 @@ function removeDistrict(name) {
   document.getElementById("dm-save-status").style.color = "var(--amber)";
 }
 
-function persistDistricts() {
+async function persistDistricts() {
   const status = document.getElementById("dm-save-status");
   status.textContent = "⏳ Saving…"; status.style.color = "var(--text3)";
-  gasRequest(
-    { action: "saveDistricts", token: adminToken, list: JSON.stringify(districts) },
-    function() {
-      status.textContent = "✅ Saved to Google Sheet";
-      status.style.color = "var(--accent)";
-      setTimeout(() => { status.textContent = ""; }, 4000);
-    },
-    function(err) {
-      // FIX #16: Escape error message before inserting into DOM
-      status.textContent = "❌ Save failed: " + escHtml(err);
-      status.style.color = "var(--red)";
-    }
-  );
+  if (!supabaseSession) { status.textContent = "❌ Not logged in"; return; }
+
+  // Replace all districts: delete all then re-insert
+  const del = await sbDelete("districts", "id=gt.0");
+  if (del.error) { status.textContent = "❌ " + del.error; status.style.color = "var(--red)"; return; }
+
+  const rows = districts.map(d => ({ name: d }));
+  const ins  = await sbInsert("districts", rows);
+  if (ins.error) {
+    status.textContent = "❌ " + ins.error; status.style.color = "var(--red)";
+  } else {
+    status.textContent = "✅ Saved to Supabase"; status.style.color = "var(--accent)";
+    setTimeout(() => { status.textContent = ""; }, 4000);
+  }
 }
 
 // ═══════════════════════════════════════════════════════════════
@@ -1033,48 +994,47 @@ function doLogin() {
     return;
   }
 
+  const email = (document.getElementById("admin-email") || {}).value || "";
   const pw  = document.getElementById("admin-pw").value;
   const btn = document.getElementById("btn-login");
   const err = document.getElementById("login-err");
-  if (!pw) { err.textContent = "Please enter the password."; return; }
+  if (!email.trim() || !pw) { err.textContent = "Please enter your email and password."; return; }
 
   btn.disabled  = true;
   btn._origHTML = btn.innerHTML;
   btn.innerHTML = '<span class="spinner">⏳</span> Verifying…';
   err.textContent = "";
 
-  gasRequest(
-    { action: "adminLogin", pw: pw },
-    function(result) {
-      _loginAttempts = 0;
-      btn.disabled  = false;
-      btn.innerHTML = btn._origHTML;
-      adminToken    = result.token;
+  sbSignIn(email.trim(), pw).then(function(res) {
+    if (!res.error && res.data && res.data.access_token) {
+      _loginAttempts  = 0;
+      supabaseSession = res.data;
+      localStorage.setItem("ceu_session", JSON.stringify(supabaseSession));
       document.getElementById("admin-pw").value = "";
       document.getElementById("admin-login").style.display = "none";
       document.getElementById("admin-dashboard").classList.add("open");
+      btn.disabled  = false;
+      btn.innerHTML = btn._origHTML;
       startSessionTimer();
       loadAllAdminData();
-    },
-    function(errMsg) {
+    } else {
       _loginAttempts++;
-      if (_loginAttempts >= 5) {
-        _loginLockedUntil = Date.now() + 2 * 60 * 1000;
-      }
+      if (_loginAttempts >= 5) _loginLockedUntil = Date.now() + 2 * 60 * 1000;
       btn.disabled  = false;
       btn.innerHTML = btn._origHTML;
       document.getElementById("admin-pw").value = "";
-      err.textContent = escHtml(errMsg) || "Incorrect password.";
-    },
-    20000
-  );
+      err.textContent = String(res.error || "Incorrect email or password.");
+    }
+  });
 }
 
 function doLogout() {
-  adminToken = null;
-  clearInterval(sessionTimer);
-  _loginAttempts   = 0;       // FIX #6: reset lockout counter on logout
+  sbSignOut();
+  supabaseSession   = null;
+  _loginAttempts    = 0;
   _loginLockedUntil = 0;
+  localStorage.removeItem("ceu_session");
+  clearInterval(sessionTimer);
   faultReports   = [];
   installReports = [];
   equipReports   = [];
@@ -1119,82 +1079,86 @@ function startSessionTimer() {
 }
 
 // ═══════════════════════════════════════════════════════════════
-// ADMIN — LOAD ALL DATA FROM GOOGLE SHEETS
+// ADMIN — LOAD ALL DATA FROM SUPABASE
 // ═══════════════════════════════════════════════════════════════
-function loadAllAdminData() {
+async function loadAllAdminData() {
+  if (!supabaseSession) return;
   loadingState("fault-reports-list", "📡 Loading fault reports…");
   loadingState("install-list",       "📡 Loading installation requests…");
   loadingState("equip-list",         "📡 Loading equipment requests…");
   document.getElementById("stats-grid").innerHTML =
     '<div style="grid-column:1/-1;font-size:.8rem;color:var(--text3)">⏳ Loading…</div>';
 
-  let done = 0;
-  const onDone = function() {
-    done++;
-    if (done === 3) {
-      const stamp = document.getElementById("last-refresh");
-      if (stamp) stamp.textContent = "Last updated: " + new Date().toLocaleTimeString();
-    }
-  };
+  const [fRes, iRes, eRes] = await Promise.all([
+    sbFetch("/rest/v1/fault_reports?select=*&order=created_at.desc&limit=500",
+      { method: "GET", headers: { "Authorization": "Bearer " + supabaseSession.access_token } }),
+    sbFetch("/rest/v1/installation_requests?select=*&order=created_at.desc&limit=500",
+      { method: "GET", headers: { "Authorization": "Bearer " + supabaseSession.access_token } }),
+    sbFetch("/rest/v1/equipment_requests?select=*&order=created_at.desc&limit=500",
+      { method: "GET", headers: { "Authorization": "Bearer " + supabaseSession.access_token } })
+  ]);
 
-  fetchSheet("fault",   function(d) { faultReports   = d; renderFaultList();   renderStats(); onDone(); });
-  fetchSheet("install", function(d) { installReports = d; renderInstallList(); onDone(); });
-  fetchSheet("equip",   function(d) { equipReports   = d; renderEquipList();   onDone(); });
+  faultReports   = fRes.error ? [] : (Array.isArray(fRes.data)  ? fRes.data.map(r  => mapSheetRow("fault",   r)) : []);
+  installReports = iRes.error ? [] : (Array.isArray(iRes.data)  ? iRes.data.map(r  => mapSheetRow("install", r)) : []);
+  equipReports   = eRes.error ? [] : (Array.isArray(eRes.data)  ? eRes.data.map(r  => mapSheetRow("equip",   r)) : []);
+
+  if (fRes.error)  loadingState("fault-reports-list", "⚠️ " + fRes.error);
+  else             renderFaultList();
+
+  if (iRes.error)  loadingState("install-list", "⚠️ " + iRes.error);
+  else             renderInstallList();
+
+  if (eRes.error)  loadingState("equip-list", "⚠️ " + eRes.error);
+  else             renderEquipList();
+
+  renderStats();
+  const stamp = document.getElementById("last-refresh");
+  if (stamp) stamp.textContent = "Last updated: " + new Date().toLocaleTimeString();
 }
 
-function fetchSheet(type, onSuccess) {
-  const listId = type === "fault" ? "fault-reports-list" : type === "install" ? "install-list" : "equip-list";
-
-  if (!adminToken) {
-    document.getElementById(listId).innerHTML =
-      '<div class="empty-state" style="color:var(--red)">⚠️ Session expired. Please log in again.</div>';
-    onSuccess([]);
-    return;
-  }
-
-  gasRequest(
-    { action: "getAll", type: type, token: adminToken },
-    function(result) {
-      if (Array.isArray(result.records)) {
-        onSuccess(result.records.map(function(row) { return mapSheetRow(type, row); }));
-      } else {
-        loadingState(listId, "⚠️ No records returned.");
-        onSuccess([]);
-      }
-    },
-    function(err) {
-      document.getElementById(listId).innerHTML =
-        '<div class="empty-state" style="color:var(--red)">⚠️ ' + escHtml(err) + '</div>';
-      onSuccess([]);
-    }
-  );
-}
-
+// Supabase returns snake_case columns directly — map to our UI fields
 function mapSheetRow(type, row) {
   if (type === "fault") return {
-    ref: row["Ref Code"]||"", timestamp: row["Timestamp"]||"",
-    facility: row["Facility Name"]||"", district: row["District"]||"",
-    ftype: row["Facility Type"]||"", unit: row["Unit / Department"]||"",
-    equipment: row["Equipment Name"]||"", desc: row["Fault Description"]||"",
-    reporter: row["Reporter Name"]||"", contact: row["Contact Number"]||"",
-    remarks: row["Remarks"]||"", status: row["Status"]||"Received",
-    imageUrl: row["Image URL"]||""
+    ref:       row.ref_code       || "",
+    timestamp: row.created_at     || "",
+    facility:  row.facility_name  || "",
+    district:  row.district       || "",
+    ftype:     row.facility_type  || "",
+    unit:      row.unit_department || "",
+    equipment: row.equipment_name  || "",
+    desc:      row.fault_description || "",
+    reporter:  row.reporter_name   || "",
+    contact:   row.contact_number  || "",
+    remarks:   row.remarks         || "",
+    status:    row.status          || "Received",
+    imageUrl:  row.image_url       || ""
   };
   if (type === "install") return {
-    ref: row["Ref Code"]||"", timestamp: row["Timestamp"]||"",
-    facility: row["Facility Name"]||"", district: row["District"]||"",
-    ftype: row["Facility Type"]||"", etype: row["Equipment Type"]||"",
-    qty: row["Quantity"]||"", date: row["Preferred Date"]||"",
-    name: row["Requester Name"]||"", grade: row["Grade / Position"]||"",
-    contact: row["Contact Number"]||"", status: row["Status"]||""
+    ref:       row.ref_code       || "",
+    timestamp: row.created_at     || "",
+    facility:  row.facility_name  || "",
+    district:  row.district       || "",
+    ftype:     row.facility_type  || "",
+    etype:     row.equipment_type || "",
+    qty:       String(row.quantity || ""),
+    date:      row.preferred_date || "",
+    name:      row.requester_name || "",
+    grade:     row.grade_position || "",
+    contact:   row.contact_number || "",
+    status:    row.status         || ""
   };
   if (type === "equip") return {
-    ref: row["Ref Code"]||"", timestamp: row["Timestamp"]||"",
-    facility: row["Facility Name"]||"", district: row["District"]||"",
-    etype: row["Equipment Type"]||"", qty: row["Quantity Needed"]||"",
-    reason: row["Reason for Request"]||"", name: row["Requester Name"]||"",
-    contact: row["Contact Number"]||"", grade: row["Grade / Position"]||"",
-    status: row["Status"]||""
+    ref:       row.ref_code       || "",
+    timestamp: row.created_at     || "",
+    facility:  row.facility_name  || "",
+    district:  row.district       || "",
+    etype:     row.equipment_type || "",
+    qty:       String(row.quantity || ""),
+    reason:    row.reason         || "",
+    name:      row.requester_name || "",
+    contact:   row.contact_number || "",
+    grade:     row.grade_position || "",
+    status:    row.status         || ""
   };
   return row;
 }
@@ -1233,17 +1197,16 @@ function renderFaultList() {
   c.innerHTML = faultReports.map(r => {
     // Build safe Drive image block if URL exists
     let imgBlock = "";
-    if (r.imageUrl && r.imageUrl.startsWith("https://drive.google.com/")) {
-      // Convert Drive share URL to direct thumbnail URL for preview
-      // Pattern: https://drive.google.com/file/d/FILE_ID/view → thumbnail API
-      const fileIdMatch = r.imageUrl.match(/\/d\/([A-Za-z0-9_-]+)/);
-      const thumbUrl = fileIdMatch
-        ? "https://drive.google.com/thumbnail?id=" + fileIdMatch[1] + "&sz=w200"
-        : "";
+    if (r.imageUrl && r.imageUrl.startsWith("https://")) {
+      // Supabase Storage public URL — use directly as thumbnail src
+      const thumbUrl = r.imageUrl;
       imgBlock =
         '<div class="drive-img-wrap">' +
-        (thumbUrl ? '<img class="drive-img-thumb" src="' + escHtml(thumbUrl) + '" alt="Equipment photo" onerror="this.style.display=\'none\'" onclick="window.open(\'' + escHtml(r.imageUrl) + '\',\'_blank\',\'noopener,noreferrer\')">' : "") +
-        '<br><a href="' + escHtml(r.imageUrl) + '" target="_blank" rel="noopener noreferrer" class="drive-img-link">🖼 View Full Image on Drive</a>' +
+        '<img class="drive-img-thumb" src="' + escHtml(thumbUrl) + '" alt="Equipment photo" ' +
+        'onerror="this.style.display=\'none\'" ' +
+        'onclick="window.open(\'' + escHtml(r.imageUrl) + '\',\'_blank\',\'noopener,noreferrer\')">' +
+        '<br><a href="' + escHtml(r.imageUrl) + '" target="_blank" rel="noopener noreferrer" ' +
+        'class="drive-img-link">🖼 View Full Image</a>' +
         '</div>';
     }
 
@@ -1296,19 +1259,20 @@ function updateFaultStatus(ref, newStatus) {
   if (stepperEl) stepperEl.innerHTML = buildStepperHTML(ref, newStatus);
   renderStats();
 
-  gasRequest(
-    { action: "updateStatus", ref: ref, status: newStatus, token: adminToken },
-    function() { /* success — stepper already updated optimistically */ },
-    function(err) {
-      // Revert optimistic update on failure
-      if (idx !== -1) faultReports[idx].status = newStatus; // keep as-is since we don't know old
-      showStatusUpdateError(ref, String(err || "Status update failed. Please try again."));
+  if (!supabaseSession) { showStatusUpdateError(ref, "Not logged in."); return; }
+  sbFetch("/rest/v1/fault_reports?ref_code=eq." + encodeURIComponent(ref), {
+    method: "PATCH",
+    body: JSON.stringify({ status: newStatus }),
+    headers: {
+      "Authorization": "Bearer " + supabaseSession.access_token,
+      "Prefer": "return=minimal"
     }
-  );
+  }).then(function(res) {
+    if (res.error) showStatusUpdateError(ref, String(res.error));
+  });
 }
 
 function showStatusUpdateError(ref, msg) {
-  // Show error inline on the card instead of blocking alert()
   const card = document.getElementById("card-" + ref);
   if (!card) return;
   let errBanner = card.querySelector(".status-err-banner");
@@ -1353,15 +1317,14 @@ function renderEquipList() {
 }
 
 function openGoogleSheet() {
-  if (!SHEET_ID || SHEET_ID === "PASTE_YOUR_SPREADSHEET_ID_HERE") {
-    showAdminNotice("Update SHEET_ID in the HTML config block with your Google Sheet ID.", "warn");
-    return;
+  if (SUPABASE_URL.includes("YOUR_PROJECT_ID")) {
+    showAdminNotice("Update SUPABASE_URL in the config block first.", "warn"); return;
   }
-  if (!/^[A-Za-z0-9_-]+$/.test(SHEET_ID)) {
-    showAdminNotice("Invalid Sheet ID format.", "warn");
-    return;
-  }
-  window.open("https://docs.google.com/spreadsheets/d/" + encodeURIComponent(SHEET_ID) + "/edit", "_blank", "noopener,noreferrer");
+  const projectId = SUPABASE_URL.replace("https://","").split(".")[0];
+  window.open(
+    "https://supabase.com/dashboard/project/" + encodeURIComponent(projectId) + "/editor",
+    "_blank", "noopener,noreferrer"
+  );
 }
 
 function showAdminNotice(msg, type) {
@@ -1442,16 +1405,14 @@ function updateCharCount(textareaId, countId, max) {
 }
 
 // ═══════════════════════════════════════════════════════════════
-// FILE UPLOAD — Google Drive pipeline
-// Flow: user picks file → client validates → FileReader reads
-//       base64 → chunked JSONP to GAS uploadImage →
-//       GAS saves to Drive folder → returns shareable URL →
-//       URL stored in driveImageUrl for inclusion in submitFault
+// FILE UPLOAD — Supabase Storage
+// Flow: user picks file → client validates type + size →
+//       FileReader shows local preview → uploadToSupabase() sends
+//       direct multipart POST to Supabase Storage →
+//       returns public URL stored in imagePublicUrl
 // ═══════════════════════════════════════════════════════════════
 const ALLOWED_IMAGE_TYPES = ["image/jpeg","image/png","image/gif","image/webp"];
-const MAX_FILE_BYTES      = 5 * 1024 * 1024; // 5 MB hard cap
-// Base64 chunk size per JSONP call — stays safely under GAS URL length limit
-const B64_CHUNK_BYTES = 30000; // ~40 KB base64 per chunk
+const MAX_FILE_BYTES      = 5 * 1024 * 1024; // 5 MB
 
 function previewImg(input, previewId) {
   const prev  = document.getElementById(previewId);
@@ -1459,8 +1420,7 @@ function previewImg(input, previewId) {
   const file  = input.files && input.files[0];
 
   // Clear any previous upload state
-  driveImageUrl    = null;
-  driveFileId      = null;
+  imagePublicUrl   = null;
   uploadInProgress = false;
   document.getElementById("f-img-drive-result").style.display = "none";
   setUploadProgress(false, 0, "");
@@ -1483,18 +1443,12 @@ function previewImg(input, previewId) {
   const reader = new FileReader();
   reader.onload = function(e) {
     const dataUrl = e.target.result;
-    // Security: confirm it's a genuine image data URL before using
     if (typeof dataUrl !== "string" || !dataUrl.startsWith("data:image/")) {
       if (errEl) errEl.textContent = "Invalid image file.";
       input.value = ""; return;
     }
-    // Show local preview immediately for good UX
-    prev.src = dataUrl;
-    prev.style.display = "block";
-
-    // Begin chunked Drive upload
-    const base64 = dataUrl.split(",")[1]; // strip data:image/...;base64, prefix
-    uploadToDrive(base64, file.name, file.type);
+    prev.src = dataUrl; prev.style.display = "block";
+    uploadToSupabase(file);
   };
   reader.onerror = function() {
     if (errEl) errEl.textContent = "Could not read the file. Please try again.";
@@ -1503,9 +1457,60 @@ function previewImg(input, previewId) {
   reader.readAsDataURL(file);
 }
 
+// ── Supabase Storage upload — direct multipart, no chunking needed ──
+async function uploadToSupabase(file) {
+  const errEl  = document.getElementById("err-f-img");
+  const ext    = (file.name.split(".").pop() || "jpg").toLowerCase().replace(/[^a-z0-9]/g,"");
+  const path   = "fault-images/fault_" + Date.now() + "_" +
+                 Math.random().toString(36).slice(2,8) + "." + ext;
+  setUploadProgress(true, 30, "Uploading image…");
+
+  const controller = new AbortController();
+  const timer      = setTimeout(() => controller.abort(), 30000);
+  try {
+    const res = await fetch(
+      SUPABASE_URL + "/storage/v1/object/" + IMAGE_BUCKET + "/" + path,
+      {
+        method:  "POST",
+        signal:  controller.signal,
+        headers: {
+          "apikey":        SUPABASE_ANON,
+          "Authorization": "Bearer " + SUPABASE_ANON,
+          "Content-Type":  file.type,
+          "x-upsert":      "false"
+        },
+        body: file
+      }
+    );
+    clearTimeout(timer);
+    if (!res.ok) {
+      const txt = await res.text();
+      throw new Error("Upload failed (" + res.status + "): " + txt.slice(0,120));
+    }
+    imagePublicUrl = SUPABASE_URL + "/storage/v1/object/public/" +
+                     IMAGE_BUCKET + "/" + path;
+    setUploadProgress(true, 100, "Upload complete ✅");
+    setTimeout(() => setUploadProgress(false, 0, ""), 1800);
+    const resultDiv   = document.getElementById("f-img-drive-result");
+    const anchor      = document.getElementById("f-img-drive-link");
+    anchor.href       = imagePublicUrl;
+    resultDiv.style.display = "block";
+    if (errEl) errEl.textContent = "";
+  } catch(err) {
+    clearTimeout(timer);
+    setUploadProgress(false, 0, "");
+    imagePublicUrl   = null;
+    uploadInProgress = false;
+    document.getElementById("f-img-drive-result").style.display = "none";
+    if (errEl) errEl.textContent = (err.name === "AbortError"
+      ? "Upload timed out."
+      : "Upload failed: " + err.message) + " — you can still submit without an image.";
+  }
+}
+
 // Animate the progress bar
 function setUploadProgress(visible, pct, label) {
-  uploadInProgress = visible && pct < 100; // true only while actively uploading
+  uploadInProgress = visible && pct < 100;
   const wrap    = document.getElementById("upload-progress-wrap");
   const bar     = document.getElementById("upload-progress-bar");
   const lbl     = document.getElementById("upload-progress-label");
@@ -1517,82 +1522,29 @@ function setUploadProgress(visible, pct, label) {
   fileLbl.classList.toggle("uploading", visible && pct < 100);
 }
 
-// ── Chunked upload to Google Drive via GAS POST ─────────────────
-// FIX: Previously used GET which truncates at ~8KB URL limit.
-// Now uses gasPost() which sends chunks as JSON body — no size limit.
-// GAS assembles chunks in PropertiesService then writes to Drive.
-function uploadToDrive(base64, fileName, mimeType) {
-  const errEl    = document.getElementById("err-f-img");
-  const totalLen = base64.length;
-  const chunks   = Math.ceil(totalLen / B64_CHUNK_BYTES);
-  const uploadId = "UPL_" + Date.now() + "_" + Math.floor(Math.random() * 99999);
-
-  setUploadProgress(true, 5, "Starting upload (" + chunks + " part" + (chunks > 1 ? "s" : "") + ")…");
-
-  function sendChunk(idx) {
-    const start  = idx * B64_CHUNK_BYTES;
-    const end    = Math.min(start + B64_CHUNK_BYTES, totalLen);
-    const chunk  = base64.slice(start, end);
-    const isLast = (end >= totalLen);
-    const pct    = Math.round(((idx + 1) / chunks) * 90);
-
-    setUploadProgress(true, pct,
-      isLast ? "Saving to Google Drive…" : "Uploading part " + (idx + 1) + " of " + chunks + "…"
-    );
-
-    gasPost(
-      {
-        action:   "uploadImage",
-        uploadId: uploadId,
-        chunk:    chunk,
-        chunkIdx: idx,
-        total:    chunks,
-        fileName: fileName,
-        mimeType: mimeType,
-        folderId: DRIVE_FOLDER
-      },
-      function(result) {
-        if (isLast) {
-          setUploadProgress(true, 100, "Upload complete ✅");
-          setTimeout(function() { setUploadProgress(false, 0, ""); }, 1800);
-          driveImageUrl = result.viewUrl || "";
-          driveFileId   = result.fileId  || "";
-          const resultDiv   = document.getElementById("f-img-drive-result");
-          const driveAnchor = document.getElementById("f-img-drive-link");
-          if (driveImageUrl) { driveAnchor.href = driveImageUrl; resultDiv.style.display = "block"; }
-          if (errEl) errEl.textContent = "";
-        } else {
-          sendChunk(idx + 1);
-        }
-      },
-      function(err) {
-        setUploadProgress(false, 0, "");
-        if (errEl) errEl.textContent = "Image upload failed: " + escHtml(err) + " — you can still submit without an image.";
-        driveImageUrl = null;
-        driveFileId   = null;
-        document.getElementById("f-img-drive-result").style.display = "none";
-      },
-      35000
-    );
-  }
-
-  sendChunk(0);
-}
-
-// Clear the uploaded image (user clicks ✕ Remove)
 function clearImageUpload() {
-  driveImageUrl    = null;
-  driveFileId      = null;
+  imagePublicUrl   = null;
   uploadInProgress = false;
-  document.getElementById("f-img").value              = "";
+  document.getElementById("f-img").value               = "";
   document.getElementById("img-preview").style.display = "none";
   document.getElementById("img-preview").src           = "";
-  document.getElementById("f-img-name").textContent   = "";
+  document.getElementById("f-img-name").textContent    = "";
   document.getElementById("f-img-drive-result").style.display = "none";
   setUploadProgress(false, 0, "");
   const errEl = document.getElementById("err-f-img");
   if (errEl) errEl.textContent = "";
 }
+
+function resetFaultForm() {
+  ["f-facility","f-unit","f-equip","f-reporter","f-contact","f-desc","f-remarks"]
+    .forEach(id => { document.getElementById(id).value = ""; });
+  ["f-district","f-ftype"].forEach(id => { document.getElementById(id).value = ""; });
+  clearImageUpload();
+  document.getElementById("f-desc-count").textContent = "0";
+}
+
+// Remove now-unused Drive chunk upload functions
+// (uploadToDrive and gasPost are replaced by uploadToSupabase above)
 
 // ═══════════════════════════════════════════════════════════════
 // SUBMIT ENGINE — per-form locking (FIX: was a single global that
@@ -1626,52 +1578,47 @@ function unlockSubmit(btnId) {
   }, 1000);
 }
 
-function submitFault() {
+async function submitFault() {
   if (isSubmitLocked("btn-fault")) return;
   clearErrors(["f-facility","f-district","f-ftype","f-equip","f-reporter","f-contact","f-desc"]);
   let ok = true;
-  ok = req("f-facility","Facility name")      && ok;
-  ok = req("f-district","District")           && ok;
-  ok = req("f-ftype","Facility type")         && ok;
-  ok = req("f-equip","Equipment name")        && ok;
-  ok = req("f-reporter","Reporter name")      && ok;
-  ok = req("f-desc","Fault description")      && ok;
-  ok = validPhone("f-contact")               && ok;
+  ok = req("f-facility","Facility name") && ok;
+  ok = req("f-district","District")      && ok;
+  ok = req("f-ftype","Facility type")    && ok;
+  ok = req("f-equip","Equipment name")   && ok;
+  ok = req("f-reporter","Reporter name") && ok;
+  ok = req("f-desc","Fault description") && ok;
+  ok = validPhone("f-contact")           && ok;
   if (!ok) return;
-
-  // Block submission ONLY if an upload is genuinely in progress
-  if (uploadInProgress) {
-    showErrorModal("Please wait — image upload is still in progress.");
-    return;
-  }
-
+  if (uploadInProgress) { showErrorModal("Please wait — image upload is still in progress."); return; }
   if (!navigator.onLine) { showErrorModal("You are offline. Please reconnect and try again."); return; }
 
   setSubmitting("btn-fault", true);
   const ref = genRef("FR");
-  gasRequest(
-    {
-      action:    "submitFault",
-      ref:       ref,
-      facility:  document.getElementById("f-facility").value.trim(),
-      district:  document.getElementById("f-district").value,
-      ftype:     document.getElementById("f-ftype").value,
-      unit:      document.getElementById("f-unit").value.trim(),
-      equipment: document.getElementById("f-equip").value.trim(),
-      desc:      document.getElementById("f-desc").value.trim(),
-      reporter:  document.getElementById("f-reporter").value.trim(),
-      contact:   document.getElementById("f-contact").value.trim(),
-      remarks:   document.getElementById("f-remarks").value.trim(),
-      imageUrl:  driveImageUrl || ""   // Drive URL included here
-    },
-    function(result) {
-      setSubmitting("btn-fault", false);
-      pendingReset = resetFaultForm;
-      showModal(result.refCode || ref, "Fault Report");
-    },
-    function(err) { unlockSubmit("btn-fault"); showErrorModal(err); },
-    20000
-  );
+  const body = {
+    ref_code:          ref,
+    facility_name:     document.getElementById("f-facility").value.trim(),
+    district:          document.getElementById("f-district").value,
+    facility_type:     document.getElementById("f-ftype").value,
+    unit_department:   document.getElementById("f-unit").value.trim() || null,
+    equipment_name:    document.getElementById("f-equip").value.trim(),
+    fault_description: document.getElementById("f-desc").value.trim(),
+    reporter_name:     document.getElementById("f-reporter").value.trim(),
+    contact_number:    document.getElementById("f-contact").value.trim(),
+    remarks:           document.getElementById("f-remarks").value.trim() || null,
+    image_url:         imagePublicUrl || null,
+    status:            "Received"
+  };
+
+  const res = await sbInsert("fault_reports", body);
+  if (!res.error) {
+    setSubmitting("btn-fault", false);
+    pendingReset = resetFaultForm;
+    showModal(ref, "Fault Report");
+  } else {
+    unlockSubmit("btn-fault");
+    showErrorModal(String(res.error));
+  }
 }
 
 function resetFaultForm() {
@@ -1683,92 +1630,93 @@ function resetFaultForm() {
   document.getElementById("f-desc-count").textContent = "0";
 }
 
-function submitInstall() {
+async function submitInstall() {
   if (isSubmitLocked("btn-install")) return;
   clearErrors(["i-facility","i-district","i-ftype","i-etype","i-qty","i-name","i-contact"]);
   let ok = true;
-  ok = req("i-facility","Facility name")  && ok;
-  ok = req("i-district","District")       && ok;
-  ok = req("i-ftype","Facility type")     && ok;
-  ok = req("i-etype","Equipment type")    && ok;
-  ok = req("i-qty","Quantity")            && ok;
-  ok = req("i-name","Requester name")     && ok;
+  ok = req("i-facility","Facility name") && ok;
+  ok = req("i-district","District")      && ok;
+  ok = req("i-ftype","Facility type")    && ok;
+  ok = req("i-etype","Equipment type")   && ok;
+  ok = req("i-qty","Quantity")           && ok;
+  ok = req("i-name","Requester name")    && ok;
   ok = validPhone("i-contact")           && ok;
   if (!ok) return;
-
   if (!navigator.onLine) { showErrorModal("You are offline. Please reconnect and try again."); return; }
 
   setSubmitting("btn-install", true);
   const ref = genRef("IR");
-  gasRequest(
-    {
-      action:   "submitInstall",
-      ref:      ref,
-      facility: document.getElementById("i-facility").value.trim(),
-      district: document.getElementById("i-district").value,
-      ftype:    document.getElementById("i-ftype").value,
-      etype:    document.getElementById("i-etype").value,
-      qty:      document.getElementById("i-qty").value,
-      date:     document.getElementById("i-date").value,
-      name:     document.getElementById("i-name").value.trim(),
-      grade:    document.getElementById("i-grade").value.trim(),
-      contact:  document.getElementById("i-contact").value.trim()
-    },
-    function(result) {
-      setSubmitting("btn-install", false);
-      pendingReset = function() {
-        ["i-facility","i-name","i-grade","i-contact","i-date"].forEach(id => document.getElementById(id).value = "");
-        ["i-district","i-ftype","i-etype","i-qty"].forEach(id => document.getElementById(id).value = "");
-      };
-      showModal(result.refCode || ref, "Installation Request");
-    },
-    function(err) { unlockSubmit("btn-install"); showErrorModal(err); },
-    20000
-  );
+  const prefDate = document.getElementById("i-date").value || null;
+  const body = {
+    ref_code:       ref,
+    facility_name:  document.getElementById("i-facility").value.trim(),
+    district:       document.getElementById("i-district").value,
+    facility_type:  document.getElementById("i-ftype").value,
+    equipment_type: document.getElementById("i-etype").value.trim(),
+    quantity:       parseInt(document.getElementById("i-qty").value, 10),
+    preferred_date: prefDate || null,
+    requester_name: document.getElementById("i-name").value.trim(),
+    grade_position: document.getElementById("i-grade").value.trim() || null,
+    contact_number: document.getElementById("i-contact").value.trim(),
+    status:         "Pending Review"
+  };
+
+  const res = await sbInsert("installation_requests", body);
+  if (!res.error) {
+    setSubmitting("btn-install", false);
+    pendingReset = function() {
+      ["i-facility","i-name","i-grade","i-contact","i-date"].forEach(id => document.getElementById(id).value = "");
+      ["i-district","i-ftype","i-etype","i-qty"].forEach(id => document.getElementById(id).value = "");
+    };
+    showModal(ref, "Installation Request");
+  } else {
+    unlockSubmit("btn-install");
+    showErrorModal(String(res.error));
+  }
 }
 
-function submitEquip() {
+async function submitEquip() {
   if (isSubmitLocked("btn-equip")) return;
   clearErrors(["e-facility","e-district","e-etype","e-qty","e-name","e-contact","e-reason"]);
   let ok = true;
-  ok = req("e-facility","Facility name")   && ok;
-  ok = req("e-district","District")        && ok;
-  ok = req("e-etype","Equipment type")     && ok;
-  ok = req("e-qty","Quantity")             && ok;
-  ok = req("e-name","Your name")           && ok;
-  ok = req("e-reason","Reason")            && ok;
-  ok = validPhone("e-contact")            && ok;
+  ok = req("e-facility","Facility name") && ok;
+  ok = req("e-district","District")      && ok;
+  ok = req("e-etype","Equipment type")   && ok;
+  ok = req("e-qty","Quantity")           && ok;
+  ok = req("e-name","Your name")         && ok;
+  ok = req("e-reason","Reason")          && ok;
+  ok = validPhone("e-contact")           && ok;
   if (!ok) return;
-
   if (!navigator.onLine) { showErrorModal("You are offline. Please reconnect and try again."); return; }
 
   setSubmitting("btn-equip", true);
   const ref = genRef("ER");
-  gasRequest(
-    {
-      action:   "submitEquip",
-      ref:      ref,
-      facility: document.getElementById("e-facility").value.trim(),
-      district: document.getElementById("e-district").value,
-      etype:    document.getElementById("e-etype").value,
-      qty:      document.getElementById("e-qty").value,
-      reason:   document.getElementById("e-reason").value.trim(),
-      name:     document.getElementById("e-name").value.trim(),
-      contact:  document.getElementById("e-contact").value.trim(),
-      grade:    document.getElementById("e-grade").value.trim()
-    },
-    function(result) {
-      setSubmitting("btn-equip", false);
-      pendingReset = function() {
-        ["e-facility","e-name","e-grade","e-contact","e-reason"].forEach(id => document.getElementById(id).value = "");
-        ["e-district","e-etype","e-qty"].forEach(id => document.getElementById(id).value = "");
-        document.getElementById("e-reason-count").textContent = "0";
-      };
-      showModal(result.refCode || ref, "Equipment Request");
-    },
-    function(err) { unlockSubmit("btn-equip"); showErrorModal(err); },
-    20000
-  );
+  const body = {
+    ref_code:       ref,
+    facility_name:  document.getElementById("e-facility").value.trim(),
+    district:       document.getElementById("e-district").value,
+    equipment_type: document.getElementById("e-etype").value.trim(),
+    quantity:       parseInt(document.getElementById("e-qty").value, 10),
+    reason:         document.getElementById("e-reason").value.trim(),
+    requester_name: document.getElementById("e-name").value.trim(),
+    contact_number: document.getElementById("e-contact").value.trim(),
+    grade_position: document.getElementById("e-grade").value.trim() || null,
+    status:         "Pending Review"
+  };
+
+  const res = await sbInsert("equipment_requests", body);
+  if (!res.error) {
+    setSubmitting("btn-equip", false);
+    pendingReset = function() {
+      ["e-facility","e-name","e-grade","e-contact","e-reason"].forEach(id => document.getElementById(id).value = "");
+      ["e-district","e-etype","e-qty"].forEach(id => document.getElementById(id).value = "");
+      document.getElementById("e-reason-count").textContent = "0";
+    };
+    showModal(ref, "Equipment Request");
+  } else {
+    unlockSubmit("btn-equip");
+    showErrorModal(String(res.error));
+  }
 }
 
 // ═══════════════════════════════════════════════════════════════
@@ -1782,7 +1730,7 @@ function showModal(ref, label) {
   const strong = document.createElement("strong");
   strong.textContent = label;
   labelEl.appendChild(strong);
-  const rest = document.createTextNode(" was confirmed by the server and saved. Keep your reference code safe for tracking.");
+  const rest = document.createTextNode(" was confirmed by the server and saved to Google Sheets. Keep your reference code safe for tracking.");
   labelEl.appendChild(rest);
   document.getElementById("ref-copy-tip").textContent = "Tap the code above to copy it";
   document.getElementById("success-modal").classList.add("open");
@@ -1902,26 +1850,67 @@ function checkStatus() {
     trackBtn.innerHTML = trackBtn._origHTML;
   }
 
-  gasRequest(
-    { action: "getStatus", ref: raw },
-    function(result) {
-      resetTrackBtn();
-      document.getElementById("track-loading").style.display = "none";
-      if (!result.found) {
-        document.getElementById("track-notfound").style.display = "block";
-        document.getElementById("track-notfound-msg").textContent = "Reference code not found.";
+  // Query Supabase across all three tables
+  (async function() {
+    try {
+      // Check fault_reports
+      let res = await sbFetch(
+        "/rest/v1/fault_reports?ref_code=eq." + encodeURIComponent(raw) +
+        "&select=ref_code,facility_name,equipment_name,status,created_at,last_status_update",
+        { method: "GET" }
+      );
+      if (!res.error && Array.isArray(res.data) && res.data.length > 0) {
+        const r = res.data[0];
+        resetTrackBtn();
+        document.getElementById("track-loading").style.display = "none";
+        renderTrackResult({ found: true, type: "fault_report", ref: r.ref_code,
+          facility: r.facility_name, equipment: r.equipment_name,
+          status: r.status, lastUpdated: r.last_status_update || r.created_at });
         return;
       }
-      renderTrackResult(result);
-    },
-    function(err) {
+      // Check installation_requests
+      res = await sbFetch(
+        "/rest/v1/installation_requests?ref_code=eq." + encodeURIComponent(raw) +
+        "&select=ref_code,facility_name,equipment_type,status,created_at",
+        { method: "GET" }
+      );
+      if (!res.error && Array.isArray(res.data) && res.data.length > 0) {
+        const r = res.data[0];
+        resetTrackBtn();
+        document.getElementById("track-loading").style.display = "none";
+        renderTrackResult({ found: true, type: "installation_request", ref: r.ref_code,
+          facility: r.facility_name, equipment: r.equipment_type,
+          status: r.status, lastUpdated: r.created_at });
+        return;
+      }
+      // Check equipment_requests
+      res = await sbFetch(
+        "/rest/v1/equipment_requests?ref_code=eq." + encodeURIComponent(raw) +
+        "&select=ref_code,facility_name,equipment_type,status,created_at",
+        { method: "GET" }
+      );
+      if (!res.error && Array.isArray(res.data) && res.data.length > 0) {
+        const r = res.data[0];
+        resetTrackBtn();
+        document.getElementById("track-loading").style.display = "none";
+        renderTrackResult({ found: true, type: "equipment_request", ref: r.ref_code,
+          facility: r.facility_name, equipment: r.equipment_type,
+          status: r.status, lastUpdated: r.created_at });
+        return;
+      }
+      // Not found anywhere
+      resetTrackBtn();
+      document.getElementById("track-loading").style.display  = "none";
+      document.getElementById("track-notfound").style.display = "block";
+      document.getElementById("track-notfound-msg").textContent = "Reference code not found.";
+    } catch(err) {
       resetTrackBtn();
       document.getElementById("track-loading").style.display  = "none";
       document.getElementById("track-notfound").style.display = "block";
       document.getElementById("track-notfound-msg").textContent =
-        "Could not check status: " + String(err || "Unknown error");
+        "Could not check status: " + String(err.message || err);
     }
-  );
+  })();
 }
 
 function renderTrackResult(result) {
